@@ -1,5 +1,5 @@
 rbvj = function () {
-  renderer.setClearColor('#ffffff');
+  renderer.setClearColor('#000000');
   ctx.clearRect( 0, 0, w, h );
   var sphere = [];
   var sphereGeom = [];
@@ -46,7 +46,7 @@ rbvj = function () {
   var date = new Date();
 
   // add subtle ambient lighting
-  var ambientLight = new THREE.AmbientLight( 0x111111 );
+  var ambientLight = new THREE.AmbientLight( 0x444444 );
   scene.add( ambientLight );
 
   // add spotlight for the shadows
@@ -89,7 +89,7 @@ rbvj = function () {
     //   } );
     // } else {
     var planetMaterial = new THREE.MeshPhongMaterial( {
-      color: 0x111111,
+      color: 0xffffff,
       side: THREE.DoubleSide,
       clippingPlanes: clipPlanes[ i ],
     } );
@@ -107,7 +107,7 @@ rbvj = function () {
 
 
   function changeClipConstants( s, num, value ) {
-    clipPlanes[ s ][ num ].constant = value;
+    clipPlanes[ s ][ num ].constant = value/2;
   }
 
   this.draw = function () {
@@ -115,7 +115,7 @@ rbvj = function () {
     step += 1;
 
     sw = Sound.getVol(1,3);
-    params.sliceWidth = tween(params.sliceWidth, sw, 5);
+    params.sliceWidth = Math.round(tween(params.sliceWidth, sw, 15));
     for ( var i = 0; i < num_slices; i++ ) {
       if ( change_constants[ i ] ) {
         changeClipConstants( i, 0, Math.sin( (noiseAmount/3 + step) / speed[ i ] ) * 16 );
