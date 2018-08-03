@@ -1,4 +1,5 @@
-rbvj = function(){
+rbvj = function () {
+
 
   var Wave = function(_num_particles, _x, _y, _me) {
 
@@ -14,6 +15,7 @@ rbvj = function(){
   	this.setup = function(){
   		for (var i = 0; i < num_particles; i++) {
   			var c = random(225);
+  			//var c = 0;
   		    var cc = rgba(c, c, c, 1);
   			this.addParticle(x, y, cc, me);
   		}
@@ -26,14 +28,14 @@ rbvj = function(){
   	this.addParticle = function(_x, _y, _colour, _me){
   		var particle = {
   			x: _x,
-  			y: h-_y,
+  			y: _y,
   			c: _colour,
   			me: _me,
-  			stroke_width: random(0.1, 1),
+  			stroke_width: 4,
   			speedx: 0,
   			speedy: random(2,20),
   			sz: radius+ _me*26,
-  			dir: -1*_me%2
+  			angle: 0
   		}
   		particles.push(particle);
   	}
@@ -41,17 +43,33 @@ rbvj = function(){
 
   	this.moveParticles = function(){
 
-  		for (var i = 0; i < particles.length ; i++) {
+  		for (var i = 0; i < particles.length; i++) {
 
   			p = particles[i];
 
   			//DISTRIBUTED MAPPED SOUND VALUE
-  			var s = Sound.mapSound(40+p.me%53, 100, 0, 100);
+  			var s = Sound.mapSound(p.me, num_waves);
+  			p.speedx = tween(p.speedx, map(s, 0, 255, 0, 360)-180, 20);
+  			var arc =  p.speedx * Math.PI;
+  			p.angle += p.speedx/50;
+  			// if (p.angle > 180) p.angle = 180;
+  			// if (p.angle < 0) p.angle = 0;
 
-  			ctx.fillStyle = rgb(255);
-  			ctx.fillRect(p.x, p.y - spacing_y/2, s/4.2, spacing_y);
-
-
+  			// DRAW ARCS
+  			ctx.translate(w/2, h/2);
+  			ctx.rotate(radians(p.angle+180));
+  			ctx.strokeStyle = p.c;
+  			//ctx.lineWidth = p.stroke_width;
+  			ctx.lineWidth = s/10;
+  			//ctx.lineWidth = 1;
+  			// ctx.beginPath();
+  			// ctx.arc(0, 0, p.sz/2, -arc/2, arc/2);
+  			// ctx.stroke();
+  			ctx.line(-s, 0, s, 0);
+  			ctx.line(0, -s, 0, s);
+  			ctx.rotate(radians(-p.angle-180));
+  			ctx.translate(-w/2, -h/2);
+  			//ctx.fillEllipse(p.x, p.y, 16, 16);
   		};
 
   	}
@@ -64,7 +82,7 @@ rbvj = function(){
   // SETUP WAVES CLASS
 
   var waves = [];
-  var grid_w = 65;
+  var grid_w = 10;
   var grid_h = 10;
   var num_waves = grid_w * grid_h;
   var spacing_x = w/grid_w;
@@ -75,25 +93,19 @@ rbvj = function(){
   var num_particles = 1;
 
   for (var i = 0; i < num_waves; i++) {
-  	waves[i] = new Wave(num_particles, grid[i][0]*spacing_x,grid[i][1]*spacing_y + spacing_y/2, i*num_particles);
-
+  	waves[i] = new Wave(num_particles, grid[i][0]*spacing_x+spacing_x/2,grid[i][1]*spacing_y + spacing_y/2, i);
   };
 
 
 
   // DRAW WAVES CLASS
 
-  draw = function(){
-
-  	ctx.background( 0 );
-
+  draw = function (){
+  	ctx.background(0);
   	for (var i = 0; i < num_waves; i++) {
   		waves[i].draw();
-
   	};
-
   }
-
 
 
 }();

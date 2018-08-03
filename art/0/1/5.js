@@ -1,95 +1,158 @@
+rbvj = function(){
 
-var ctx = createCanvas("canvas1");
-var ctx2 = createCanvas("canvas2");
-ctx2.font="10px Arial";
-var grid = new particleEngine(60, 30);
-var engine = new particleEngine(20, 2);
-var hit_dist = 50;
+  var gw = 40;
+  var gh = 30;
+  var grid = new particleEngine(gw, gh);
+  var grid2 = new particleEngine(gw, gh);
+  var hit_dist = 140;
+  var sz = 10;
+  var tween_speed = 10;
 
-for (var i = 0; i < grid.length; i++) {
-  var g = grid.particles[i];
-  g.sz = 5;
-  g.start_sz = 6;
-}
+  ctx.font="12px Arial";
 
-for (var i = 0; i < engine.particles.length; i++) {
-  p = engine.particles[i];
-  p.pos.y =  h;
-
-  p.speed.x = 15;
-  p.speed.y = random(2, 6);
-  p.dir.x = 1;
-  p.dir.y = -1;
-  //console.log(p.speed.y);
-}
-//console.log(engine.particles);
-//engine.particles[5].speed.y = 20;
-
-function draw() {
-  ctx.background(0);
-  ctx.fillStyle = "white";
+  console.log(grid);
 
   for (var i = 0; i < grid.length; i++) {
-
     var g = grid.particles[i];
-  for (var j = 0; j < engine.length; j++) {
-    var p = engine.particles[j];
+    var g2 = grid.particles[i];
+    g.sz = sz;
+    g.orig = new Vector(g.pos.x, g.pos.y);
+    g2.orig = new Vector(g2.pos.x, g2.pos.y);
+    g.old_me = g.me;
+    g2.old_me = g2.me;
+    g.start_sz = sz;
+    if(chance(2)) {
+      g.on = true;
+      g.open = false;
+    } else {
+      g.on = false;
+      g.open = true;
+    }
+  }
+
+  ctx.background(0);
 
 
+  draw = function() {
 
-      var d = Math.abs(getDist(g, p));
-      if(d < hit_dist) {
-        //if (p.me == 1) console.log(d);
-        //var target_sz = g.start_sz + Math.abs(hit_dist/2 - d/2);
-        var target_sz = hit_dist - d + g.start_sz;
-        if (g.sz < target_sz) g.sz = target_sz/3;
+    ctx.background(0, 0.1);
+    ctx2.clearRect(0, 0, w, h);
+    ctx.fillStyle = "white";
+    ctx2.fillStyle = "white";
+    //ctx2.fillStyle = "black";
+
+    if (chance(20)) shuffleGrid();
+    moveGrid();
+    drawGrid();
+
+  }
+
+  function newPosX(g){
+
+    if (g.on) {
+      //console.log(g);
+      var row = g.row;
+      var col = g.col;
+      var old_pos = col + (row * grid.grid.num_items_horiz);
+      var new_col = randomInt(grid.grid.num_items_horiz-1);
+      var new_pos = new_col + ( row * (grid.grid.num_items_horiz));
+
+      var p = grid.particles[new_pos];
+      var g2 = grid2.particles[old_pos];
+      //console.log(g2);
+      if(col != new_col && p.open == true && !p.on) {
+        p.open = false;
+        p.on = true;
+        g.open = true;
+        g.on = false;
+        p.pos.x = g.pos.x;
+        p.target.x = p.start.x;
+        p.old.x = g2.old.x;
+        p.old_me = g2.old_me;
       }
+    }
+  }
+
+  function newPosY(g){
+
+    if (g.on) {
+      //console.log(g);
+      var row = g.row;
+      var col = g.col;
+      var old_pos = col + (row * grid.grid.num_items_horiz);
+      var new_row = randomInt(grid.grid.num_items_vert-1);
+      var new_pos = col + ( new_row * (grid.grid.num_items_horiz));
+
+      var p = grid.particles[new_pos];
+      var g2 = grid2.particles[old_pos];
+      // console.log(g.me + " old: " + row + ":" + col + " - " + old_pos);
+      // console.log(p.me + " new: " + new_row + ":" + col + " - " + new_pos);
+      p.open = false;
+      p.on = true;
+      g.open = true;
+      g.on = false;
+      p.pos.y = g.pos.y;
+      p.target.y = p.start.y;
+      p.old.y = g2.old.y;
+      p.old_me = g2.old_me;
+    }
+
+  }
+
+  function shuffleGrid(){
+    for (var i = 0; i < grid.length; i++) {
+      var g = grid.particles[i];
+      if (Math.round(g.pos.x) == Math.round(g.target.x) && Math.round(g.pos.y) == Math.round(g.target.y) && chance(10)) newPosX(g);
+      if (Math.round(g.pos.x) == Math.round(g.target.x) && Math.round(g.pos.y) == Math.round(g.target.y) && chance(10)) newPosY(g);
+      }
+  }
 
 
+  function moveGrid(){
+    for (var i = 0; i < grid.length; i++) {
+      var g = grid.particles[i];
+      g.pos.x = tween(g.pos.x, g.target.x, tween_speed);
+      g.pos.y = tween(g.pos.y, g.target.y, tween_speed);
+    }
+  }
+
+  function drawGrid(){
+    for (var i = 0; i < grid.length; i++) {
+      var g = grid.particles[i];
+      var g2 = grid2.particles[i];
+      ctx.fillStyle = "white";
+      ctx.strokeStyle = rgba(255, 0.2);
+      if(dist(g.old.x, g.old.y, g.pos.x, g.pos.y) < 150) {
+      //ctx.line(g.old.x, g.old.y, g.pos.x, g.pos.y);
+        //if(g.old.x != g.pos.x && g.old.y != g.pos.y)
+        //ctx.fillStyle = rgba(255, 0.2);
+        //ctx.fillEllipse(g.old.x, g.old.y, 26, 26);
+      }
+      //ctx.fillStyle = "red";
+      //ctx.fillEllipse(g.start.x, g.start.y, 4, 4);
+
+      if(g.on) {
+        ctx.fillStyle = "white";
+        //ctx.fillText(g2.old_me, g.pos.x, g.pos.y + 20);
+        // if (chance(4)) {
+        //   var s = Sound.mapSound(i, grid.length * 2, 2, 7);
+        // } else {
+          var s = 6;
+        //}
+
+        ctx2.LfillEllipse(g.pos.x, g.pos.y, s, s);
+
+      for (var j = i+1; j < grid.length-1; j++) {
+        var gg = grid.particles[j];
+        if(dist(gg.pos.x, gg.pos.y, g.pos.x, g.pos.y) < 30) {
+          ctx.line(gg.pos.x, gg.pos.y, g.pos.x, g.pos.y);
+          //ctx2.LfillEllipse(gg.pos.x, gg.pos.y, 6, 6);
+        }
+      }
+      }
 
     }
   }
 
-  moveParticles();
-  drawGrid();
-  //drawParticles();
 
-}
-
-function drawGrid(){
-  for (var i = 0; i < grid.length; i++) {
-    var g = grid.particles[i];
-    ctx.fillEllipse(g.pos.x, g.pos.y, g.sz, g.sz);
-    if (g.sz > g.start_sz) g.sz = tween(g.start_sz, g.sz, 35);
-    //g.sz-= 2;
-  }
-}
-
-function moveParticles(){
-  for (var i = 0; i < engine.particles.length; i++) {
-    var p = engine.particles[i];
-    p.pos.x += p.speed.x * p.dir.x;
-    p.pos.y += p.speed.y * p.dir.y;
-    //console.log(p.speed.y);
-    if (p.pos.y < 0) p.pos.y = h;
-    if (p.pos.y > h) p.pos.y = 0;
-    if (p.pos.x < 0) p.pos.x = w;
-    if (p.pos.x > w) p.pos.x = 0;
-  }
-  //engine.update();
-}
-
-function drawParticles(){
-  for (var j = 0; j < engine.length; j++) {
-    var p = engine.particles[j];
-    //ctx.fillStyle = "red";
-    ctx.fillEllipse(p.pos.x, p.pos.y, 5, 5);
-  }
-}
-
-
-
-
-function getDist(p, p2){
-  return dist(p.pos.x, p.pos.y, p2.pos.x, p2.pos.y);
-}
+}();

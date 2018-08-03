@@ -1,4 +1,4 @@
-rbvj = function(){
+rbvj = function () {
 
   var Wave = function(_num_particles, _x, _y, _me) {
 
@@ -44,12 +44,11 @@ rbvj = function(){
   		for (var i = 0; i < particles.length ; i++) {
 
   			p = particles[i];
-
-  			//DISTRIBUTED MAPPED SOUND VALUE
-  			var s = Sound.mapSound(40+p.me%53, 100, 0, 100);
+        var s = Sound.mapSound(p.me % 100, 200 , 1, 100);
 
   			ctx.fillStyle = rgb(255);
-  			ctx.fillRect(p.x, p.y - spacing_y/2, s/4.2, spacing_y);
+  			ctx.fillRect(p.x, p.y, s/4, spacing_y/1-2);
+
 
 
   		};
@@ -64,13 +63,12 @@ rbvj = function(){
   // SETUP WAVES CLASS
 
   var waves = [];
-  var grid_w = 65;
-  var grid_h = 10;
+  var grid_w = 30;
+  var grid_h = 80;
   var num_waves = grid_w * grid_h;
   var spacing_x = w/grid_w;
   var spacing_y = h/grid_h;
-  console.log(spacing_x)
-  console.log(spacing_y)
+
   var grid = makeGrid(grid_w, grid_h);
   var num_particles = 1;
 
@@ -85,7 +83,7 @@ rbvj = function(){
 
   draw = function(){
 
-  	ctx.background( 0 );
+  	ctx.background(0);
 
   	for (var i = 0; i < num_waves; i++) {
   		waves[i].draw();
@@ -93,7 +91,6 @@ rbvj = function(){
   	};
 
   }
-
 
 
 }();

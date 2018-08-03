@@ -10,6 +10,11 @@ rbvj = function () {
   var change_constants = [];
   var speed = [];
 
+  var seed = window.location.hash.substr(1) || String(Math.random()).split('.')[1];
+  var r = random( seed )
+  var simplex = new SimplexNoise( r )
+  var simplex3 = simplex.noise3D.bind(simplex)
+  var simplexScale = 0.6;
 
   var params = {
     clipIntersection: true,
@@ -53,7 +58,7 @@ rbvj = function () {
   var noiseAmount = 2;
 
 
-  pn = new Perlin( 'rnd' + date.getTime() );
+  //pn = new Perlin( 'rnd' + date.getTime() );
 
   sphereGeom[ 0 ] = new THREE.SphereGeometry( 10, 30, 200 );
   sphereGeom[ 1 ] = new THREE.SphereGeometry( 11, 30, 100 );
@@ -94,46 +99,6 @@ rbvj = function () {
 
   }
 
-  //
-  // gui.add( params, 'sliceWidth', 0.1, 10 ).step( 0.1 ).name( 'Slice Width' ).onChange( function ( value ) {
-  // 	sliceWidth = value;
-  //
-  // } );
-  //
-  // // sphere 1
-  // gui.add( params, 'planeConstant', - 16, 16 ).step( 1 ).name( 'plane constant' ).onChange( function ( value ) {
-  // 	change_constants = false;
-  // 	changeClipConstants(0, 0, value)
-  // } );
-  //
-  // gui.add( params, 'planeConstant', - 16, 16 ).step( 1 ).name( 'plane constant' ).onChange( function ( value ) {
-  // 	change_constants = false;
-  // 	changeClipConstants(0, 1, value)
-  // } );
-  //
-  // // sphere 1
-  // gui.add( params, 'planeConstant', - 16, 16 ).step( 1 ).name( 'plane constant' ).onChange( function ( value ) {
-  // 	change_constants = false;
-  // 	changeClipConstants(1, 0, value)
-  // } );
-  //
-  // gui.add( params, 'planeConstant', - 16, 16 ).step( 1 ).name( 'plane constant' ).onChange( function ( value ) {
-  // 	change_constants = false;
-  // 	changeClipConstants(1, 1, value)
-  // } );
-  //
-  // // sphere 2
-  // gui.add( params, 'planeConstant', - 16, 16 ).step( 1 ).name( 'plane constant' ).onChange( function ( value ) {
-  // 	change_constants = false;
-  // 	changeClipConstants(2, 0, value)
-  // } );
-  //
-  // gui.add( params, 'planeConstant', - 16, 16 ).step( 1 ).name( 'plane constant' ).onChange( function ( value ) {
-  // 	change_constants = false;
-  // 	changeClipConstants(2, 1, value)
-  // } );
-
-
 
   for ( var i = 0; i < num_slices; i++ ) {
     change_constants[ i ] = true;
@@ -163,8 +128,9 @@ rbvj = function () {
 
     for ( var i = 0; i < vl; i += 1 ) {
       var vertex = sphereGeom[ 0 ].vertices[ i ];
-
-      var value = pn.noise( ( vertex.x + step ) / 10, vertex.y / 10, vertex.z / 10 );
+      var value = sw;
+      //var value  = simplex.noise3D( ( vertex.x + step ) / 10, vertex.y / 10, vertex.z / 10 );
+      //var value = Perlin.noise( ( vertex.x + step ) / 10, vertex.y / 10, vertex.z / 10 );
       value = Math.abs(1 - value);
 
       vertex.x = sphereVerticesArray[ i ].x + sphereVerticesNormArray[ i ].x * value * noiseAmount;

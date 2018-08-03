@@ -84,6 +84,7 @@ function reset(){
   ctx2.clearRect( 0, 0, w, h );
   ctx3.clearRect( 0, 0, w, h );
   ctx.lineCap = "butt";
+  ctx.lineWidth = 1;
 }
 
 // INJECT JS ONTO PAGE
