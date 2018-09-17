@@ -31,6 +31,8 @@ var current_file = 0;
 var current_set = 0;
 var current_bank = 0;
 
+var colours = ["white","red", "blue", "green", "purple", "magenta", "orange", "pink", "yellow"];
+var colour_count = 0;
 
 function setup() {
   if (window.location.hash) {
@@ -77,6 +79,19 @@ function changeBank( bank ) {
   current_bank = bank;
   console.log( "changeBank: " + current_bank );
   changeFile( 0 );
+}
+
+function changeColourFwd() {
+  colour_count = (colour_count + 1);
+  if (colour_count > colours.length - 1 ) colour_count = 0;
+  ctx.fillStyle = rgb( colours[colour_count] );
+  ctx.strokeStyle = rgb( colours[colour_count] );
+}
+
+function changeColourBwd() {
+  colour_count = (colour_count - 1) % colours.length;
+  ctx.fillStyle = rgb( colours[colour_count] );
+  ctx.strokeStyle = rgb( colours[colour_count] );
 }
 
 function reset(){

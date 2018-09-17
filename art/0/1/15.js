@@ -18,7 +18,8 @@ rbvj = function () {
 
          ctx.background(0, 0.5);
          //ctx3.clearRect(0,0,w, h);
-
+         ctx.fillStyle = rgb( colours[colour_count] );
+         //var c = ctx.getCurrentFillValues();
          FlowField();
          //ctx2.drawImage(ctx.canvas, 0, 0, w, h);
 

@@ -32,8 +32,8 @@ rbvj = function () {
 
   	ctx.fillStyle = rgb(0);
   	ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = rgb(255);
-
+    //ctx.strokeStyle = rgb(255);
+    ctx.strokeStyle = rgb( colours[colour_count] );
 
 
   var c = r;

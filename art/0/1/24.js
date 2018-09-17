@@ -40,6 +40,9 @@ rbvj = function () {
   }
 
   function moveParticles(){
+    ctx.fillStyle = rgb( colours[colour_count] );
+    ctx.strokeStyle = rgb( colours[colour_count] );
+
   	for (var i = 0; i < particles.length; i++) {
   		p = particles[i];
   		var me = (p.me)%256;
@@ -51,9 +54,9 @@ rbvj = function () {
   		p.x = w/2 + (p.sz/2+r) * Math.cos(p.angle);
   		p.y = h/2 + (p.sz/2+r) * Math.sin(p.angle);
 
-  		ctx.fillStyle = rgba(255,1);
+  		//ctx.fillStyle = rgba(255,1);
   		ctx.fillEllipse(p.x, p.y, p.sz/50, p.sz/50);
-  		ctx.strokeStyle = rgba(255,1);
+  		//ctx.strokeStyle = rgba(255,1);
   		ctx.line(w/2, h/2, p.x,p.y);
 
   		};

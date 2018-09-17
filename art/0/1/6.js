@@ -21,7 +21,8 @@ rbvj = function () {
       speed_x: random(-2, 2),
       speed_y: random(-2, 2),
       c: rgb(random(255), 0, 0),
-      size: 20
+      size: 20,
+      a: random(1)
     }
 
     balls.push(ball);
@@ -69,10 +70,14 @@ rbvj = function () {
     //   m = motion[i];
     //   ctx.fillRect(m.x, m.y, block_size, block_size)
     // }
+    ctx.fillStyle = rgb( colours[colour_count] );
+    var c = ctx.getCurrentFillValues();
+
+
 
     for (var i = 0; i < balls.length; i++) {
       b = balls[i];
-
+      //ctx.fillStyle = rgb( c.r + b.a*10, c.g + b.a*10, c.b + b.a*10, b.a );
       ctx.fillStyle = b.c;
       ctx.fillEllipse(b.x, b.y, b.size, b.size);
 

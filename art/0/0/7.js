@@ -29,7 +29,7 @@ rbvj = function () {
   draw = function () {
 
     ctx.background( 0 );
-    ctx.strokeStyle = rgb( 255 );
+    ctx.strokeStyle = rgb( colours[colour_count] );
 
     for ( var i = 0; i < circs.length; i++ ) {
 

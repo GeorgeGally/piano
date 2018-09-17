@@ -11,7 +11,7 @@ function reset() {
   gx = randomInt(20, 85);
   gy = randomInt(20, 120);
   engine = new particleEngine(gx, gy);
-  ctx.fillStyle = rgb( 255 );
+  ctx.fillStyle = rgb( colours[colour_count] );
 }
 
 

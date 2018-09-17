@@ -120,8 +120,8 @@ rbvj = function () {
 
       shakers[ i ].x = Math.cos( angle ) * d;
       shakers[ i ].y = Math.sin( angle ) * d;
-      ctx.fillStyle = "white";
-      ctx.strokeStyle = "white";
+      ctx.fillStyle = rgb ( colours[colour_count] );
+      ctx.strokeStyle = rgb ( colours[colour_count] );
       ctx.fillEllipse( shakers[ i ].x, shakers[ i ].y, 12, 12 );
       angle = 2 * Math.PI / shakers.length * i;
       for ( var j = 0; j < num_movers; j++ ) {
@@ -149,8 +149,8 @@ rbvj = function () {
     v = Sound.mapSound( 5, 100, 120, 150 );
     d = tween( d, v, 35 );
     d2 = tween( d2, v, 25 );
-    ctx.fillStyle = "white";
-    ctx.strokeStyle = "white";
+    ctx.fillStyle = rgb ( colours[colour_count] );;
+    ctx.strokeStyle = rgb ( colours[colour_count] );;
     for ( var i = 0; i < shakers.length; i++ ) {
 
       shakers[ i ].x = Math.cos( angle ) * d;
@@ -177,7 +177,7 @@ rbvj = function () {
     v = tween( v, Sound.mapSound( 10, 100, 60, 150 ), 5 );
     d = tween( d, v + 20, 35 );
     d2 = tween( d2, v + 30, 5 );
-    ctx.fillStyle = "white";
+    ctx.fillStyle = rgb ( colours[colour_count] );;
     ctx.lineWeight = 0.2;
     for ( var i = 0; i < shakers.length; i++ ) {
 
@@ -195,9 +195,9 @@ rbvj = function () {
         if ( lines_on ) ctx.line( shakers[ i ].x, shakers[ i ].y, moverX, moverY );
 
         if ( big_mover ) {
-          ctx.fillStyle = "white";
+          ctx.fillStyle = rgb ( colours[colour_count] );;
           ctx.fillEllipse( moverX, moverY, 60, 60 );
-          ctx.fillStyle = "white";
+          ctx.fillStyle = rgb ( colours[colour_count] );;
           ctx.fillEllipse( moverX, moverY, 22, 22 );
         } else {
           ctx.fillEllipse( moverX, moverY, 12, 12 );

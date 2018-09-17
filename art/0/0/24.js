@@ -4,7 +4,7 @@ rbvj = function () {
   var radius = 160;
   var c = 0;
   var num_particles = 4000;
-  ctx.strokeStyle = rgb( 255 );
+  ctx.strokeStyle = rgb( colours[colour_count] );
   ctx.lineWidth = 0.5;
 
   for ( var i = 0; i < num_particles; i++ ) {

@@ -9,6 +9,7 @@ rbvj = function () {
   for (var i = 0; i < group.particles.length; i++) {
 
       group.particles[i].c = rgb(randomInt(150,255));
+      group.particles[i].a = randomInt(1);
       group.particles[i].speed.y = random(2, 5);
       group.particles[i].pos.x = random(w);
       group.particles[i].pos.y = random(-180, h-30);
@@ -30,6 +31,9 @@ rbvj = function () {
   // FORCE(gravity) = (G * m1 * m2)/ (d*d) * r
   draw = function(){
       // ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = rgb( colours[colour_count] );
+      var c = ctx.getCurrentFillValues();
+      //ctx.fillStyle = rgb( c.r, c.g, c.b, 0.8 );
       ctx.fillStyle = rgba(0, 0, 0, 0.06);
       ctx.fillRect(0, 0, w, h);
       //console.log(group.particles[0].pos)
@@ -38,8 +42,8 @@ rbvj = function () {
           var g = group.particles[i];
           //
           g.pos.y += g.speed.y;
-          ctx.fillStyle = g.c;
-
+          //ctx.fillStyle = g.c;
+          ctx.fillStyle = rgb( c.r, c.g, c.b, g.a );
           if (g.pos.y > h + 600) { reset(g, i); }
 
           for (var j = 0; j < particles[i].particles.length; j++) {

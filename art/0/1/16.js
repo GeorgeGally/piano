@@ -3,7 +3,8 @@ rbvj = function () {
 
   var Wave = function(_num_particles, _x, _y, _me) {
 
-  	ctx.strokeStyle = rgba(0,0,0,0.8);
+
+  	//ctx.strokeStyle = rgba(c.r, c.g, c.b, a);
   	var particles = [];
   	var radius = 50;
   	var rot = 0;
@@ -14,10 +15,11 @@ rbvj = function () {
 
   	this.setup = function(){
   		for (var i = 0; i < num_particles; i++) {
-  			var c = random(225);
+  			var a = random(225);
   			//var c = 0;
-  		    var cc = rgba(c, c, c, 1);
-  			this.addParticle(x, y, cc, me);
+        // var c = getCurrentFillValues();
+  		  // var cc = rgba(c.r, c.g, c.b, a);
+  			this.addParticle(x, y, me);
   		}
   	}
 
@@ -25,24 +27,25 @@ rbvj = function () {
   		this.moveParticles();
   	}
 
-  	this.addParticle = function(_x, _y, _colour, _me){
+  	this.addParticle = function(_x, _y, _me){
   		var particle = {
   			x: _x,
   			y: _y,
-  			c: _colour,
   			me: _me,
   			stroke_width: 4,
   			speedx: 0,
   			speedy: random(2,20),
   			sz: radius+ _me*26,
-  			angle: 0
+  			angle: 0,
+        a: random(1)
   		}
   		particles.push(particle);
   	}
 
 
   	this.moveParticles = function(){
-
+      ctx.fillStyle = rgb( colours[colour_count] );
+      var c = ctx.getCurrentFillValues();
   		for (var i = 0; i < particles.length; i++) {
 
   			p = particles[i];
@@ -58,7 +61,7 @@ rbvj = function () {
   			// DRAW ARCS
   			ctx.translate(w/2, h/2);
   			ctx.rotate(radians(p.angle+180));
-  			ctx.strokeStyle = p.c;
+  			ctx.strokeStyle = rgba(c.r, c.g, c.b, p.a);
   			//ctx.lineWidth = p.stroke_width;
   			ctx.lineWidth = s/10;
   			//ctx.lineWidth = 1;

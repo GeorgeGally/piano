@@ -10,7 +10,7 @@ rbvj = function () {
   var rot;
   ctx.lineWidth = 1;
   resetMe();
-  ctx.strokeStyle = rgb( 255 );
+  ctx.strokeStyle = rgb( colours[colour_count] );
 
   function resetMe() {
     rot = 0;

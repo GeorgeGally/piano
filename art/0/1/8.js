@@ -5,13 +5,18 @@ rbvj = function () {
   colours.add('#000', 50);
   var engine = new particleEngine(80);
   var dir = 1;
+  ctx.fillStyle = rgb( colours[colour_count] );
+
 
   for (var i = 0; i < engine.particles.length; i++) {
     var p = engine.particles[i];
     p.vol = 0;
     p.grid2 = createGrid(1,20);
-    p.c = rgb(random(255), random(255), random(155));
-    p.c = colours.get();
+
+    p.c = rgb( colours[colour_count] );
+    if (chance(200)) {
+        p.c = '#000'
+      }
   }
 
   draw = function() {
@@ -30,13 +35,15 @@ rbvj = function () {
 
   function drawCone(startx, starty){
     //starty = startx || h/2;
+    // ctx.fillStyle = rgb( colours[colour_count] );
+    // var c = ctx.getCurrentFillValues();
     for (var i = 0; i < 80; i++) {
       var p = engine.particles[i];
       if (frameCount%60 == 0 && chance(20)) {
-        if(p.c == '#fff') {
-          p.c = '#000'
+        if(p.c == '#000') {
+          p.c = rgb( colours[colour_count] );
         } else {
-          p.c = '#fff'
+          p.c = '#000'
         }
       }
       //console.log(p.c);

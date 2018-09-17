@@ -1,5 +1,5 @@
 rbvj = function () {
-  
+
   ctx.strokeStyle = rgb( 0, 0, 0 );
 
   var particles = [];
@@ -21,7 +21,7 @@ rbvj = function () {
     // var x = Math.sin(rot*80)*220;
     var x = Math.sin( vol ) * 220;
 
-    ctx.fillStyle = rgb( 250 );
+    ctx.fillStyle = rgb( colours[colour_count] );
     ctx.fillRect( 0, 0, w, h );
 
 

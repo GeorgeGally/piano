@@ -25,7 +25,7 @@ rbvj = function () {
     for ( var i = 0; i < particles.length; i++ ) {
       var p = particles[ i ];
       vol = Sound.mapSound( i % 100, 100, 0, 8 ) - random( 0.3 );
-      ctx.fillStyle = rgb( 255 );
+      ctx.fillStyle = rgb( colours[colour_count] );
       ctx.fillRect( p.x, p.y, r, vol );
     }
 

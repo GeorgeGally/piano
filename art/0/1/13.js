@@ -45,8 +45,7 @@ rbvj = function () {
 
   			p = particles[i];
         var s = Sound.mapSound(p.me % 100, 200 , 1, 100);
-
-  			ctx.fillStyle = rgb(255);
+        ctx.fillStyle = rgb( colours[colour_count] );
   			ctx.fillRect(p.x, p.y, s/4, spacing_y/1-2);
 
 

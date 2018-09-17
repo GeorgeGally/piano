@@ -5,7 +5,7 @@ rbvj = function () {
 
   for ( let p of engine.particles ) {
     p.dir = posNeg();
-    p.c = randomGrey();
+    p.c = rgb ( colours[colour_count] );
   }
 
 

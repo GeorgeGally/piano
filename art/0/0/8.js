@@ -86,7 +86,7 @@ rbvj = function () {
     //   } );
     // } else {
     var planetMaterial = new THREE.MeshPhongMaterial( {
-      color: 0xffffff,
+      color: rgb(colours[colour_count]),
       side: THREE.DoubleSide,
       clippingPlanes: clipPlanes[ i ],
     } );

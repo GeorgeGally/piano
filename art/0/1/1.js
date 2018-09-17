@@ -48,7 +48,7 @@ rbvj = function(){
   			//DISTRIBUTED MAPPED SOUND VALUE
   			var s = Sound.mapSound(40+p.me%53, 100, 0, 100);
 
-  			ctx.fillStyle = rgb(255);
+  			ctx.fillStyle = rgb( colours[colour_count] );
   			ctx.fillRect(p.x, p.y - spacing_y/2, s/4.2, spacing_y);
 
 

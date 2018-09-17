@@ -16,7 +16,8 @@ rbvj = function () {
       var p = particles[i];
       p.pos.x = p.start.x + Math.cos((i + frameCount)/20) * (engine.grid.spacing.x*4);
       p.pos.y = p.start.y + Math.sin((i/5 + frameCount)/40) * engine.grid.spacing.y;
-      ctx.strokeStyle = rgb(255);
+      //ctx.strokeStyle = rgb(255);
+      ctx.strokeStyle = rgb( colours[colour_count] );
       ctx.line(p.pos.x, p.pos.y, p.start.x, p.start.y);
     }
 

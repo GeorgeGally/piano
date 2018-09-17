@@ -48,8 +48,9 @@ rbvj = function () {
     Xcenter = x;
     Ycenter = y;
 
-    ctx.fillStyle = rgb(255);
-
+    //ctx.fillStyle = rgb(255);
+    ctx.fillStyle = rgb( colours[colour_count] );
+    //var c = ctx.getCurrentFillValues();
     ctx.moveTo( Xcenter + size * Math.cos( i ), Ycenter + size * Math.sin( i ) );
     for ( var i = 1; i <= sides; i += 2 ) {
       ctx.beginPath();
@@ -63,7 +64,8 @@ rbvj = function () {
       ctx.fill();
 
     }
-    ctx.strokeStyle = rgb(255);
+    ctx.strokeStyle = rgb( colours[colour_count] );
+    //ctx.strokeStyle = rgb(255);
 
     ctx.moveTo( Xcenter + size * Math.cos( 0 ), Ycenter + size * Math.sin( 0 ) );
     for ( var i = 1; i <= sides; i += 1 ) {

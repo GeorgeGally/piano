@@ -6,9 +6,10 @@ rbvj = function () {
   var engine = new particleEngine( grid_w, grid_h );
   var speed = random( 1 + i / 2 );
 
+
   for ( var i = 0; i < engine.particles.length; i++ ) {
     var b = engine.particles[ i ];
-    b.c = randomGrey();
+    b.c = rgb ( colours[colour_count] );
     b.w = w / grid_w;
     b.h = h / grid_h;
     if ( b.me > grid_w ) {
@@ -30,8 +31,12 @@ rbvj = function () {
     engine.update();
     for ( var i = 0; i < engine.particles.length; i++ ) {
       var b = engine.particles[ i ];
-      var s = Sound.mapSound( i, engine.particles.length * 2, 0, 255 );
-      ctx.fillStyle = rgb( s );
+      var s = Sound.mapSound( i, engine.particles.length * 2, 0, 1 );
+      ctx.fillStyle = rgb( colours[colour_count] );
+      var c = ctx.getCurrentFillValues();
+
+      ctx.fillStyle = rgba(c.r, c.g, c.b, s);
+
       if ( mode == 1 ) {
         ctx.fillRect( b.pos.x, b.pos.y, b.h - 5, b.h - 5 );
       } else {

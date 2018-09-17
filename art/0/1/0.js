@@ -21,7 +21,7 @@ rbvj = function () {
     for ( var i = 0; i < engine.particles.length; i++ ) {
       var p = engine.particles[ i ];
       var vol = Sound.mapSound( i, engine.particles.length, 0, 10 );
-      ctx.fillStyle = rgb( 255 );
+      ctx.fillStyle = rgb( colours[colour_count] );
       ctx.fillRect( p.pos.x - ( engine.grid.spacing_x - 10 ) / 2, p.pos.y, engine.grid.spacing_x - 5, 1.5 * Math.abs( vol ) );
       p.pos.y += 1;
       if ( p.pos.y > h ) p.pos.y = 0;

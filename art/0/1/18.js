@@ -44,7 +44,9 @@ rbvj = function () {
 
 
   	this.moveParticles = function(){
-
+      ctx.fillStyle = rgb( colours[colour_count] );
+      ctx.strokeStyle = rgb( colours[colour_count] );
+      //var c = ctx.getCurrentFillValues();
   		for (var i = 0; i < particles.length; i++) {
 
   			p = particles[i];
@@ -60,8 +62,8 @@ rbvj = function () {
   			// DRAW ARCS
   			ctx.translate(p.x, p.y);
   			ctx.rotate(radians(p.angle+180));
-  			ctx.strokeStyle = p.c;
-  	
+  			//ctx.strokeStyle = p.c;
+
   			// ctx.beginPath();
   			// ctx.arc(0, 0, p.sz/2, -arc/2, arc/2);
   			// ctx.stroke();

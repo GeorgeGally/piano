@@ -96,19 +96,22 @@ rbvj = function () {
 
 
   function drawBall(b){
+    ctx.fillStyle = rgb( colours[colour_count] );
+    var c = ctx.getCurrentFillValues();
       if (mode == 2 || mode == 1) {
         //ctx.fillStyle = hsl(b.sz*2, 80, 50);
-        ctx.fillStyle = rgb(b.sz*5, 0, 0);
+        //ctx.fillStyle = rgb(b.sz*5, 0, 0);
       } else if (mode == 4) {
         //ctx.fillStyle = hsl(b.sz*2, 80, 50);
-        ctx.fillStyle = rgb(0, 0, 200);
+        //ctx.fillStyle = rgb(0, 0, 200);
       } else {
-        ctx.fillStyle = rgb(b.sz*5);
+        //ctx.fillStyle = rgb(b.sz*5);
       }
       if (mode == 6) {
         ctx.fillEllipse(b.x, b.y - b.sz, b.sz/2, b.sz/2);
       } else if (mode == 7) {
-        ctx.fillStyle = rgb(255);
+
+        //ctx.fillStyle = rgb(255);
         ctx.fillRect(b.x, b.y, b.sz, grid.spacing_y/2);
       } else {
         ctx.fillRect(b.x, b.y - b.sz, grid.spacing_x - 2, b.sz);

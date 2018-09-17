@@ -22,14 +22,15 @@ rbvj = function () {
 
 
   function addBall( _x, _y ) {
+    var c = ctx.getCurrentFillValues();
     var sz = ave( random( 20, 100 ), gridx * 2 );
-    // we create a ball object - an object has properties
     var ball = {
       x: _x,
       y: _y,
       speed_x: ave( random( -2, 2 ), gridx * 2 ),
       speed_y: random( -5, 5 ),
-      c: rgba( random( 200 ), random( 1 ) ),
+      c: rgba( c.r, random( 1 ) ),
+      a: random( 1 ),
       sz: sz
     }
 
@@ -80,10 +81,15 @@ rbvj = function () {
     update();
 
     ctx.lineWidth = 4;
-    ctx.strokeStyle = rgb( 255 );
+    ctx.fillStyle = rgb( colours[colour_count] );
+    var c = ctx.getCurrentFillValues();
+    ctx.strokeStyle = rgb( colours[colour_count] );
     for ( var i = 0; i < balls.length; i++ ) {
       b = balls[ i ];
-      ctx.fillStyle = b.c;
+
+
+      ctx.fillStyle = rgba(c.r, c.g, c.b, b.a);
+      //ctx.fillStyle = b.c;
       if ( b.speed_y < 0 ) {
         ctx.eqFillTriangle( b.x, b.y, b.sz );
         ctx.fillStyle = rgb( 0 );
@@ -96,15 +102,7 @@ rbvj = function () {
 
     } // end for loop
 
-    // ctx.lineWidth = 0.2;
-    // ctx.strokeStyle = rgba(220, 0.9);
-    //
-    // for (var i = 0; i < grid2.length; i++) {
-    //   ctx.line(0, grid2[i].y, w, grid2[i].y);
-    //   ctx.line(grid2[i].x - 90, 0, grid2[i].x - 90, h);
-    // }
 
-    //pixelate(50);
   } // end draw
 
 

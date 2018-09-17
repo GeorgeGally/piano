@@ -51,17 +51,19 @@ rbvj = function() {
 
 
   function drawParticles() {
-
+    ctx.fillStyle = rgb( colours[colour_count] );
+    var c = ctx.getCurrentFillValues();
     for (var i = 0; i < particles.length; i++) {
       p = particles[i];
       p.counter += 0.1;
       p.sz = tween(p.sz, circ_sz + Math.sin(p.counter) * 5, 10);
       if (Sound.spectrum[p.me] > 100) {
         p.on == true;
-        ctx.fillStyle = rgb( 255 );
+        ctx.fillStyle = rgb( colours[colour_count] );
         ctx.LfillEllipse(p.x, p.y, p.sz, p.sz);
       } else {
-        ctx.fillStyle = rgba( 255, 0.08 );
+
+        ctx.fillStyle = rgba( c.r, c.g, c.b, 0.08 );
       }
       if (chance(10000) && p.on == true) {
         p.on == false;

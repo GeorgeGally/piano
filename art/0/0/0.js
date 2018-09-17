@@ -26,7 +26,7 @@ rbvj = function () {
   spacing = ( ( Math.PI * 2 ) / dim );
   numPoints = dim * dim;
   points = [];
-  ctx.fillStyle = rgb(255);
+  ctx.fillStyle = rgb( colours[colour_count]);
   ctx.strokeStyle = rgb(0);
 
   for ( var i = 0; i < dim; i++ ) {

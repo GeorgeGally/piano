@@ -11,7 +11,7 @@ rbvj = function () {
     for ( var i = 0; i < Sound.spectrum.length / 2; i += 2 ) {
       var x = w / 2 + Math.cos( radians( Sound.mapSound( i, Sound.spectrum.length / 2, 0, 360 ) ) ) * radius;
       var y = h / 2 + Math.sin( radians( Sound.mapSound( i, Sound.spectrum.length / 2, 0, 360 ) ) ) * radius;
-      if ( Sound.spectrum[ i ] > 1 ) addParticle( x, y, "#FFFFFF" );
+      if ( Sound.spectrum[ i ] > 1 ) addParticle( x, y, rgb ( colours[colour_count] ) );
     };
     moveParticles();
   }

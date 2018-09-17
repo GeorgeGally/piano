@@ -22,6 +22,7 @@ rbvj = function () {
     }
 
     this.draw = function () {
+      ctx.strokeStyle = rgb( colours[colour_count] );
       this.moveParticles();
 
     }

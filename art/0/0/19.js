@@ -25,7 +25,7 @@ rbvj = function () {
       y: _y,
       speed_x: random( -2, 2 ),
       speed_y: random( -5, -1 ),
-      c: rgba( 255 ),
+      c: rgba( colours[colour_count] ),
       sz: sz
     }
 

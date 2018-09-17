@@ -24,6 +24,7 @@ rbvj = function () {
           p.me = (p.me + randomInt(100))%80;
           c = randomInt(100,255);
           p.c = rgba(c, c, c, random(0.1, 0.8));
+          p.a = random(1);
       }
   }
 
@@ -36,7 +37,8 @@ rbvj = function () {
       ctx.fillRect(0, 0, w, h);
       //particle.draw();
       //console.log();
-
+        ctx.fillStyle = rgb( colours[colour_count] );
+    var c = ctx.getCurrentFillValues();
 
       for (var i = 0; i < balls.particles.length; i++) {
 
@@ -68,8 +70,8 @@ rbvj = function () {
               //p.sz = 2;
               // p.sz =  map(audioChannelVolume[p.me%80], 0, 120, 0.2, 3);
               p.sz =  Sound.mapSound(p.me%80, 160, 0.2, 3);
-              ctx.strokeStyle = p.c;
-              ctx.fillStyle = p.c;
+              //ctx.strokeStyle = p.c;
+              ctx.fillStyle = rgba(c.r, c.g, c.b, p.a);
 
               ctx.LfillEllipse(p.pos.x, p.pos.y, p.sz, p.sz);
 

@@ -14,7 +14,7 @@ rbvj = function () {
     addBall( grid[ i ].x, grid[ i ].y );
   }
 
-  ctx.background( 255 );
+  ctx.background( colours[colour_count] );
 
 
   function addBall( _x, _y ) {
@@ -72,7 +72,7 @@ rbvj = function () {
 
     for ( var i = 0; i < balls.length; i++ ) {
       b = balls[ i ];
-      ctx.fillStyle = rgb( 255 );
+      ctx.fillStyle = rgb( colours[colour_count] );
       ctx.fillEllipse( b.x, b.y, b.sz, b.sz );
 
     } // end for loop

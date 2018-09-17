@@ -61,9 +61,9 @@ rbvj = function () {
 
 
   		p.sz =  Sound.mapSound(p.me+randomInt(-2,2)%200, 400, 2, 50);
+      ctx.fillStyle = rgb( colours[colour_count] );
 
-
-  		ctx.fillStyle = p.c;
+  		//ctx.fillStyle = p.c;
   		ctx.fillEllipse(p.x, p.y, p.sz, p.sz);
 
   		};

@@ -2,7 +2,7 @@
 
 function onKeyDown(event) {
 
-		//console.log(event.keyCode);
+		console.log(event.keyCode);
     var keyCode = event.keyCode;
 
     // CHANGE FILE // keys a-z
@@ -21,10 +21,15 @@ function onKeyDown(event) {
       // ~ SHOW MOUSE
     } else if (keyCode == 192) {
       showMouse();
+      // CHANGE SET AND BANK // keys 0-9
+    } else if (keyCode == 219) {
+      changeColourBwd();
+    } else if (keyCode == 221) {
+      changeColourFwd();
     }
 
 }
 
-window.addEventListener('keydown', function(e) {
-    if (typeof onKeyDown == 'function') onKeyDown(e);
-  });
+// window.addEventListener('keydown', function(e) {
+//     if (typeof onKeyDown == 'function') onKeyDown(e);
+//   });

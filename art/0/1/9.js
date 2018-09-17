@@ -15,7 +15,7 @@ rbvj = function () {
   	this.setup = function(){
   		for (var i = 0; i < num_particles; i++) {
   			var c = random(225);
-  		    var cc = rgba(c, c, c, 1);
+  		  var cc = rgba(c, c, c, 1);
   			this.addParticle(x, y, cc, me);
   		}
   	}
@@ -50,8 +50,8 @@ rbvj = function () {
 
   			//var s = audioChannelVolume[10+p.me%83];
   			var s = Sound.mapSound(p.me, particles.length*num_waves * 2, 0, 50);
-
-  			ctx.fillStyle = rgba(255);
+        ctx.fillStyle = rgb( colours[colour_count] );
+  			//ctx.fillStyle = rgba(255);
   			ctx.fillEllipse(p.x-s/2, p.y, s/8, s/8);
   			// if (p.y < h/2) {
   			// 	ctx.line(p.x, p.y, p.x, spacing_y + p.y+s*2);

@@ -145,6 +145,14 @@ p.getCurrentFill = function() {
   return rgb(r, g, b);
 }
 
+p.getCurrentFillValues = function() {
+  //console.log(ctx.fillStyle);
+  var r = parseInt(this.fillStyle.substring(1, 3), 16);
+  var g = parseInt(this.fillStyle.substring(3, 5), 16);
+  var b = parseInt(this.fillStyle.substring(5), 16);
+  if (!r) r = 0;
+  return {r:r, g:g, b:b};
+}
 
 function getColour(r, g, b, a) {
   'use strict';

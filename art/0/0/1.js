@@ -71,8 +71,8 @@ rbvj = function () {
     rotation = dir * Sound.spectrum[ 50 ];
 
     c = tween( c, 40 + map( Sound.spectrum[ 40 ], 0, 100, 0, 80 ), 2 );
-    ctx.strokeStyle = rgb( 255 );
-    ctx.fillStyle = rgb ( 255 );
+    ctx.strokeStyle = rgb( colours[colour_count] );
+    ctx.fillStyle = rgb ( colours[colour_count] );
     ctx.HfillEllipse( w / 2, h / 2, c, c );
 
     ctx.HstrokeEllipse( w / 2, h / 2, c, c );
@@ -111,10 +111,10 @@ rbvj = function () {
       var linepos = new Vector( w / 2 + ( p.radius - p.sz / 2 ) * Math.cos( p.angle ),
         h / 2 + ( p.radius - p.sz / 2 ) * Math.sin( p.angle ) );
       var linepos2 = new Vector( w / 2 + c / 2 * Math.cos( p.angle ), h / 2 + c / 2 * Math.sin( p.angle ) );
-      ctx.strokeStyle = rgba( 255 );
+      ctx.strokeStyle = rgba( colours[colour_count] );
       ctx.line( linepos2.x, linepos2.y, linepos.x, linepos.y );
 
-      ctx.fillStyle = rgb( 255 );
+      ctx.fillStyle = rgb( colours[colour_count] );
 
       ctx.HstrokeEllipse( p.pos.x, p.pos.y, p.sz, p.sz );
       if ( p.on ) ctx.fillEllipse( p.pos.x, p.pos.y, p.sz - 20, p.sz - 20 );

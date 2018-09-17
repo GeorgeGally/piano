@@ -10,7 +10,7 @@ rbvj = function() {
   function reset(which) {
 
     console.log("reset");
-    
+
     if(which) {
       gx = randomInt(2, 40)
     } else {
@@ -32,7 +32,7 @@ rbvj = function() {
       var p = engine.particles[i];
       volX = Sound.mapSound(i, engine.particles.length * 1.4, 1, engine.grid.spacing_x - 1);
       volY = Sound.mapSound(i, engine.particles.length * 1.4, 1, 40);
-      ctx.fillStyle = rgb(255);
+      ctx.fillStyle = rgb( colours[colour_count] );
       ctx.centreFillRect(p.pos.x - engine.grid.spacing_x / 2, p.pos.y - engine.grid.spacing_y / 2, volX, engine.grid.spacing_y);
 
     }

@@ -11,8 +11,8 @@ rbvj = function () {
   var moverX;
   var moverY;
 
-  ctx.strokeStyle = rgb ( 255 );
-  ctx.fillStyle = rgb ( 255 );
+  ctx.strokeStyle = rgb ( colours[colour_count] );
+  ctx.fillStyle = rgb ( colours[colour_count] );
   ctx.lineWidth = 4;
 
   draw = function () {

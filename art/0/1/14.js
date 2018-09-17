@@ -1,7 +1,7 @@
 rbvj = function () {
 
   ctx.strokeStyle = rgba( 0, 0, 0, 0.8 );
-  var num = 220;
+  var num = 320;
   var particles = [];
 
   var time = 0;
@@ -22,6 +22,8 @@ rbvj = function () {
     for ( var i = 0; i < particles.length; i++ ) {
       ctx.rotate( radians( time ) );
       ctx.fillStyle = rgb(255);
+      ctx.fillStyle = rgb( colours[colour_count] );
+  
       var x = Math.sin( frameCount / 100 ) * 50 + i;
       var y = Math.cos( frameCount / 100 ) * 50 + i;
       ctx.LfillEllipse( x, y, 10, 10 );
@@ -41,7 +43,7 @@ rbvj = function () {
         p.time += 0.0001;
         ctx.rotate( radians( -total_rot ) );
       }
-      time += 0.0002;
+      time += 0.0001;
     }
 
     ctx.restore();

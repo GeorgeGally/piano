@@ -37,8 +37,10 @@ rbvj = function(){
 
     ctx.background(0, 0.1);
     ctx2.clearRect(0, 0, w, h);
-    ctx.fillStyle = "white";
-    ctx2.fillStyle = "white";
+    ctx.fillStyle = rgb( colours[colour_count] );
+    ctx2.fillStyle = rgb( colours[colour_count] );
+    //ctx.fillStyle = "white";
+    //ctx2.fillStyle = "white";
     //ctx2.fillStyle = "black";
 
     if (chance(20)) shuffleGrid();
@@ -117,11 +119,17 @@ rbvj = function(){
   }
 
   function drawGrid(){
+    ctx.fillStyle = rgb( colours[colour_count] );
+    var c = ctx.getCurrentFillValues();
+    ctx.strokeStyle = rgb( c.r, c.g, c.b, 0.2 );
+    ctx2.strokeStyle = rgb( c.r, c.g, c.b, 0.2 );
     for (var i = 0; i < grid.length; i++) {
       var g = grid.particles[i];
       var g2 = grid2.particles[i];
-      ctx.fillStyle = "white";
-      ctx.strokeStyle = rgba(255, 0.2);
+      //ctx.fillStyle = "white";
+
+
+      //ctx.strokeStyle = rgba(255, 0.2);
       if(dist(g.old.x, g.old.y, g.pos.x, g.pos.y) < 150) {
       //ctx.line(g.old.x, g.old.y, g.pos.x, g.pos.y);
         //if(g.old.x != g.pos.x && g.old.y != g.pos.y)
@@ -132,7 +140,8 @@ rbvj = function(){
       //ctx.fillEllipse(g.start.x, g.start.y, 4, 4);
 
       if(g.on) {
-        ctx.fillStyle = "white";
+        ctx.fillStyle = rgb( colours[colour_count] );
+        //ctx.fillStyle = "white";
         //ctx.fillText(g2.old_me, g.pos.x, g.pos.y + 20);
         // if (chance(4)) {
         //   var s = Sound.mapSound(i, grid.length * 2, 2, 7);

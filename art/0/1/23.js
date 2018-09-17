@@ -9,7 +9,10 @@ rbvj = function () {
 
   draw = function(){
       ctx.background(0, 0.02);
-      ctx.fillStyle = rgb(255);
+      ctx.fillStyle = rgb( colours[colour_count] );
+        var c = ctx.getCurrentFillValues();
+        ctx.strokeStyle = rgb( c.r/10, c.g/10, c.b/10, 0.08 );
+      ctx.fillStyle = rgb(colours[colour_count]);
       ctx.save();
     	ctx.translate(w/2, h/2);
 
