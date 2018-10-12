@@ -4,16 +4,8 @@ var rbvj;
 var ctx = createCanvas( 'canvas1' );
 var ctx2 = createCanvas( 'canvas2' );
 var ctx3 = createCanvas( 'canvas3' );
+var renderer;
 
-var renderer = new THREE.WebGLRenderer( {
-  alpha: true,
-  antialias: true
-} );
-renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.shadowMapEnabled = true;
-renderer.localClippingEnabled = true;
-document.getElementById( "canvas3D" )
-  .appendChild( renderer.domElement );
 
 
 // setFileLocation to defaults
@@ -35,6 +27,16 @@ var colours = ["white","red", "blue", "green", "purple", "magenta", "orange", "p
 var colour_count = 0;
 
 function setup() {
+  renderer = new THREE.WebGLRenderer( {
+    alpha: true,
+    antialias: true
+  } );
+
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.shadowMapEnabled = true;
+  renderer.localClippingEnabled = true;
+  document.getElementById( "canvas3D" ).appendChild( renderer.domElement );
+
   if (window.location.hash) {
   //var set = window.location.hash.substr(1, 1);
   var bank = window.location.hash.substr(1, 1);

@@ -7,7 +7,7 @@ function Microphone (_fft) {
     this.spectrum = [];
     this.volume = this.vol = 0;
     this.peak_volume = 0;
-
+    this.volume_adjust = 0;
     var self = this;
     var audioContext = new AudioContext();
     var SAMPLE_RATE = audioContext.sampleRate;
@@ -50,8 +50,8 @@ function Microphone (_fft) {
           //analyser.getByteTimeDomainData(dataArray);
           self.vol = self.getRMS(self.spectrum);
           // get peak
-          if (self.vol > self.peak_volume) self.peak_volume = self.vol;
-          self.volume = self.vol;
+          if (self.vol - self.volume_adjust > self.peak_volume) self.peak_volume = self.vol - self.volume_adjust;
+          self.volume = self.vol - self.volume_adjust;
         };
 
         var input = context.createMediaStreamSource(stream);
@@ -82,7 +82,7 @@ function Microphone (_fft) {
         //console.log(Math.round(self.peak_volume) + " : " + Math.round(self.spectrum[new_freq]));
         // map the volumes to a useful number
         var s = map(self.spectrum[new_freq], 0, self.peak_volume, min, max);
-        //console.log(s);
+        if (frameCount%50 == 0) console.log(self.peak_volume);
         return s;
       } else {
         return 0;
@@ -195,4 +195,4 @@ function Microphone (_fft) {
 
 
 var Sound = new Microphone();
-console.log(Sound);
+//console.log(Sound);

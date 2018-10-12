@@ -2,7 +2,7 @@
 
 function onKeyDown(event) {
 
-		console.log(event.keyCode);
+		//console.log(event.keyCode);
     var keyCode = event.keyCode;
 
     // CHANGE FILE // keys a-z
@@ -26,7 +26,16 @@ function onKeyDown(event) {
       changeColourBwd();
     } else if (keyCode == 221) {
       changeColourFwd();
-    }
+    } else if (keyCode == 188 ) {
+			Sound.volume_adjust -=1;
+			Sound.peak_volume-=1;
+			if (Sound.volume_adjust < 0) Sound.volume_adjust = 0;
+			console.log("volume_adjust: " + Sound.volume_adjust);
+		} else if (keyCode == 190 ) {
+			Sound.volume_adjust +=1;
+			Sound.peak_volume+=1;
+			console.log("volume_adjust: " + Sound.volume_adjust);
+		}
 
 }
 
