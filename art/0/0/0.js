@@ -51,8 +51,6 @@ rbvj = function () {
     ctx.background( 0, 0.08 );
 
 
-    }
-
   }
 
 
