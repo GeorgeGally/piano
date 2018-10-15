@@ -48,77 +48,14 @@ rbvj = function () {
 
   draw = function () {
 
-    ctx.background( 0 );
+    ctx.background( 0, 0.08 );
 
-    angleX = Math.sin( frameCount / 100 ) * 0.01;
-    angleY = Math.cos( frameCount / 200 ) * 0.01;
-
-    for ( var i = 0; i < numPoints; i++ ) {
-      point3d = points[ i ];
-      // console.log(i)
-      // console.log(points[i])
-      z3d = point3d[ 2 ];
-      if ( z3d < -fov ) z3d += 0;
-
-      point3d[ 2 ] = z3d;
-
-      rotateX( point3d, angleX );
-      rotateY( point3d, angleY );
-
-      x3d = point3d[ 0 ];
-      y3d = point3d[ 1 ];
-      z3d = point3d[ 2 ];
-
-      var scale = ( fov / ( fov + z3d ) );
-      var x2d = ( x3d * scale ) + HALF_WIDTH;
-      var y2d = ( y3d * scale ) + HALF_HEIGHT;
-
-      var s = Sound.mapSound( i % 90, numPoints * 2, 0, 1 );
-
-      // ctx.fillEllipse( x2d, y2d, scale * s, scale * s );
-      ctx.centreFillRect( x2d, y2d, scale * s, scale * s );
-      //ctx.strokeEllipse( x2d, y2d, scale * s, scale * s );
 
     }
 
   }
 
 
-  function rotateX( point3d, angleX ) {
-    var x = point3d[ 0 ];
-    var z = point3d[ 2 ];
 
-    var cosRY = Math.cos( angleX );
-    var sinRY = Math.sin( angleX );
-
-    var tempz = z;
-    var tempx = x;
-
-    x = ( tempx * cosRY ) + ( tempz * sinRY );
-    z = ( tempx * -sinRY ) + ( tempz * cosRY );
-
-    point3d[ 0 ] = x;
-    point3d[ 2 ] = z;
-
-  }
-
-  function rotateY( point3d, angleY ) {
-
-    var y = point3d[ 1 ];
-    var z = point3d[ 2 ];
-
-    var cosRX = Math.cos( angleY );
-    var sinRX = Math.sin( angleY );
-
-    var tempz = z;
-    var tempy = y;
-
-    y = ( tempy * cosRX ) + ( tempz * sinRX );
-    z = ( tempy * -sinRX ) + ( tempz * cosRX );
-
-    point3d[ 1 ] = y;
-    point3d[ 2 ] = z;
-
-  }
 
 }();

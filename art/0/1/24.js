@@ -1,24 +1,9 @@
 rbvj = function () {
 
-  // var colours = new colourPool()
-  //   .add( '#ECECEC' )
-  //   //.add('#CCCCCC')
-  //   .add( '#CCFFCC' )
-  //   .add( '#333333' )
-  //   .add( '#0095a8' )
-  //   .add( '#00616f' )
-  //   .add( '#FF3300' )
-  //   .add( '#FF6600' )
-  //   .add( '#000000' )
-  //   .add( '#ffc84f' )
-  //   .add( '#FFFFFF' )
-  //   .add( '#FFFF00' )
-  //   .add( '#FF00FF' );
-
   var FORCE = 13.5;
   var RESISTANCE = 0.4;
 
-  //var engine = new particleEngine( 0 );
+  var engine = new particleEngine( 0, 0 );
   ctx.background( 0 );
 
   draw = function () {
@@ -57,14 +42,24 @@ rbvj = function () {
     //console.log(num);
     var c = colours.get( num );
 
+
     engine.add( w / 2, h / 2 );
-    //console.log(engine.last);
-    engine.last.resistance = RESISTANCE;
-    // engine.last.sz = Math.round(Sound.getVol(1, 10));
-    engine.last.sz = Math.round( map( spectrum[ note ], 0, 255, 2, 10 ) );
-    engine.last.c = c;
+    var p = engine.last;
+    p.c = c;
+
+    p.resistance = RESISTANCE;
+    p.acceleration.x = 0;
+    p.acceleration.y = 0;
+    p.speed.x = 0;
+    p.speed.y = 0;
+    if(spectrum[ note ]) {
+      p.sz = Math.round( map( spectrum[ note ], 0, 255, 2, 10 ) );
+    } else {
+      p.sz = 2;
+    }
+
     //engine.last.pos = new Vector( w / 2, h / 2 );
-    //console.log(engine.last);
+    //console.log(p);
   }
 
 
@@ -103,9 +98,10 @@ rbvj = function () {
       p2.acceleration.x -= forceX;
       p2.acceleration.y -= forceY;
 
+      //console.log(p.pos);
     }
 
-    console.log(p.pos);
+
 
   }
 

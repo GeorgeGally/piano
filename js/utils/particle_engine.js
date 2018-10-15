@@ -21,11 +21,12 @@ var particleEngine = function(_gw, _gh, _grid_w, _grid_h, _startx, _starty){
 	this.pos = new Vector();
 	this.last = [];
 
+	if(gw > 0) {
 	this.grid = new Grid(gw, gh,  this.width, this.height, this.start.x, this.start.y);
 	var num_particles = this.grid.length;
 	this.rows = this.grid.rows;
 	this.cols = this.grid.cols;
-
+	}
 
 	this.setup = function() {
 
@@ -40,7 +41,8 @@ var particleEngine = function(_gw, _gh, _grid_w, _grid_h, _startx, _starty){
 
 	this.add = function(_x, _y, _colour, _me){
 			//console.log(this.grid.grid);
-
+			var row = 0;
+			var col = 0;
 			var x = _x || w/2;
 			var y = _y || h/2;
 			var colour = _colour || "black";
@@ -48,7 +50,7 @@ var particleEngine = function(_gw, _gh, _grid_w, _grid_h, _startx, _starty){
 			var angle = radians(distributeAngles(me, this.particles.length));
 			var speed =  new Vector(random(0.2,2), random(0.2,2));
 			var accel = new Vector(1,1);
-
+			if(this.grid) {
 			if (this.grid.grid[me]) {
 				row = this.grid.grid[me].row
 				col = this.grid.grid[me].col
@@ -62,6 +64,7 @@ var particleEngine = function(_gw, _gh, _grid_w, _grid_h, _startx, _starty){
 			var bottom = row + 1 < this.grid.num_items_vert ? col + (row + 1) * this.grid.num_items_horiz: -1;
 			var right = col + 1 < this.grid.num_items_horiz ? col + 1 + (row * this.grid.num_items_horiz): -1;
 			var neighbours = { top: top, right: right, bottom: bottom, left: left};
+			}
 			var particle = {
 				me: me,
 				pos: new Vector(x, y, 1),
@@ -72,11 +75,6 @@ var particleEngine = function(_gw, _gh, _grid_w, _grid_h, _startx, _starty){
 				pos3d: new Vector(x, y, 1),
 				row: row,
 				col: col,
-				w: this.grid.spacing.x,
-				w: this.grid.spacing.x,
-				h: this.grid.spacing.y,
-				ht: this.grid.spacing.y,
-				neighbours: neighbours,
 				speed: speed,
 				start_speed: speed,
 				accel: accel,
@@ -91,7 +89,7 @@ var particleEngine = function(_gw, _gh, _grid_w, _grid_h, _startx, _starty){
 				tween: true,
 				r: 0,
 				target_r: 0,
-				sz: this.grid.spacing.x,
+				sz: 4,
 				scale: 1,
 				orig_sz: 5,
 				target_sz: 5,
@@ -105,6 +103,14 @@ var particleEngine = function(_gw, _gh, _grid_w, _grid_h, _startx, _starty){
 				engine: []
 		}
 
+		if (this.grid) {
+			particle.w = this.grid.spacing.x;
+			particle.w = this.grid.spacing.x;
+			particle.h = this.grid.spacing.y;
+			particle.ht = this.grid.spacing.y;
+			particle.neighbours = neighbours;
+			particle.sz =  this.grid.spacing.x;
+		}
 
 			// console.log(this.grid.spacing.y);
 			//console.log(particle)

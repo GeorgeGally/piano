@@ -61,7 +61,7 @@ rbvj = function () {
 
 
   		//p.sz =  Sound.mapSound(p.me+randomInt(-2,2)%200, 400, 2, 50);
-      if (Sound.getVol(()) p.sz =  tween(p.sz, Sound.mapSound(p.me+randomInt(-2,2)%200, 400, 2, 50), 20);
+      if (Sound.getVol()) p.sz =  tween(p.sz, Sound.mapSound(p.me+randomInt(-2,2)%200, 400, 2, 50), 20);
       ctx.fillStyle = colours.get(colour_count);
 
   		//ctx.fillStyle = p.c;

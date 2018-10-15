@@ -1,7 +1,7 @@
 rbvj = function () {
   ctx.lineWidth = 1;
   ctx.strokeStyle = rgba(0,0,0,0.8);
-  ctx.fillRect(0, 0, w, h);
+  ctx.background(0);
   var particles = [];
   var group = new particleEngine(80);
 

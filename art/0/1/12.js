@@ -4,7 +4,8 @@ rbvj = function () {
   var radius = 350;
   var flies = [];
   var balls = new particleEngine(130);
-
+  ctx.background(0);
+  
   for (var i = 0; i < balls.particles.length; i++) {
       b = balls.particles[i];
       b.pos.x = b.x = random(55);

@@ -1,7 +1,5 @@
 rbvj = function () {
 
-
-
   var grid = new Grid( 1, 1, w / 2, h / 2, w / 4, h / 4 )
 
 
@@ -45,10 +43,7 @@ rbvj = function () {
       ctx.save();
       ctx.translate( this.pos.x, this.pos.y );
       ctx.fillCircle( 0, 0, this.r, this.r );
-      // ctx.fillMe(255);
-      // ctx.fillEllipse(0, 0, this.r/2, this.r/2);
-      // ctx.strokeMe(255);
-      // ctx.strokeEllipse(0, 0, this.r, this.r);
+
       ctx.restore();
       ctx2.fillMe( 0 );
       ctx2.fillCircle( this.pos.x, this.pos.y, this.r, this.r );
@@ -58,6 +53,7 @@ rbvj = function () {
       ctx2.fillCircle( this.pos.x, this.pos.y, this.r / 5, this.r / 5 );
 
     }
+
     this.isTooSmall = function () {
       var sz = this.r;
       //console.log(pos.y);
@@ -76,50 +72,13 @@ rbvj = function () {
   }
 
 
-  function Obstacle( x, y, r ) {
-
-    this.x = x;
-    this.y = y;
-    this.r = r;
-
-    this.options = {
-      friction: 0.99,
-      restitution: 0.1,
-      isStatic: true
-    }
-
-    this.body = Bodies.circle( x, y, this.r / 2, this.options );
-    //this.body = Bodies.polygon(x, y, 3, this.r * 1.1, this.options);
-
-    this.show = function () {
-
-      // var pos = this.body.position;
-      //
-      // ctx.fillStyle = rgb(200);
-      //
-      // //ctx.save();
-      // //ctx.translate(pos.x, pos.y);
-      // //ctx.rotateDeg(10);
-      // ctx.eqDownFillTriangle(pos.x, pos.y, this.r);
-      // //ctx.rotateDeg(-10);
-      ctx2.fillEllipse( 0, 0, this.r, this.r );
-      // ctx2.restore();
-    }
-
-  }
-
-
-
   matter_engine = MatterEngine.create();
   matter_engine.density = 0.008;
-  //matter_engine.restitution = 0.5;
-  //frictionAir: 0.06,
-  //restitution: 0.3}
+
   world = matter_engine.world;
   MatterEngine.run( matter_engine );
 
   var offset = 5;
-
 
   options = {
     friction: 0.9,
@@ -134,6 +93,10 @@ rbvj = function () {
 
   World.add( matter_engine.world, [ leftWall, rightWall, topWall ] );
 
+  matter_engine.timing.timeScale = 0.9;
+  matter_engine.world.gravity.x = 0;
+  matter_engine.world.gravity.y = -1;
+
 
   for ( var i = 0; i < grid.length; i++ ) {
     var g = grid.grid[ i ];
@@ -146,28 +109,29 @@ rbvj = function () {
     addCircle( 255 );
   }
 
-  matter_engine.timing.timeScale = 0.9;
-  matter_engine.world.gravity.x = 0;
-  matter_engine.world.gravity.y = -1;
+
 
 
   draw = function () {
 
     ctx.background( 0, 0.09 );
+
     //ctx.fillStyle = rgb(255);
     //ctx.clearRect( 0, 0, w, h );
     ctx2.clearRect( 0, 0, w, h );
 
 
-    if ( Sound.getVol() > 90 ) matter_engine.world.gravity.x = ( posNeg() * 1.4 );
+    if ( Sound.getVol() > 90 ) matter_engine.world.gravity.x = ( posNeg() * 1.2 );
 
     if ( Sound.getVol() > 70 ) {
       matter_engine.world.gravity.y = -0.5;
     }
+
     if ( Sound.getVol() > 50 ) {
       //appParticle(x, random(200));
       addCircle();
     }
+
     if ( Sound.getVol() < 60 ) {
       matter_engine.world.gravity.x = 0;
       matter_engine.world.gravity.y = 0.5;

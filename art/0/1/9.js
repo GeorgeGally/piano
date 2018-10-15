@@ -1,97 +1,124 @@
 rbvj = function () {
 
+  var fov = 240;
 
-  var amount = 0;
-  var stars = [];
+  var point = [];
+  var points = [];
+  var point3d = [];
+  var angleX = 0;
+  var angleY = 0;
+  var HALF_WIDTH = width / 2;
+  var HALF_HEIGHT = height / 2;
 
-  var mouse = {
-    x: w / 2,
-    y: h / 2
-  };
+  var x3d = 0;
+  var y3d = 0;
+  var z3d = 0;
 
-  var gravity = 0.016;
-  var mouseMoved = false;
+  var lastScale = 0;
+  var lastx2d = 0;
+  var lasty2d = 0;
 
-  var prevA = -500;
+  var size = 150;
+  var dim = 80;
+  var spacing;
+  var numPoints;
 
-  ctx.globalCompositeOperation = "screen";
-    ctx.fillStyle = "white";
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 10;
+  spacing = ( ( Math.PI * 2 ) / dim );
+  numPoints = dim * dim;
+  points = [];
+  ctx.fillStyle = colours.get(colour_count);
+  ctx.strokeStyle = rgb(0);
+
+  for ( var i = 0; i < dim; i++ ) {
+
+    var z = size * Math.cos( spacing / 2 * i );
+    var s = size * Math.sin( spacing / 2 * i );
+
+    for ( var j = 0; j < dim; j++ ) {
+
+      var point = [ Math.cos( spacing * j ) * s, Math.sin( spacing * j ) * s, z ];
+      points.push( point );
+
+
+    }
+
+  }
+
 
 
   draw = function () {
 
-    ctx.background(0);
-    ctx.fillStyle = "white";
-    ctx.strokeStyle = "black";
-    if( Sound.getVol() > 60 && frameCount%2 == 0) {
-      var spectrum = Sound.spectrum;
-      var freq = getNoteFromFFT(spectrum);
-      var note = getNoteNumberFromFFT(spectrum);
-      //console.log(note);
-      x = map(note, 0, 60, 20, w);
-      appParticle(x, random(200))
+    ctx.background( 0 );
+
+    angleX = Math.sin( frameCount / 100 ) * 0.01;
+    angleY = Math.cos( frameCount / 200 ) * 0.01;
+
+    for ( var i = 0; i < numPoints; i++ ) {
+      point3d = points[ i ];
+      // console.log(i)
+      // console.log(points[i])
+      z3d = point3d[ 2 ];
+      if ( z3d < -fov ) z3d += 0;
+
+      point3d[ 2 ] = z3d;
+
+      rotateX( point3d, angleX );
+      rotateY( point3d, angleY );
+
+      x3d = point3d[ 0 ];
+      y3d = point3d[ 1 ];
+      z3d = point3d[ 2 ];
+
+      var scale = ( fov / ( fov + z3d ) );
+      var x2d = ( x3d * scale ) + HALF_WIDTH;
+      var y2d = ( y3d * scale ) + HALF_HEIGHT;
+
+      var s = Sound.mapSound( i % 90, numPoints * 2, 0, 1 );
+
+      // ctx.fillEllipse( x2d, y2d, scale * s, scale * s );
+      ctx.centreFillRect( x2d, y2d, scale * s, scale * s );
+      //ctx.strokeEllipse( x2d, y2d, scale * s, scale * s );
+
     }
 
-    for (var i = stars.length-1; i > 0; i--) {
-
-      var s = stars[i];
-      s.render();
-      if (s.y + (s.r * 2) > h + 200) {
-        stars.splice(0, 1);
-        //amount--;
-        i--;
-      }
-    }
-
-    // if (!mouseMoved && frameCount - prevA > 50) {
-    //   stars.push(new Star(w / 2, h / 1));
-    //   //amount++;
-    //   prevA = frameCount;
-    // }
-
-  };
-
-
-
-  function appParticle(x, y) {
-
-    // if (!mouseMoved) {
-    //   mouseMoved = true;
-    // }
-
-    mouse.x = x;
-    mouse.y = y;
-
-    stars.push(new Star(mouse.x, mouse.y));
-    //amount++;
   }
 
 
-  function Star(x, y) {
-    this.x = x;
-    this.y = y;
-    this.r = (Math.random() + 0.1) * 50;
-    this.color = ((40 * Math.random()) + 0);
-    this.velocityY = random(-1);
-    this.velocityX = (Math.random() - 0.5) * 2;
-  }
+  function rotateX( point3d, angleX ) {
+    var x = point3d[ 0 ];
+    var z = point3d[ 2 ];
 
-  Star.prototype.render = function() {
+    var cosRY = Math.cos( angleX );
+    var sinRY = Math.sin( angleX );
 
-    this.velocityY += gravity;
-    this.x += this.velocityX;
-    this.y += this.velocityY;
-    //ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, Math.PI * 2, 0);
-    ctx.fill();
-    ctx.stroke();
+    var tempz = z;
+    var tempx = x;
+
+    x = ( tempx * cosRY ) + ( tempz * sinRY );
+    z = ( tempx * -sinRY ) + ( tempz * cosRY );
+
+    point3d[ 0 ] = x;
+    point3d[ 2 ] = z;
 
   }
 
+  function rotateY( point3d, angleY ) {
 
+    var y = point3d[ 1 ];
+    var z = point3d[ 2 ];
 
+    var cosRX = Math.cos( angleY );
+    var sinRX = Math.sin( angleY );
+
+    var tempz = z;
+    var tempy = y;
+
+    y = ( tempy * cosRX ) + ( tempz * sinRX );
+    z = ( tempy * -sinRX ) + ( tempz * cosRX );
+
+    point3d[ 1 ] = y;
+    point3d[ 2 ] = z;
+
+  }
 
 }();

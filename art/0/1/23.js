@@ -2,7 +2,7 @@ rbvj = function () {
 
   ctx.strokeStyle = rgba(0,0.8);
   ctx.lineWidth = 3;
-
+  ctx.background(0);
 
   var time = 0;
 

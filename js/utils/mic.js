@@ -8,11 +8,12 @@ function Microphone (_fft) {
     this.volume = this.vol = 0;
     this.peak_volume = 0;
     this.volume_adjust = 0;
-    var self = this;
+
     var audioContext = new AudioContext();
-    var SAMPLE_RATE = audioContext.sampleRate;
+    this.SAMPLE_RATE = audioContext.sampleRate;
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+    var self = this;
 
     window.addEventListener('load', init, false);
 
@@ -37,7 +38,8 @@ function Microphone (_fft) {
         var analyser = context.createAnalyser();
         analyser.smoothingTimeConstant = 0.2;
         analyser.fftSize = FFT_SIZE;
-
+        self.FFT_FREQ_RES = ( self.SAMPLE_RATE / 2 ) / ( FFT_SIZE / 2 );
+        
         var node = context.createScriptProcessor(FFT_SIZE*2, 1, 1);
 
         node.onaudioprocess = function () {
@@ -120,7 +122,7 @@ function Microphone (_fft) {
     //freq = n * SAMPLE_RATE / MY_FFT_SIZE
     function mapFreq(i){
       // var freq = i * SAMPLE_RATE / FFT_SIZE;
-      var freq = i * SAMPLE_RATE / self.spectrum.length;
+      var freq = i * self.SAMPLE_RATE / self.spectrum.length;
       return freq;
     }
 

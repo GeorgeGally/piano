@@ -11,6 +11,7 @@ rbvj = function () {
   var particles = [];
   var flowfield;
 
+  ctx.fillStyle = rgb( 0 );
   ctx.strokeStyle = rgb( 0 );
   ctx.background( 255 );
 
