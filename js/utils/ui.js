@@ -11,6 +11,7 @@ function showMouse(){
 }
 
 var colours = new colourPool()
+.add('#FFFFFF')
 .add('#99B898')
 .add('#FECEAB')
 .add('#FF847C')
@@ -19,6 +20,7 @@ var colours = new colourPool()
 
 
 var colours2 = new colourPool()
+.add('#FFFFFF')
 .add('#A8A7A7')
 .add('#CC527A')
 .add('#E8175D')
@@ -26,6 +28,7 @@ var colours2 = new colourPool()
 .add('#363636');
 
 var colours3 = new colourPool()
+.add('#FFFFFF')
 .add('#E1F5C4')
 .add('#EDE574')
 .add('#F9D423')
@@ -33,6 +36,7 @@ var colours3 = new colourPool()
 .add('#FF4E50');
 
 var colours4 = new colourPool()
+.add('#FFFFFF')
 .add('#E5FCC2')
 .add('#9DE0AD')
 .add('#45ADA8')
