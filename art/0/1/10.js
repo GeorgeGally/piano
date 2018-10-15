@@ -167,7 +167,7 @@ rbvj = function () {
     var note1 = ( freq.substring( 0, 1 ) )
       .charCodeAt( 0 ) - 65;
     num = Math.round( map( note1, 0, 7, 0, colours.pool.length ) );
-    console.log( freq + " : " + note1 );
+    //console.log( freq + " : " + note1 );
     //num = Math.round(i/matter_engine.particles.length * 360);
     //console.log(num);
     var c = colours.get( num );

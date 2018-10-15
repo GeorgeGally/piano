@@ -47,6 +47,7 @@ var colours4 = new colourPool()
 function changeColourFwd() {
   colour_count = (colour_count + 1);
   if (colour_count > colours.pool.length - 1 ) colour_count = 0;
+  console.log("colour_count: " + colour_count);
   ctx.fillStyle = rgb( colours.get(colour_count) );
   ctx.strokeStyle = rgb( colours.get(colour_count) );
 }
@@ -54,6 +55,7 @@ function changeColourFwd() {
 function changeColourBwd() {
   colour_count = (colour_count - 1);
   if( colour_count < 0 ) colour_count = colours.pool.length;
+  console.log("colour_count: " + colour_count);
   ctx.fillStyle = rgb( colours.get(colour_count) );
   ctx.strokeStyle = rgb( colours.get(colour_count) );
 }

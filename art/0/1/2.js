@@ -60,7 +60,7 @@ rbvj = function () {
     var spectrum = Sound.spectrum;
     var freq = getNoteFromFFT(spectrum);
     var note = getNoteNumberFromFFT(spectrum);
-    console.log(freq);
+    //console.log(freq);
     //console.log(colours.pool.length-1);
     // var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
     var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
