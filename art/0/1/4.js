@@ -52,7 +52,7 @@ rbvj = function(){
   function drawGrid(){
     for (var i = 0; i < grid.length; i++) {
       var g = grid.particles[i];
-      ctx.fillStyle = rgb( colours[colour_count] );
+      ctx.fillStyle = colours.get(colour_count);
       ctx.fillEllipse(g.pos.x, g.pos.y, g.sz, g.sz);
       if (g.sz > g.start_sz) g.sz = tween(g.start_sz, g.sz, 35);
       //g.sz-= 2;

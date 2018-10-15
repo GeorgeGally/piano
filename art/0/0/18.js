@@ -81,9 +81,9 @@ rbvj = function () {
     update();
 
     ctx.lineWidth = 4;
-    ctx.fillStyle = rgb( colours[colour_count] );
+    ctx.fillStyle = colours.get(colour_count);
     var c = ctx.getCurrentFillValues();
-    ctx.strokeStyle = rgb( colours[colour_count] );
+    ctx.strokeStyle = colours.get(colour_count);
     for ( var i = 0; i < balls.length; i++ ) {
       b = balls[ i ];
 

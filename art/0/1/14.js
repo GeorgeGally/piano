@@ -22,8 +22,8 @@ rbvj = function () {
     for ( var i = 0; i < particles.length; i++ ) {
       ctx.rotate( radians( time ) );
       ctx.fillStyle = rgb(255);
-      ctx.fillStyle = rgb( colours[colour_count] );
-  
+      ctx.fillStyle = colours.get(colour_count);
+
       var x = Math.sin( frameCount / 100 ) * 50 + i;
       var y = Math.cos( frameCount / 100 ) * 50 + i;
       ctx.LfillEllipse( x, y, 10, 10 );

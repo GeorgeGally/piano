@@ -1,78 +1,69 @@
 rbvj = function () {
 
-  ctx.lineWidth = 1;
-  ctx.lineCap = "round";
-  var grid = new Grid( 19, 13 );
-  var nums = [ 3, 3, 4, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 30 ]
-  grid.sides = []
-  for ( var i = 0; i < grid.length; i++ ) {
-    grid.sides[ i ] = 2;
+  var particles = [];
+  var dir = -1;
+  var FOV = dir * -200;
+
+  function addParticle(){
+    var particle = {
+      x: random(-100,100),
+      y: random(-100,100),
+      z: dir * 150,
+      x3d: 0,
+      y3d: 0,
+      speed_z: dir * 1,
+      scale: 1,
+      colour: randomColour(),
+    }
+    particles.push(particle);
   }
 
-  var counter = 0;
-  //console.log(grid);
-  draw = function () {
-    ctx.background( 0 );
-    if ( frameCount % 1 == 0 ) {
-      for ( var i = grid.num_items_vert; i > 0; i-- ) {
-        var pos = i * grid.num_items_horiz + counter;
+  draw = function (){
+  	if(chance(1100)) dir *=-1;
+    //if(frameCount%10 == 0) ctx.background(0, 0.05);
+  	ctx.background(0);
+    addParticle();
+  	//addParticle();
+    moveParticles();
+    drawParticles();
+  }
 
-        var s = Math.round( map( Sound.mapSound( i / 2, grid.num_items_vert ), 0, 255, 0, 22 ) );
 
-        if ( s < 10 ) {
-          grid.sides[ pos ] = 2;
-        } else {
-          grid.sides[ pos ] = nums[ s - 10 ];
-        }
-        //grid.sides[pos2] = 2;
+  function moveParticles(){
+
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+
+      p.z -= p.speed_z;
+      p.scale = FOV/(p.z+FOV);
+      p.x3d = p.x * p.scale;
+      p.y3d = p.y * p.scale;
+
+      if (dir == -1 && p.z > FOV || dir == 1 && p.z < -FOV) {
+        particles.splice(i,1);
       }
-      counter = ( counter + 1 );
     }
-    for ( var i = 0; i < grid.length; i++ ) {
-      var sides = grid.sides[ i ];
-      myPolygon( grid.x[ i ], grid.y[ i ], sides, grid.spacing_x / 2.2 );
-    }
-
-    if ( counter >= grid.num_items_horiz ) {
-      for ( var i = 0; i < grid.length; i++ ) {
-        //grid.sides[i] = 2;
-
-      }
-      counter = 0;
-    }
-
 
   }
 
-  function myPolygon( x, y, sides, size ) {
-    Xcenter = x;
-    Ycenter = y;
 
-    //ctx.fillStyle = rgb(255);
-    ctx.fillStyle = rgb( colours[colour_count] );
-    //var c = ctx.getCurrentFillValues();
-    ctx.moveTo( Xcenter + size * Math.cos( i ), Ycenter + size * Math.sin( i ) );
-    for ( var i = 1; i <= sides; i += 2 ) {
-      ctx.beginPath();
-
-      ctx.lineTo( Xcenter + size * Math.cos( i * 2 * Math.PI / sides ), Ycenter + size * Math.sin( i * 2 * Math.PI / sides ) );
-
-      ctx.lineTo( Xcenter + size * Math.cos( ( i + 1 ) * 2 * Math.PI / sides ), Ycenter + size * Math.sin( ( i + 1 ) * 2 * Math.PI / sides ) );
-      ctx.lineTo( Xcenter, Ycenter );
-      // ctx.stroke();
-      ctx.closePath();
-      ctx.fill();
-
+  function drawParticles(){
+    ctx.save();
+  	var ww = w/2 + Math.sin(frameCount/120) * w/4
+    ctx.translate(ww, h/2);
+  	ctx.rotate(radians( frameCount/5));
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      ctx.fillStyle = p.colour;
+  		var s = Sound.mapSound(i, particles.length * 2, 0.01, 3.2);
+  		//p.speed_z = s;
+  		var sz = Math.abs(p.scale * 2);
+  		//if (sz> 30) sz = 30;
+      ctx.fillCircle(p.x3d, p.y3d, sz, sz);
     }
-    ctx.strokeStyle = rgb( colours[colour_count] );
-    //ctx.strokeStyle = rgb(255);
-
-    ctx.moveTo( Xcenter + size * Math.cos( 0 ), Ycenter + size * Math.sin( 0 ) );
-    for ( var i = 1; i <= sides; i += 1 ) {
-      ctx.lineTo( Xcenter + size * Math.cos( i * 2 * Math.PI / sides ), Ycenter + size * Math.sin( i * 2 * Math.PI / sides ) );
-    }
-    ctx.stroke();
+    ctx.restore();
   }
+
 
 
 }();

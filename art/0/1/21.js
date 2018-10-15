@@ -68,8 +68,8 @@ rbvj = function () {
   }
 
   function drawParticles(b){
-    ctx.fillStyle = rgb( colours[colour_count] );
-    ctx2.fillStyle = rgb( colours[colour_count] );
+    ctx.fillStyle = colours.get(colour_count);
+    ctx2.fillStyle = colours.get(colour_count);
     var c = ctx.getCurrentFillValues();
     //  ctx2.fillStyle = "white";
       ctx2.fillEllipse(b.pos.x, b.pos.y, b.size, b.size);
@@ -122,7 +122,7 @@ rbvj = function () {
         if (p.pos.y < 0) p.pos.y = h;
 
         //ctx.strokeStyle = rgba(255);
-        ctx.strokeStyle = rgb( colours[colour_count] );
+        ctx.strokeStyle = colours.get(colour_count);
         ctx.strokeRect(p.pos.x, p.pos.y, p.size, p.size);
 
       }

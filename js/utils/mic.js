@@ -48,10 +48,10 @@ function Microphone (_fft) {
           analyser.getByteFrequencyData(self.spectrum);
           // getByteTimeDomainData gets volumes over the sample time
           //analyser.getByteTimeDomainData(dataArray);
-          self.vol = self.getRMS(self.spectrum);
+          self.vol = self.getRMS(self.spectrum) + self.volume_adjust;
           // get peak
-          if (self.vol - self.volume_adjust > self.peak_volume) self.peak_volume = self.vol - self.volume_adjust;
-          self.volume = self.vol - self.volume_adjust;
+          if (self.vol > self.peak_volume) self.peak_volume = self.vol;
+          self.volume = self.vol;
         };
 
         var input = context.createMediaStreamSource(stream);
@@ -81,8 +81,8 @@ function Microphone (_fft) {
 
         //console.log(Math.round(self.peak_volume) + " : " + Math.round(self.spectrum[new_freq]));
         // map the volumes to a useful number
-        var s = map(self.spectrum[new_freq], 0, self.peak_volume, min, max);
-        if (frameCount%50 == 0) console.log(self.peak_volume);
+        var s = map(self.spectrum[new_freq], 0, self.peak_volume, min, max) + self.volume_adjust;
+        //if (frameCount%150 == 0) console.log(self.peak_volume);
         return s;
       } else {
         return 0;
@@ -99,7 +99,7 @@ function Microphone (_fft) {
       var max = _max || min_max;
 
       // map total volume to 100 for convenience
-      self.volume = map(self.vol, 0, self.peak_volume, min, max);
+      self.volume = map(self.vol - self.volume_adjust, 0, self.peak_volume, min, max);
       return self.volume || 0;;
     }
 

@@ -26,12 +26,13 @@ function onKeyDown(event) {
       changeColourBwd();
     } else if (keyCode == 221) {
       changeColourFwd();
+      // <> sign volume adjust
     } else if (keyCode == 188 ) {
 			Sound.volume_adjust -=1;
 			Sound.peak_volume-=1;
-			if (Sound.volume_adjust < 0) Sound.volume_adjust = 0;
+			//if (Sound.volume_adjust < 0) Sound.volume_adjust = 0;
 			console.log("volume_adjust: " + Sound.volume_adjust);
-		} else if (keyCode == 190 ) {
+    } else if (keyCode == 190 ) {
 			Sound.volume_adjust +=1;
 			Sound.peak_volume+=1;
 			console.log("volume_adjust: " + Sound.volume_adjust);

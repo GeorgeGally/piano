@@ -27,7 +27,7 @@ rbvj = function () {
 
   draw = function(){
 
-  	ctx.clearRect(0, 0, w, h);
+  	ctx.background(0);
   	moveParticles();
   	ctx.fillStyle = rgba(0,0,0,1);
   	//ctx.HfillEllipse(w/2, h/2, radius-8, radius-8);
@@ -60,8 +60,9 @@ rbvj = function () {
   		p = particles[i];
 
 
-  		p.sz =  Sound.mapSound(p.me+randomInt(-2,2)%200, 400, 2, 50);
-      ctx.fillStyle = rgb( colours[colour_count] );
+  		//p.sz =  Sound.mapSound(p.me+randomInt(-2,2)%200, 400, 2, 50);
+      if (Sound.getVol(()) p.sz =  tween(p.sz, Sound.mapSound(p.me+randomInt(-2,2)%200, 400, 2, 50), 20);
+      ctx.fillStyle = colours.get(colour_count);
 
   		//ctx.fillStyle = p.c;
   		ctx.fillEllipse(p.x, p.y, p.sz, p.sz);

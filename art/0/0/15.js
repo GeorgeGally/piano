@@ -22,7 +22,7 @@ rbvj = function () {
 
     ctx.background( 0 );
     moveParticles();
-    ctx.fillStyle = rgba( colours[colour_count] );
+    ctx.fillStyle = colours.get(colour_count);
 
   }
 

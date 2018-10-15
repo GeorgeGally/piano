@@ -23,7 +23,7 @@ rbvj = function () {
   draw = function (){
 
     ctx.background(0, 0.1);
-    ctx.fillStyle = rgb( colours[colour_count] );
+    ctx.fillStyle = colours.get(colour_count);
     //var c = ctx.getCurrentFillValues();
     engine.update();
     for (var i = 0; i < particles.length; i++) {

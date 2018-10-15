@@ -1,54 +1,86 @@
 rbvj = function() {
 
-  var numParticles = 60;
-  var particles = [];
+  ctx2.font="10px Arial";
+  var grid = new particleEngine( 60, 40 );
+  var engine = new particleEngine( 5, 5 );
+  var hit_dist = 55;
 
-  for (var i = 0; i < numParticles; i++) {
-    addParticle(i);
+  for (var i = 0; i < grid.length; i++) {
+    var g = grid.particles[i];
+    g.sz = 5;
+    g.start_sz = 0;
   }
 
-  function addParticle(i) {
-    var x = map(i, 0, numParticles, 0, window.innerWidth);
-    var particle = {
-      x: 0,
-      y: 0,
-      r: random(1000),
-      strokeColor: rgb( colours[colour_count] ),
-      fillColor: rgba(0, random(55), random(0, 255), random(0, 255)),
-      strokeWeight: randomInt(1, 4),
-      size: 450,
-      me: i
-    }
+  for (var i = 0; i < engine.particles.length; i++) {
+    p = engine.particles[i];
+    //p.pos.y =  Math.sin(i/3000) * h;
 
-    particles.push(particle);
+    p.speed.y = 5;
+    p.speed.x = random(1,5);
+    p.dir.x = 1;
+    //if(i%2 == 0) p.dir.x = -1;
+    p.dir.y = -1;
+    if(i%2 == 0) p.dir.y = 1;
+    //console.log(p.speed.y);
   }
-
 
 
   draw = function() {
-    ctx.background(0);
-    for (var i = 0; i < particles.length; i++) {
-      var vol = Sound.mapSound(i, particles.length, 0, w / 2);
-      particles[i].strokeWeight = map( vol, 0, w/2, 1, 8);
-      particles[i].size = tween(particles[i].size, vol * 2, 8);
 
+    ctx.background( 0);
+    ctx.fillStyle = colours4.get(1);
+    ctx.strokeStyle = colours4.get(1);
+
+    for (var i = 0; i < grid.length; i++) {
+
+      var g = grid.particles[i];
+      for (var j = 0; j < engine.length; j++) {
+        var p = engine.particles[j];
+          var d = Math.abs(getDist(g, p));
+          hit_dist = Sound.mapSound(j, engine.length * 2, 0, 90);
+          if(d < hit_dist) {
+            var target_sz = Sound.mapSound(i, grid.length * 2, 0, 10)
+            //var target_sz = hit_dist;
+            if (g.sz < target_sz) g.sz = target_sz;
+            ctx.line( g.pos.x, g.pos.y, p.pos.x, p.pos.y );
+          }
+        }
     }
+
     moveParticles();
+    drawGrid();
 
   }
 
-  function moveParticles() {
+  function drawGrid(){
+    for (var i = 0; i < grid.length; i++) {
+      var g = grid.particles[i];
+      ctx.fillEllipse(g.pos.x, g.pos.y, g.sz, g.sz);
+      if (g.sz > g.start_sz) g.sz = tween(g.start_sz, g.sz, 55);
+      //g.sz-= 2;
+    }
+  }
 
-    for (var i = 0; i < particles.length; i++) {
-      particle = particles[i];
-      ctx.strokeStyle = particles[i].strokeColor;
-      ctx.lineWidth = particles[i].strokeWeight;
-      ctx.HstrokeEllipse(w/2, h/2, particle.size, particle.size);
-    };
+  function moveParticles(){
+    for (var i = 0; i < engine.particles.length; i++) {
+      var p = engine.particles[i];
+      p.pos.x += ( p.speed.x * p.dir.x );
+      //p.pos.x = w/2 + Math.sin ((i + frameCount)/160) * w/2;
+      p.pos.y += ( p.speed.y * p.dir.y );
+      if (p.pos.y < 0) p.pos.y = h;
+      if (p.pos.y > h) p.pos.y = 0;
+      if (p.pos.x < 0) p.pos.x = w;
+      if (p.pos.x > w) p.pos.x = 0;
+    }
 
   }
 
 
+
+
+  function getDist(p, p2){
+    return dist(p.pos.x, p.pos.y, p2.pos.x, p2.pos.y);
+  }
 
 
 }();

@@ -1,33 +1,116 @@
 rbvj = function () {
 
-  ctx.lineWidth = 1;
-  var gx = randomInt( 2, 15 );
-  var gy = 25;
-  var grid = new Grid( gx, gy );
-  var engine = new particleEngine( gx, gy );
+  var grid = new particleEngine( 1, 1 );
+  var engine = new particleEngine( 1, 2 );
+  var hit_dist = 345;
+  ctx.lineWidth = 0.2;
+  var dir = 1;
+  var radius = 200;
+  var color1 = '#67aeda';
+  ctx.strokeMe( 255 );
 
+  // var colours = new colourPool()
+  //     //
+  //     .add('#ECECEC')
+  //     .add('#CCCCCC')
+  //     // .add('#333333')
+  //     .add('#0095a8')
+  //     .add('#00616f')
+  //     .add('#FF3300')
+  //     .add('#FF6600')
+  //     .add('#FFFFFF')
+  //     .add('#FFFF00')
+  //     .add('#FF00FF')
+  //     ;
 
-  function reset() {
-    console.log( "reset" );
-    gx = randomInt( 2, 15 );
-    grid = new Grid( gx, gy );
-    engine = new particleEngine( gx, gy );
+  for (var i = 0; i < grid.length; i++) {
+    var g = grid.particles[i];
+    g.sz = 5;
+    g.start_sz = 0;
+    g.speed = new Vector(random(1,8), random(1,8));
+    g.dir = -1;
+  }
+
+  for (var i = 0; i < engine.particles.length; i++) {
+    p = engine.particles[i];
+    //p.pos.y =  Math.sin(i/3000) * h;
+
+    p.speed.y = 4;
+    p.speed.x = 4;
+    p.sz = random(10, 200);
+    p.sw = 8;
+    // p.c = randomGrey(0, 225, 0.1 );
+    p.c = rgba(randomInt(100, 255), randomInt(55), 0, 0.5 );
+    p.start_sz = 0;
+    //if(i%2 == 0) p.dir.x = -1;
+    p.dir.x = posNeg();
+    p.dir.y = posNeg();
+    p.direction = 1;
+    if(i%2 == 0) p.dir.y = 1;
+    //console.log(p.speed.y);
   }
 
 
-  draw = function () {
-    if ( chance( 400 ) ) reset();
+
+  draw = function() {
+
     ctx.background( 0 );
-    for ( var i = 0; i < engine.particles.length; i++ ) {
-      var p = engine.particles[ i ];
-      var vol = Sound.mapSound( i, engine.particles.length, 0, 10 );
-      ctx.fillStyle = rgb( colours[colour_count] );
-      ctx.fillRect( p.pos.x - ( engine.grid.spacing_x - 10 ) / 2, p.pos.y, engine.grid.spacing_x - 5, 1.5 * Math.abs( vol ) );
-      p.pos.y += 1;
-      if ( p.pos.y > h ) p.pos.y = 0;
+    if( Sound.getVol() > 60 && frameCount%4 == 0) {
+    var spectrum = Sound.spectrum;
+    var freq = getNoteFromFFT(spectrum);
+    var note = getNoteNumberFromFFT(spectrum);
+    //console.log(freq);
+    //console.log(colours.pool.length-1);
+    var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
+    //console.log(c);
+    var col = colours3.get(c);
+    //ctx.strokeMe( colours.get(c) );
+    engine.add();
+    engine.last.sz = 10;
+    engine.last.c = col;
+    engine.last.direction = dir;
+    }
+    moveParticles();
+    drawParticles();
+    if (chance(200)) dir *=-1;
+
+  }
+
+  function drawParticles(){
+    for (var i = 0; i < engine.length; i++) {
+      var g = engine.particles[i];
+      // ctx.fillMe( g.c );
+      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz, g.sz);
+      // ctx.fillMe( 0 );
+      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz/3, g.sz/3);
+      ctx.strokeMe( g.c );
+
+      // if (g.direction == -1) {
+      var f = (frameCount/180)%360;
+      var x = w/2 + Math.cos(g.direction * f) * w/2;
+      // var y = h/2 + Math.sin(g.direction * f) * w/4;
+      var y = h/2;
+      ctx.lineWidth = 3;
+      ctx.strokeCircle(x, y, g.sz, g.sz);
+
+
     }
 
   }
 
+
+
+
+  function moveParticles(){
+    for (var i = 0; i < engine.particles.length; i++) {
+      var p = engine.particles[i];
+      var sz = Sound.mapSound( i, engine.length * 2, 0, 25);
+      // p.sz = tween(p.sz, p.sz + sz, 4);
+      p.sz += 5;
+      if (p.sz > w * 2.5) engine.delete(p.me);
+
+    }
+
+  }
 
 }();

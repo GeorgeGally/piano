@@ -25,7 +25,7 @@ rbvj = function () {
       y: _y,
       speed_x: random( -2, 2 ),
       speed_y: random( -5, -1 ),
-      c: rgba( colours[colour_count] ),
+      c: colours.get(colour_count),
       sz: sz
     }
 
@@ -51,7 +51,7 @@ rbvj = function () {
       if ( b.y < 0 ) {
         b.y = height;
       }
-      if ( Sound.volume > 0 ) vol = Sound.mapSound( i, balls.length, 0, 10 );
+      if ( Sound.volume > 0 ) vol = tween(vol, Sound.mapSound( i, balls.length, 0, 10 ), 20);
       //b.x += b.speed_x;
       b.y += b.speed_y - vol / 10;
 
@@ -68,7 +68,7 @@ rbvj = function () {
 
     for ( let b of balls ) {
 
-      ctx.fillStyle = b.c;
+      ctx.fillStyle = colours.get(colour_count);
       ctx.fillRect( b.x - b.sz / 2, b.y - b.sz / 2, b.sz, b.sz );
       ctx.fillStyle = rgb( 0 );
       ctx.fillRect( b.x - ( b.sz / 1.2 ) / 2, b.y - ( b.sz / 1.2 ) / 2, b.sz / 1.2, b.sz / 1.2 );

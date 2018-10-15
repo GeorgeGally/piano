@@ -12,6 +12,7 @@ rbvj = function () {
     addBall();
   }
   ctx.background(0);
+  ctx2.clearRect(0, 0, w, h);
 
   function addBall(_x, _y){
 
@@ -70,7 +71,7 @@ rbvj = function () {
     //   m = motion[i];
     //   ctx.fillRect(m.x, m.y, block_size, block_size)
     // }
-    ctx.fillStyle = rgb( colours[colour_count] );
+    ctx.fillStyle = colours.get(colour_count);
     var c = ctx.getCurrentFillValues();
 
 

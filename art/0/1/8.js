@@ -1,61 +1,146 @@
 rbvj = function () {
 
-  var colours = new colourPool();
-  colours.add('#fff', 50);
-  colours.add('#000', 50);
-  var engine = new particleEngine(80);
-  var dir = 1;
-  ctx.fillStyle = rgb( colours[colour_count] );
+  var engine = new particleEngine(22, 3);
 
+  var dir = 1;
+  var radius = 200;
+  var color1 = '#67aeda';
+  ctx.strokeMe(255);
+  ctx.lineWidth = 1;
+  ctx.background(0);
+  var colours = new colourPool()
+    //
+    .add('#ECECEC')
+    .add('#CCCCCC')
+    //.add('#CCFFCC')
+    // .add('#333333')
+    .add('#0095a8')
+    .add('#00616f')
+    .add('#FF3300')
+    .add('#FF6600')
+    .add('#FFFFFF')
+  // .add('#FFFF00')
+  // .add('#FF00FF')
+  ;
 
   for (var i = 0; i < engine.particles.length; i++) {
-    var p = engine.particles[i];
-    p.vol = 0;
-    p.grid2 = createGrid(1,20);
-
-    p.c = rgb( colours[colour_count] );
-    if (chance(200)) {
-        p.c = '#000'
-      }
+    p = engine.particles[i];
+    p.speed.y = 4;
+    p.speed.x = 4;
+    p.sz = 2;
+    p.sz2 = 2;
+    //p.pos.x = -5;
+    //p.pos.y = h + 5;
+    p.old = new Vector(p.pos.x, p.pos.y)
+    //p.old.x = p.pos.x;
+    p.sw = 4;
+    num = Math.round(i/engine.particles.length * colours.pool.length);
+    console.log(num);
+    p.c = colours.get(num);
+    //p.c = rgba(randomInt(100, 255), randomInt(55), 0, 0.5 );
+    p.start_sz = 0;
+    p.s = 2;
+    p.direction = 1;
+    if (i % 2 == 0) p.dir.y = 1;
   }
 
-  draw = function() {
 
-    //if (chance (200)) dir *=-1;
-    ctx.clearRect(0,0,w,h);
-    drawCone(w/2,h/2);
 
-    // drawCone(w-w/4,h/4);
-    // drawCone(w/4,h-h/4);
-    // drawCone(w-w/4,h-h/4);
+  draw = function () {
+
+    ctx.background( 0 );
+    ctx2.fillMe(0, 0.05)
+    ctx2.fillRect( 0, 0, w, h);
+    // if( Sound.getVol() > 80 && frameCount%2 == 0) {
+    //
+    // //ctx.strokeMe( colours.get(c) );
+    // // engine.add();
+    // // engine.last.sz = 10;
+    // // engine.last.sw = random(0.2, 3);
+    // // engine.last.s = 2 * c + random(0.1, 8);
+    // // engine.last.edge = c;
+    // // engine.last.c = col;
+    // // engine.last.direction = dir;
+    // }
+    moveParticles();
+    drawParticles();
+    if (chance(50)) dir *= -1;
 
   }
 
 
 
-  function drawCone(startx, starty){
-    //starty = startx || h/2;
-    // ctx.fillStyle = rgb( colours[colour_count] );
-    // var c = ctx.getCurrentFillValues();
-    for (var i = 0; i < 80; i++) {
+
+  function drawParticles() {
+    for (var i = 0; i < engine.length; i++) {
       var p = engine.particles[i];
-      if (frameCount%60 == 0 && chance(20)) {
-        if(p.c == '#000') {
-          p.c = rgb( colours[colour_count] );
-        } else {
-          p.c = '#000'
-        }
-      }
-      //console.log(p.c);
-      ctx.fillStyle = p.c;
+      // ctx.fillMe( p.c );
 
-      p.vol = tween(p.vol, Sound.getVol(), 10);
-      p.pos.x = dir * Math.cos(frameCount/80) * 3;
-      p.pos.y = dir * Math.sin(frameCount/80) * 3;
-      ctx.HfillEllipse(startx - i*p.pos.x, starty - i*p.pos.y, map(p.vol, 0,255, 500,800) -i*7.0
-    );
+      // ctx.fillMe( 180, 0.7 );
+      // ctx.fillCircle(p.pos.x, p.pos.y, p.sz2, p.sz2);
+
+      ctx2.fillMe( p.c );
+      ctx2.fillCircle(p.pos.x, p.pos.y, p.sz, p.sz);
+
+
+
+      ctx2.fillMe( 255 );
+      ctx2.fillCircle(p.pos.x, p.pos.y, 5, 5);
+      //ctx.fillCircle(x, y, 10, 10);
+
+
     }
+
   }
 
+
+
+  function moveParticles() {
+
+    var spectrum = Sound.spectrum
+    var note = getNoteNumberFromFFT(spectrum);
+    for (var i = 0; i < engine.particles.length; i++) {
+    note = Math.floor(note);
+    var p = engine.particles[i];
+    ctx.strokeMe(255, 0.3);
+    ctx.line(p.pos.x, 0, p.pos.x, h);
+    var sz = Sound.mapSound(i, engine.length * 2, 1, 30);
+    p.pos.y -= 4;
+    p.sz = tween(p.sz, sz, 4);
+    p.sz2 = tween(p.sz2, 0, 30);
+    if (sz > 29) {
+      p.sz2 = 180;
+    }
+    if (p.pos.x > w + 50) {
+      p.pos.x = -50;
+      p.old.x = -50;
+      p.pos.y += random(-22, 22);
+    }
+    if (p.pos.y > h) {
+      p.pos.y = 0;
+    }
+
+    if (p.pos.y < 0) {
+      p.pos.y = h;
+    }
+
+    }
+
+  }
+
+  function getMyColour(i) {
+    var spectrum = Sound.spectrum;
+    // var freq = getNoteFromFFT(spectrum);
+    var note = getNoteNumberFromFFT(spectrum);
+    //var c = Math.round (Sound.mapSound( i, engine.length * 2, 0, 5));
+    var c = Sound.mapSound(i, 0, engine.length * 2, 0, colours.pool.length - 1)
+    //console.log(c);
+    //console.log(colours.pool.length-1);
+    //var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
+    //console.log(c);
+    var col = colours2.get(c);
+    //ctx.fill(col)
+    return col;
+  }
 
 }();

@@ -3,7 +3,7 @@ rbvj = function () {
   var circs = [];
   var r = width / 14;
   var vol = 0;
-  ctx.strokeStyle = rgb( colours[colour_count] );
+  ctx.strokeStyle = colours.get(colour_count);
 
   var gx = randomInt( 3, 25 );
   var gy = Math.floor( h / 15 );

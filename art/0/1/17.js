@@ -96,7 +96,7 @@ rbvj = function () {
 
 
   function drawBall(b){
-    ctx.fillStyle = rgb( colours[colour_count] );
+    ctx.fillStyle = colours.get(colour_count);
     var c = ctx.getCurrentFillValues();
       if (mode == 2 || mode == 1) {
         //ctx.fillStyle = hsl(b.sz*2, 80, 50);

@@ -4,6 +4,7 @@ rbvj = function() {
   ctx.fillStyle = rgb(0);
   var gx = randomInt(5, 50);
   var gy = randomInt(5, 50);
+  var volX = 10;
 
   var engine = new particleEngine(gx, gy);
 
@@ -30,9 +31,9 @@ rbvj = function() {
     for (var i = 0; i < engine.particles.length; i++) {
 
       var p = engine.particles[i];
-      volX = Sound.mapSound(i, engine.particles.length * 1.4, 1, engine.grid.spacing_x - 1);
-      volY = Sound.mapSound(i, engine.particles.length * 1.4, 1, 40);
-      ctx.fillStyle = rgb( colours[colour_count] );
+      volX = tween(volX, Sound.mapSound(i, engine.particles.length * 1.4, 1, engine.grid.spacing_x - 1), 100);
+      //volY = Sound.mapSound(i, engine.particles.length * 1.4, 1, 40);
+      ctx.fillStyle = rgb( colours.get(colour_count) );
       ctx.centreFillRect(p.pos.x - engine.grid.spacing_x / 2, p.pos.y - engine.grid.spacing_y / 2, volX, engine.grid.spacing_y);
 
     }

@@ -11,7 +11,7 @@ function reset() {
   gx = randomInt(20, 85);
   gy = randomInt(20, 120);
   engine = new particleEngine(gx, gy);
-  ctx.fillStyle = rgb( colours[colour_count] );
+  ctx.fillStyle = rgb( colours.get(colour_count));
 }
 
 
@@ -25,7 +25,7 @@ draw = function() {
 
     var p = engine.particles[i];
     vol = Sound.mapSound(i%100, 100, 1, engine.grid.spacing_x - 2) - random(0.3);
-    p.r = tween(p.r, vol, 2);
+    p.r = tween(p.r, vol, 22);
     ctx.fillRect(p.pos.x - engine.grid.spacing_x/2, p.pos.y - engine.grid.spacing_y/2, p.r, engine.grid.spacing_y - 2);
 
   }

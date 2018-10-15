@@ -1,65 +1,112 @@
 rbvj = function () {
 
-  ctx.strokeStyle = rgba(0,0,0,0.8);
-  ctx.lineWidth = 2;
-  var particles = [];
-  var radius = 180;
-  var c = 0;
-  var num_particles = 100;
+  // var colours = new colourPool()
+  //   .add( '#ECECEC' )
+  //   //.add('#CCCCCC')
+  //   .add( '#CCFFCC' )
+  //   .add( '#333333' )
+  //   .add( '#0095a8' )
+  //   .add( '#00616f' )
+  //   .add( '#FF3300' )
+  //   .add( '#FF6600' )
+  //   .add( '#000000' )
+  //   .add( '#ffc84f' )
+  //   .add( '#FFFFFF' )
+  //   .add( '#FFFF00' )
+  //   .add( '#FF00FF' );
 
-  for (var i = 0; i < num_particles; i++) {
-      	var cc = rgba(random(25),random(255),0, 0.5);
-  		addParticle(random(55), random(55), cc, i);
+  var FORCE = 13.5;
+  var RESISTANCE = 0.4;
+
+  //var engine = new particleEngine( 0 );
+  ctx.background( 0 );
+
+  draw = function () {
+
+    ctx.background( 0 );
+
+    if ( frameCount % 2 == 0 && Sound.getVol() > 40 ) {
+      addParticle();
+    }
+
+    for ( var i = 0; i < engine.particles.length; i++ ) {
+      var p = engine.particles[ i ];
+      update( p );
+      //console.log(p.pos);
+      ctx.fillStyle = p.c;
+      ctx.fillCircle( p.pos.x, p.pos.y, p.sz, p.sz );
+      ctx.fillStyle = rgb( 0 );
+      ctx.fillCircle( p.pos.x, p.pos.y, p.sz / 4, p.sz / 4 );
+    }
+
+
+  }
+
+
+  function addParticle() {
+
+    var spectrum = Sound.spectrum;
+    var freq = getNoteFromFFT( spectrum );
+
+    var note = getNoteFreqPerc( spectrum );
+    //console.log(spectrum[note]);
+    var note1 = ( freq.substring( 0, 1 ) )
+      .charCodeAt( 0 ) - 65;
+    num = Math.round( map( note1, 0, 7, 0, colours.pool.length ) );
+    //num = Math.round(i/engine.particles.length * 360);
+    //console.log(num);
+    var c = colours.get( num );
+
+    engine.add( w / 2, h / 2 );
+    //console.log(engine.last);
+    engine.last.resistance = RESISTANCE;
+    // engine.last.sz = Math.round(Sound.getVol(1, 10));
+    engine.last.sz = Math.round( map( spectrum[ note ], 0, 255, 2, 10 ) );
+    engine.last.c = c;
+    //engine.last.pos = new Vector( w / 2, h / 2 );
+    //console.log(engine.last);
   }
 
 
-  draw = function(){
+  function update( p ) {
 
-  	ctx.fillStyle = rgba(0,1);
-  	ctx.fillRect(0, 0, w, h);
-  	// ctx.fillStyle = rgba(0,1);
-  	// ctx.LfillEllipse(w/2, h/2, 4 + radius*4, 4 + radius*4);
-  	moveParticles();
-  }
+    p.acceleration.x += ( w / 2 - p.pos.x ) / ( p.sz / 2.2 );
+    p.acceleration.y += ( h / 2 - p.pos.y ) / ( p.sz / 2.2 );
 
+    p.speed.x += p.acceleration.x;
+    p.speed.y += p.acceleration.y + 0.1;
 
+    p.speed.x *= p.resistance;
+    p.speed.y *= p.resistance;
 
-  function addParticle(_x, _y, _colour, _me){
-  	var particle = {
-  		x: 0,
-  		y: 0,
-  		c: _colour,
-  		me: _me,
-  		speedx: 1,
-  		speedy: 1,
-  		sz: 40,
-  		angle: radians(_me * 360/num_particles)
-  	}
+    p.pos.x += p.speed.x;
+    p.pos.y += p.speed.y;
 
-  	particles.push(particle);
-  }
+    p.acceleration.x = 0;
+    p.acceleration.y = 0;
 
-  function moveParticles(){
-    ctx.fillStyle = rgb( colours[colour_count] );
-    ctx.strokeStyle = rgb( colours[colour_count] );
+    for ( var j = p.me + 1; j < engine.length; j++ ) {
+      var p2 = engine.particles[ j ];
+      var dx = p.pos.x - p2.pos.x;
+      var dy = p.pos.y - p2.pos.y;
+      var distance = dist( p.pos.x, p.pos.y, p2.pos.x, p2.pos.y );
 
-  	for (var i = 0; i < particles.length; i++) {
-  		p = particles[i];
-  		var me = (p.me)%256;
-  		p.angle += radians(p.speedx);
-  		radius = tween(radius, Sound.mapSound(me, 1000, 0, 20), 18);
-  		var r = radius;
-  		p.sz = tween(p.sz, Sound.mapSound(me, 1000, 100, w/2), 10);
+      dx /= distance;
+      dy /= distance;
 
-  		p.x = w/2 + (p.sz/2+r) * Math.cos(p.angle);
-  		p.y = h/2 + (p.sz/2+r) * Math.sin(p.angle);
+      var forceX = dx * ( FORCE / distance );
+      var forceY = dy * ( FORCE / distance );
 
-  		//ctx.fillStyle = rgba(255,1);
-  		ctx.fillEllipse(p.x, p.y, p.sz/50, p.sz/50);
-  		//ctx.strokeStyle = rgba(255,1);
-  		ctx.line(w/2, h/2, p.x,p.y);
+      p.acceleration.x += forceX;
+      p.acceleration.y += forceY;
 
-  		};
+      p2.acceleration.x -= forceX;
+      p2.acceleration.y -= forceY;
+
+    }
+
+    console.log(p.pos);
 
   }
+
 }();

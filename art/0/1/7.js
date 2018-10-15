@@ -31,7 +31,7 @@ rbvj = function () {
   // FORCE(gravity) = (G * m1 * m2)/ (d*d) * r
   draw = function(){
       // ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = rgb( colours[colour_count] );
+      ctx.fillStyle = colours.get(colour_count);
       var c = ctx.getCurrentFillValues();
       //ctx.fillStyle = rgb( c.r, c.g, c.b, 0.8 );
       ctx.fillStyle = rgba(0, 0, 0, 0.06);

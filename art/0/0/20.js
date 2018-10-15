@@ -72,7 +72,7 @@ rbvj = function () {
 
     for ( var i = 0; i < balls.length; i++ ) {
       b = balls[ i ];
-      ctx.fillStyle = rgb( colours[colour_count] );
+      ctx.fillStyle = colours.get(colour_count);
       ctx.fillEllipse( b.x, b.y, b.sz, b.sz );
 
     } // end for loop

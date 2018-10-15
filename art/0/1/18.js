@@ -44,8 +44,8 @@ rbvj = function () {
 
 
   	this.moveParticles = function(){
-      ctx.fillStyle = rgb( colours[colour_count] );
-      ctx.strokeStyle = rgb( colours[colour_count] );
+      ctx.fillStyle = colours.get(colour_count);
+      ctx.strokeStyle = colours.get(colour_count);
       //var c = ctx.getCurrentFillValues();
   		for (var i = 0; i < particles.length; i++) {
 

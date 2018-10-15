@@ -28,6 +28,14 @@ p.clearScreen = function(_x, _y, _w, _h) {
   this.clearRect(_x, _y, _w, _h)
 }
 
+p.clear = function ( _x, _y, _w, _h ) {
+  var _x = _x || 0;
+  var _y = _y || 0;
+  var _w = _w || w;
+  var _h = _h || h;
+  this.clearRect( _x, _y, _w, _h )
+}
+
 
 p.background = function(r, g, b, a) {
   var c = this.getCurrentFill();
@@ -216,6 +224,15 @@ p.lineColour = function(r, g, b, a) {
   this.strokeStyle = getColour(r, g, b, a);
 };
 
+p.fillMe = function(r, g, b, a){
+  var rgba = getColour( r, g, b, a );
+  this.fillStyle = rgba;
+}
+
+p.strokeMe = function(r, g, b, a){
+  var rgba = getColour( r, g, b, a );
+  this.strokeStyle = rgba;
+}
 
 // BASIC DRAWING
 

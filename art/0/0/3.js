@@ -58,7 +58,7 @@ rbvj = function() {
       p.sz = tween(p.sz, circ_sz + Math.sin(p.counter) * 20, 10);
       if (Sound.spectrum[p.me] > 80) {
         p.on == true;
-        ctx.fillStyle = rgb( colours[colour_count] );
+        ctx.fillStyle = colours3.get(4);
         ctx.fillEllipse(p.x, p.y, p.sz, p.sz);
       } else {
         ctx.fillStyle = rgba( 255, 0.08 );

@@ -37,7 +37,7 @@ rbvj = function () {
       ctx.fillRect(0, 0, w, h);
       //particle.draw();
       //console.log();
-        ctx.fillStyle = rgb( colours[colour_count] );
+        ctx.fillStyle = colours.get(colour_count);
     var c = ctx.getCurrentFillValues();
 
       for (var i = 0; i < balls.particles.length; i++) {

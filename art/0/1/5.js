@@ -37,8 +37,8 @@ rbvj = function(){
 
     ctx.background(0, 0.1);
     ctx2.clearRect(0, 0, w, h);
-    ctx.fillStyle = rgb( colours[colour_count] );
-    ctx2.fillStyle = rgb( colours[colour_count] );
+    ctx.fillStyle = colours.get(colour_count);
+    ctx2.fillStyle = colours.get(colour_count);
     //ctx.fillStyle = "white";
     //ctx2.fillStyle = "white";
     //ctx2.fillStyle = "black";
@@ -119,7 +119,7 @@ rbvj = function(){
   }
 
   function drawGrid(){
-    ctx.fillStyle = rgb( colours[colour_count] );
+    ctx.fillStyle = colours.get(colour_count);
     var c = ctx.getCurrentFillValues();
     ctx.strokeStyle = rgb( c.r, c.g, c.b, 0.2 );
     ctx2.strokeStyle = rgb( c.r, c.g, c.b, 0.2 );
@@ -140,7 +140,7 @@ rbvj = function(){
       //ctx.fillEllipse(g.start.x, g.start.y, 4, 4);
 
       if(g.on) {
-        ctx.fillStyle = rgb( colours[colour_count] );
+        ctx.fillStyle = colours.get(colour_count);
         //ctx.fillStyle = "white";
         //ctx.fillText(g2.old_me, g.pos.x, g.pos.y + 20);
         // if (chance(4)) {

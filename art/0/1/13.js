@@ -1,95 +1,69 @@
 rbvj = function () {
 
-  var Wave = function(_num_particles, _x, _y, _me) {
 
-  	ctx.strokeStyle = rgba(0,0,0,0.8);
-  	var particles = [];
-  	var radius = 50;
-  	var rot = 0;
-  	var num_particles = _num_particles;
-  	var x = _x;
-  	var y = _y;
-  	var me = _me;
-
-  	this.setup = function(){
-  		for (var i = 0; i < num_particles; i++) {
-  			var c = random(225);
-  		    var cc = rgba(c, c, c, 1);
-  			this.addParticle(x, y, cc, me);
-  		}
-  	}
-
-  	this.draw = function(){
-  		this.moveParticles();
-  	}
-
-  	this.addParticle = function(_x, _y, _colour, _me){
-  		var particle = {
-  			x: _x,
-  			y: h-_y,
-  			c: _colour,
-  			me: _me,
-  			stroke_width: random(0.1, 1),
-  			speedx: 0,
-  			speedy: random(2,20),
-  			sz: radius+ _me*26,
-  			dir: -1*_me%2
-  		}
-  		particles.push(particle);
-  	}
+  noise.seed( randomInt( 20 ) );
 
 
-  	this.moveParticles = function(){
+  var scl = 6;
+  var xvec, yvec;
+  var noiseInc = .01;
+  var time = 0;
+  var particles = [];
+  var flowfield;
 
-  		for (var i = 0; i < particles.length ; i++) {
-
-  			p = particles[i];
-        var s = Sound.mapSound(p.me % 100, 200 , 1, 100);
-        ctx.fillStyle = rgb( colours[colour_count] );
-  			ctx.fillRect(p.x, p.y, s/4, spacing_y/1-2);
+  ctx.strokeStyle = rgb( 0 );
+  ctx.background( 255 );
 
 
+  draw = function () { // Rotating Vectors
 
-  		};
+    ctx.background( 255, 0.1 );
+    //ctx3.clearRect(0,0,w, h);
 
-  	}
+    FlowField();
+    //ctx2.drawImage(ctx.canvas, 0, 0, w, h);
+    mirror();
+  }
 
-  this.setup();
+  function FlowField() {
 
+    xvec = Math.floor( ( w + 50 ) / scl );
+    yvec = Math.floor( ( h + 50 ) / scl );
+    flowfield = new Array( xvec * yvec );
+    noiseInc = tween( noiseInc, Sound.getVol() / 10000, 4 );
+    var yNoise = 0;
+    for ( var y = 0; y < yvec; y++ ) {
+      var xNoise = 0;
+      for ( var x = 0; x < xvec; x++ ) {
+        var vecDirect = noise.perlin3( xNoise, yNoise, time ) * 2 * ( TWO_PI );
+
+        //vecDirect = map(degrees(vecDirect), -360, 360, 0, 360);
+        //vecDirect = radians(vecDirect);
+        //console.log(vecDirect);
+        //  var dir = p5.Vector.fromAngle(vecDirect);
+        var dir = vecDirect * 10.5;
+        //ctx.fillStyle = rgb(255 - map(dir, 0, scl * 1.5, 0, 255));
+        var index = x + y * xvec;
+        flowfield[ index ] = dir;
+        //dir.setMag(3);
+        xNoise += noiseInc;
+
+        //ctx.save();
+        //ctx.translate(Math.round(x * scl), Math.round(y * scl));
+        //ctx.rotate(dir);
+        ctx.fillRect( Math.round( x * scl ), Math.round( y * scl ), dir, dir );
+        //ctx.LfillEllipse(Math.round(x * scl), Math.round(y * scl), dir, dir, 5);
+        //ctx.line(0, 0, scl, 0);
+        //ctx.restore();
+      }
+      yNoise += noiseInc;
+      //time += Sound.getVol(y, yvec, 0, 10)/2000000;
+      time += .0001;
+    }
   }
 
 
-  // SETUP WAVES CLASS
 
-  var waves = [];
-  var grid_w = 30;
-  var grid_h = 80;
-  var num_waves = grid_w * grid_h;
-  var spacing_x = w/grid_w;
-  var spacing_y = h/grid_h;
-
-  var grid = makeGrid(grid_w, grid_h);
-  var num_particles = 1;
-
-  for (var i = 0; i < num_waves; i++) {
-  	waves[i] = new Wave(num_particles, grid[i][0]*spacing_x,grid[i][1]*spacing_y + spacing_y/2, i*num_particles);
-
-  };
-
-
-
-  // DRAW WAVES CLASS
-
-  draw = function(){
-
-  	ctx.background(0);
-
-  	for (var i = 0; i < num_waves; i++) {
-  		waves[i].draw();
-
-  	};
-
-  }
 
 
 }();

@@ -12,6 +12,7 @@ rbvj = function () {
     num_particles = this.num_particles;
     pos_y = _pos_y;
     this.pos_y = pos_y;
+    var angle = 0;
 
     this.setup = function () {
       for ( var i = 0; i < num_particles; i++ ) {
@@ -22,7 +23,7 @@ rbvj = function () {
     }
 
     this.draw = function () {
-      ctx.strokeStyle = rgb( colours[colour_count] );
+      ctx.strokeStyle = colours.get(colour_count);
       this.moveParticles();
 
     }
@@ -52,15 +53,15 @@ rbvj = function () {
 
         p = particles[ i ];
         var me = Math.floor( p.me * 360 / num_particles );
-        var angle = Sound.spectrum[ Math.floor( ( i + pos_y ) % 256 ) ];
-        p.angle += radians( angle / 80 );
+        angle = tween(angle, Sound.mapSound(i, particles.length *2, 0, 10 ), 50);
+        p.angle += radians( angle / 150 );
         radius = Sound.spectrum[ p.me ];
 
         var r = radius;
 
         p.y = this.pos_y + ( 100 ) * Math.sin( p.angle );
 
-        p.sz = Sound.mapSound( me + pos_y / 20, 2560, 6 );
+        p.sz = tween(p.sz, Sound.mapSound( me + pos_y / 20, 2560, 6 ), 20);
 
 
         if ( i > 0 ) ctx.line( p.x, p.y, particles[ i - 1 ].x, particles[ i - 1 ].y );

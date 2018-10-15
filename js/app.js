@@ -1,10 +1,12 @@
 var rbvj;
 
 // add drawing canvases
+var hidden_canvas;
 var ctx = createCanvas( 'canvas1' );
 var ctx2 = createCanvas( 'canvas2' );
 var ctx3 = createCanvas( 'canvas3' );
 var renderer;
+var hidden_ctx = createHiddenCanvas( 'canvas4' );
 
 
 
@@ -23,7 +25,7 @@ var current_file = 0;
 var current_set = 0;
 var current_bank = 0;
 
-var colours = ["white","red", "blue", "green", "purple", "magenta", "orange", "pink", "yellow"];
+//var colours = ["white","red", "blue", "green", "purple", "magenta", "orange", "pink", "yellow"];
 var colour_count = 0;
 
 function setup() {
@@ -83,25 +85,14 @@ function changeBank( bank ) {
   changeFile( 0 );
 }
 
-function changeColourFwd() {
-  colour_count = (colour_count + 1);
-  if (colour_count > colours.length - 1 ) colour_count = 0;
-  ctx.fillStyle = rgb( colours[colour_count] );
-  ctx.strokeStyle = rgb( colours[colour_count] );
-}
-
-function changeColourBwd() {
-  colour_count = (colour_count - 1) % colours.length;
-  ctx.fillStyle = rgb( colours[colour_count] );
-  ctx.strokeStyle = rgb( colours[colour_count] );
-}
 
 function reset(){
-  ctx.clearRect( 0, 0, w, h );
+  ctx.background(0);
   ctx2.clearRect( 0, 0, w, h );
   ctx3.clearRect( 0, 0, w, h );
   ctx.lineCap = "butt";
   ctx.lineWidth = 1;
+  ctx.globalCompositeOperation = "normal";
 }
 
 // INJECT JS ONTO PAGE

@@ -1,99 +1,118 @@
 rbvj = function(){
 
-  var Wave = function(_num_particles, _x, _y, _me) {
+  var grid = new particleEngine( 1, 1 );
+  var engine = new particleEngine( 1, 2 );
+  var hit_dist = 345;
+  ctx.lineWidth = 0.2;
+  var dir = 1;
+  var radius = 200;
+  var color1 = '#67aeda';
+  ctx.strokeMe( 255 );
 
-  	ctx.strokeStyle = rgba(0,0,0,0.8);
-  	var particles = [];
-  	var radius = 50;
-  	var rot = 0;
-  	var num_particles = _num_particles;
-  	var x = _x;
-  	var y = _y;
-  	var me = _me;
+  var colours = new colourPool()
+      //
+      .add('#ECECEC')
+      .add('#CCCCCC')
+      // .add('#333333')
+      .add('#0095a8')
+      .add('#00616f')
+      .add('#FF3300')
+      .add('#FF6600')
+      .add('#FFFFFF')
+      .add('#FFFF00')
+      .add('#FF00FF')
+      ;
 
-  	this.setup = function(){
-  		for (var i = 0; i < num_particles; i++) {
-  			var c = random(225);
-  		    var cc = rgba(c, c, c, 1);
-  			this.addParticle(x, y, cc, me);
-  		}
-  	}
+  for (var i = 0; i < grid.length; i++) {
+    var g = grid.particles[i];
+    g.sz = 5;
+    g.start_sz = 0;
+    g.speed = new Vector(random(1,8), random(1,8));
+    g.dir = -1;
+  }
 
-  	this.draw = function(){
-  		this.moveParticles();
-  	}
+  for (var i = 0; i < engine.particles.length; i++) {
+    p = engine.particles[i];
+    //p.pos.y =  Math.sin(i/3000) * h;
 
-  	this.addParticle = function(_x, _y, _colour, _me){
-  		var particle = {
-  			x: _x,
-  			y: h-_y,
-  			c: _colour,
-  			me: _me,
-  			stroke_width: random(0.1, 1),
-  			speedx: 0,
-  			speedy: random(2,20),
-  			sz: radius+ _me*26,
-  			dir: -1*_me%2
-  		}
-  		particles.push(particle);
-  	}
-
-
-  	this.moveParticles = function(){
-
-  		for (var i = 0; i < particles.length ; i++) {
-
-  			p = particles[i];
-
-  			//DISTRIBUTED MAPPED SOUND VALUE
-  			var s = Sound.mapSound(40+p.me%53, 100, 0, 100);
-
-  			ctx.fillStyle = rgb( colours[colour_count] );
-  			ctx.fillRect(p.x, p.y - spacing_y/2, s/4.2, spacing_y);
+    p.speed.y = 4;
+    p.speed.x = 4;
+    p.sz = random(10, 200);
+    p.sw = 8;
+    // p.c = randomGrey(0, 225, 0.1 );
+    p.c = rgba(randomInt(100, 255), randomInt(55), 0, 0.5 );
+    p.start_sz = 0;
+    //if(i%2 == 0) p.dir.x = -1;
+    p.dir.x = posNeg();
+    p.dir.y = posNeg();
+    p.direction = 1;
+    if(i%2 == 0) p.dir.y = 1;
+    //console.log(p.speed.y);
+  }
 
 
-  		};
 
-  	}
+  draw = function () {
 
-  this.setup();
+    ctx.background( 0 );
+    if( Sound.getVol() > 60 && frameCount%4 == 0) {
+    var spectrum = Sound.spectrum;
+    var freq = getNoteFromFFT(spectrum);
+    var note = getNoteNumberFromFFT(spectrum);
+    //console.log(freq);
+    //console.log(colours.pool.length-1);
+    var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
+    //console.log(c);
+    var col = colours.get(c);
+    //ctx.strokeMe( colours.get(c) );
+    engine.add();
+    engine.last.sz = 10;
+    engine.last.c = col;
+    engine.last.direction = dir;
+    }
+    moveParticles();
+    drawParticles();
+    if (chance(200)) dir *=-1;
+
+  }
+
+  function drawParticles(){
+    for (var i = 0; i < engine.length; i++) {
+      var g = engine.particles[i];
+      // ctx.fillMe( g.c );
+      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz, g.sz);
+      // ctx.fillMe( 0 );
+      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz/3, g.sz/3);
+      ctx.strokeMe( g.c );
+
+      // if (g.direction == -1) {
+      var f = (frameCount/150);
+      var x = w/2 + Math.cos(g.direction * f) * w/1.5;
+      var y = h/2 + Math.sin(g.direction * f) * w/4;
+      //var y = h/2;
+      ctx.lineWidth = 2;
+      //ctx.strokeCircle(x, y, g.sz, g.sz);
+      ctx.centreStrokeRect(x, y, g.sz, g.sz);
+
+
+    }
 
   }
 
 
-  // SETUP WAVES CLASS
-
-  var waves = [];
-  var grid_w = 65;
-  var grid_h = 10;
-  var num_waves = grid_w * grid_h;
-  var spacing_x = w/grid_w;
-  var spacing_y = h/grid_h;
-  console.log(spacing_x)
-  console.log(spacing_y)
-  var grid = makeGrid(grid_w, grid_h);
-  var num_particles = 1;
-
-  for (var i = 0; i < num_waves; i++) {
-  	waves[i] = new Wave(num_particles, grid[i][0]*spacing_x,grid[i][1]*spacing_y + spacing_y/2, i*num_particles);
-
-  };
 
 
+  function moveParticles(){
+    for (var i = 0; i < engine.particles.length; i++) {
+      var p = engine.particles[i];
+      var sz = Sound.mapSound( i, engine.length * 2, 0, 15);
+      // p.sz = tween(p.sz, p.sz + sz, 4);
+      p.sz += 5;
+      if (p.sz > w * 2.5) engine.delete(p.me);
 
-  // DRAW WAVES CLASS
-
-  draw = function(){
-
-  	ctx.background( 0 );
-
-  	for (var i = 0; i < num_waves; i++) {
-  		waves[i].draw();
-
-  	};
+    }
 
   }
-
 
 
 }();

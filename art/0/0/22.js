@@ -46,7 +46,7 @@ rbvj = function () {
 
 
     ctx.save();
-    ctx.fillStyle = rgb( colours[colour_count] );
+    ctx.fillStyle = colours.get(colour_count);
     ctx.rect( w / 2 - t_size / 2, h / 2 - t_size / 2, t_size, t_size );
     ctx.clip();
     ctx.fillStyle = cols[ randomInt( 4 ) ];

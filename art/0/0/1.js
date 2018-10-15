@@ -1,128 +1,63 @@
 rbvj = function () {
 
-  var num_particles = 2;
-  var engine = new particleEngine( num_particles, 1 );
-  var particles = engine.particles;
-
-  ctx.lineWidth = 1;
-
-  var radius = 220;
-  var out = radius;
-  var out_on = false;
-  var center_on = false;
-  var all_on = false;
-  var adding = false;
-  var removing = false;
-  var c = 0;
-  var dir = 1;
-  var rotation = 0;
+  var grid_w = 20;
+  var grid_h = 20;
+  var grid = createGrid( grid_w, grid_h );
 
 
-  for ( var i = 0; i < particles.length; i++ ) {
-    addNode( i );
+  var blocks = new particleEngine( grid.length - 1 );
+  var row = 0;
+  for ( var i = 0; i < blocks.particles.length; i++ ) {
+    var b = blocks.particles[ i ];
+    b.pos = new Vector( grid[ i ].x, grid[ i ].y );
+    b.speed = new Vector( 2, 2 );
+    b.c = rgb( 0 );
+    // b.c =  (i%2 == 0) ? rgb(0): rgb(255);
+    b.w = w / grid_w;
+    b.h = h / grid_h;
+    b.s = 0;
   }
 
-  function addNode( i ) {
-    var p = particles[ i ];
-    p.angle = radians( -90 + i * 360 / particles.length );
-    p.pos.x = w / 2 + ( p.sz / 2 + radius ) * Math.cos( p.angle );
-    p.pos.y = h / 2 + ( p.sz / 2 + radius ) * Math.sin( p.angle );
-    p.start.x = p.pos.x;
-    p.start.y = p.pos.y;
-    p.radius = radius;
-
-  }
-
-  function addNewNode() {
-    var me = particles.length;
-    engine.add();
-    addNode( me );
-    for ( var i = 0; i < particles.length; i++ ) {
-      var p = particles[ i ];
-      p.angle = radians( -90 + i * 360 / particles.length );
-      p.radius = radius;
-      p.sz = 10;
-    }
-  }
-
-  draw = function () {
-
-    ctx.background( 0 );
-
-    if ( chance( 400 ) ) adding = !adding;
-    if ( chance( 400 ) ) removing = !removing;
-
-    var ratio = w / Sound.spectrum.length;
-
-    if ( chance( 100 ) && adding ) addNewNode();
-    if ( chance( 100 ) && removing && engine.particles.length > 2 ) {
-      engine.delete();
-      engine.resetAngles();
-    }
-    if ( Sound.getBassVol() ) moveParticles();
-
-  }
-
-
-  function moveParticles() {
-
-    if ( chance( 300 ) ) dir = posNeg();
-
-    rotation = dir * Sound.spectrum[ 50 ];
-
-    c = tween( c, 40 + map( Sound.spectrum[ 40 ], 0, 100, 0, 80 ), 2 );
-    ctx.strokeStyle = rgb( colours[colour_count] );
-    ctx.fillStyle = rgb ( colours[colour_count] );
-    ctx.HfillEllipse( w / 2, h / 2, c, c );
-
-    ctx.HstrokeEllipse( w / 2, h / 2, c, c );
-    if ( center_on ) ctx.HfillEllipse( w / 2, h / 2, c - 20, c - 20 );
-
-    if ( chance( 500 ) ) out_on = !out_on;
-    if ( chance( 200 ) ) out_on = false;
-    if ( chance( 500 ) ) all_on = !all_on;
-    if ( Sound.getBassVol() > 80 ) {
-      center_on = true;
-    } else {
-      center_on = false;
-    }
-
-    for ( var i = 0; i < particles.length; i++ ) {
-      p = particles[ i ];
-      var me = Math.floor( p.me * 360 / particles.length );
-      p.angle += radians( rotation / 120 );
-
-      if ( Sound.getBassVol() ) p.radius = tween( p.radius, Sound.getBassVol( c + 60, c + 300 ), 2 );
-
-      out = p.radius;
-
-      if ( all_on ) {
-        p.on = true;
-      } else {
-        p.on = false;
+  this.draw = function () {
+    //ctx.background(0);
+    //blocks.draw(ctx);
+    if ( frameCount%60 == 0 && Sound.getVol()> 70 ) resetSpeed();
+    for ( var i = 0; i < blocks.particles.length; i++ ) {
+      var b = blocks.particles[ i ];
+      b.pos.x += b.speed.x;
+      b.pos.y += b.speed.y;
+      if (bounce(b.pos.x, 0, w, b.w/2)) b.speed.x *=-1;
+      if (bounce(b.pos.y, 0, h, b.w/2)) b.speed.y *=-1;
+      //if(b.pos.x > w/2 - 120 && b.pos.x < w/2 + 120 && b.pos.y > h/2 - 120 && b.pos.y < h/2 + 120) {
+      if ( chance( 2500 ) ) {
+        var _s = Sound.mapSound( b.me, blocks.particles.length * 2, 0, 250 );
+        //console.log(_s);
+        if ( _s < 80 ) {
+          // b.c = rgb( 100 );
+          b.c = colours.get( 1 );
+        } else if ( _s < 200 ) {
+          //b.c = rgb( _s * 2 );
+          b.c = colours.get( 2 );
+        } else {
+          //b.c = rgb( 225, 0, 0 );
+          b.c = colours.get( 3 );
+        }
       }
-
-      if ( chance( 100 ) ) p.on = !p.on;
-
-      var s = Sound.mapSound( i, particles.length, p.radius, 200 );
-      p.sz = tween( p.sz, map( p.radius, 0, 100, 0, 20 ), 12 );
-      p.pos.x = w / 2 + (  p.radius ) * Math.cos( p.angle );
-      p.pos.y = h / 2 + (  p.radius ) * Math.sin( p.angle );
-      var linepos = new Vector( w / 2 + ( p.radius - p.sz / 2 ) * Math.cos( p.angle ),
-        h / 2 + ( p.radius - p.sz / 2 ) * Math.sin( p.angle ) );
-      var linepos2 = new Vector( w / 2 + c / 2 * Math.cos( p.angle ), h / 2 + c / 2 * Math.sin( p.angle ) );
-      ctx.strokeStyle = rgba( colours[colour_count] );
-      ctx.line( linepos2.x, linepos2.y, linepos.x, linepos.y );
-
-      ctx.fillStyle = rgb( colours[colour_count] );
-
-      ctx.HstrokeEllipse( p.pos.x, p.pos.y, p.sz, p.sz );
-      if ( p.on ) ctx.fillEllipse( p.pos.x, p.pos.y, p.sz - 20, p.sz - 20 );
-
-    };
-
-
+      ctx.fillStyle = b.c;
+      ctx.fillEllipse( b.pos.x, b.pos.y, b.w / 2.2, b.w / 2.2 );
+    }
+    mirror();
+    mirror( 2 );
   }
+
+
+  function resetSpeed() {
+    var s = new Vector( random( -3, 3 ), random( -3, 3 ) );
+    for ( var i = 0; i < blocks.particles.length; i++ ) {
+      blocks.particles[ i ].speed = s;
+    }
+  }
+
 
 
 }();

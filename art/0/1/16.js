@@ -1,114 +1,64 @@
 rbvj = function () {
 
+  ctx.lineWidth = 4;
 
-  var Wave = function(_num_particles, _x, _y, _me) {
+  noise.seed(2);
+  ctx.background(0);
 
+  var num = 800;
+  var pos = [];
+  var vel = [];
+  var acc = [];
+  var c = [];
 
-  	//ctx.strokeStyle = rgba(c.r, c.g, c.b, a);
-  	var particles = [];
-  	var radius = 50;
-  	var rot = 0;
-  	var num_particles = _num_particles;
-  	var x = _x;
-  	var y = _y;
-  	var me = _me;
-
-  	this.setup = function(){
-  		for (var i = 0; i < num_particles; i++) {
-  			var a = random(225);
-  			//var c = 0;
-        // var c = getCurrentFillValues();
-  		  // var cc = rgba(c.r, c.g, c.b, a);
-  			this.addParticle(x, y, me);
-  		}
-  	}
-
-  	this.draw = function(){
-  		this.moveParticles();
-  	}
-
-  	this.addParticle = function(_x, _y, _me){
-  		var particle = {
-  			x: _x,
-  			y: _y,
-  			me: _me,
-  			stroke_width: 4,
-  			speedx: 0,
-  			speedy: random(2,20),
-  			sz: radius+ _me*26,
-  			angle: 0,
-        a: random(1)
-  		}
-  		particles.push(particle);
-  	}
+    for(var i = 0; i < num; i++) {
+        pos[i] = new Vector(random(w), random(h));
+        vel[i] = new Vector(0, 0);
+        acc[i] = new Vector(0, 0);
+        c[i] = colours2.get(randomInt(colours2.pool.length));
+    }
 
 
-  	this.moveParticles = function(){
-      ctx.fillStyle = rgb( colours[colour_count] );
-      var c = ctx.getCurrentFillValues();
-  		for (var i = 0; i < particles.length; i++) {
+  var noisy = .007;
 
-  			p = particles[i];
+  draw = function () {
 
-  			//DISTRIBUTED MAPPED SOUND VALUE
-  			var s = Sound.mapSound(p.me, num_waves);
-  			p.speedx = tween(p.speedx, map(s, 0, 255, 0, 360)-180, 20);
-  			var arc =  p.speedx * Math.PI;
-  			p.angle += p.speedx/50;
-  			// if (p.angle > 180) p.angle = 180;
-  			// if (p.angle < 0) p.angle = 0;
+    //fill(255, 255,255, 2);
+    if(frameCount%600 == 0) ctx.background(0, 0.07);
+    var s = Sound.getVol(100, 1800)
+    s = 600
+    for(var i = 0; i < num; i++) {
+        ctx.fillStyle = c[i];
+        var sz = Sound.mapSound(i, num * 3, 0, 2.2)
+        ctx.fillCircle(pos[i].x, pos[i].y, sz, sz);
 
-  			// DRAW ARCS
-  			ctx.translate(w/2, h/2);
-  			ctx.rotate(radians(p.angle+180));
-  			ctx.strokeStyle = rgba(c.r, c.g, c.b, p.a);
-  			//ctx.lineWidth = p.stroke_width;
-  			ctx.lineWidth = s/10;
-  			//ctx.lineWidth = 1;
-  			// ctx.beginPath();
-  			// ctx.arc(0, 0, p.sz/2, -arc/2, arc/2);
-  			// ctx.stroke();
-  			ctx.line(-s, 0, s, 0);
-  			ctx.line(0, -s, 0, s);
-  			ctx.rotate(radians(-p.angle-180));
-  			ctx.translate(-w/2, -h/2);
-  			//ctx.fillEllipse(p.x, p.y, 16, 16);
-  		};
+        //stroke(100, 255);
+        vel[i].x = 5*noise.perlin3(s + pos[i].x*.007, s + pos[i].y*.007, noisy)*Math.cos(4*Math.PI*noise.perlin3(pos[i].x*.003, pos[i].y*.003, noisy));
+        //console.log(vel[i].x);
+        vel[i].y = 5*noise.perlin3(s + pos[i].x*.007, s + pos[i].y*.007, noisy)*Math.sin(4*Math.PI*noise.perlin3(pos[i].x*.003, pos[i].y*.003, noisy));
+        for(var j = 0; j < num; j++) {
+          if(j != i){
+            acc[i].x += (pos[i].x-pos[j].x)/dist(pos[i].x, pos[i].y, pos[j].x, pos[j].y)/Math.pow(5+dist(pos[i].x, pos[i].y, pos[j].x, pos[j].y),2);
+            acc[i].y += (pos[i].y-pos[j].y)/dist(pos[i].x, pos[i].y, pos[j].x, pos[j].y)/Math.pow(5+dist(pos[i].x, pos[i].y, pos[j].x, pos[j].y),2);
+          }
+         // vel[i].add(acc[i]);
+        }
+      // pos[i].add(vel[i]);
+      pos[i].x += vel[i].x;
+      pos[i].y += vel[i].y;
 
-  	}
-
-  this.setup();
-
+      if(pos[i].x < 0 || pos[i].y < 0 || pos[i].x > w || pos[i].y > h){
+        pos[i].x = random(0, w);
+        pos[i].y = random(0, h);
+        vel[i].x = 0;
+        vel[i].y = 0;
+      }
+      acc[i].x = 0;
+      acc[i].y = 0;
+    }
+    noisy += .009;
   }
 
-
-  // SETUP WAVES CLASS
-
-  var waves = [];
-  var grid_w = 10;
-  var grid_h = 10;
-  var num_waves = grid_w * grid_h;
-  var spacing_x = w/grid_w;
-  var spacing_y = h/grid_h;
-  console.log(spacing_x)
-  console.log(spacing_y)
-  var grid = makeGrid(grid_w, grid_h);
-  var num_particles = 1;
-
-  for (var i = 0; i < num_waves; i++) {
-  	waves[i] = new Wave(num_particles, grid[i][0]*spacing_x+spacing_x/2,grid[i][1]*spacing_y + spacing_y/2, i);
-  };
-
-
-
-  // DRAW WAVES CLASS
-
-  draw = function (){
-  	ctx.background(0);
-  	for (var i = 0; i < num_waves; i++) {
-  		waves[i].draw();
-  	};
-  }
 
 
 }();
