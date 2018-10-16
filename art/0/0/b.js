@@ -1,5 +1,6 @@
 rbvj = function () {
 
+  ctx.background(0);
   var grid_w = 20;
   var grid_h = 20;
   var grid = createGrid( grid_w, grid_h );

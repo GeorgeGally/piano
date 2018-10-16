@@ -929,6 +929,7 @@ function colourPool() {
 
   this.get = function(n) {
     if (n == undefined) n = randomInt(this.pool.length - 1);
+    n = Math.round(n);
     return this.pool[n];
   }
   this.generateWeighedList = function(list, weight) {

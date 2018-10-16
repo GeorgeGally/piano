@@ -4,10 +4,10 @@ function onKeyDown(event) {
 
 		//console.log(event.keyCode);
     var keyCode = event.keyCode;
-
+    //console.log(event);
     // CHANGE FILE // keys a-z
     if (keyCode >= 65 && keyCode <= 90) {
-      changeFile(keyCode - 65);
+      changeFile(event.key);
 
       // CHANGE SET AND BANK // keys 0-9
     } else if (keyCode >= 48 && keyCode <= 57) {

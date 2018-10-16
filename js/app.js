@@ -21,7 +21,7 @@ var hidden_ctx = createHiddenCanvas( 'canvas4' );
 var art_location = "/art";
 
 var fileref;
-var current_file = 0;
+var current_file = 'a';
 var current_set = 0;
 var current_bank = 0;
 
@@ -42,14 +42,13 @@ function setup() {
   if (window.location.hash) {
   //var set = window.location.hash.substr(1, 1);
   var bank = window.location.hash.substr(1, 1);
-  var file = window.location.hash.substr(3);
+  current_file = window.location.hash.substr(3);
   //console.log(set);
   //changeSet( set );
   changeBank( bank );
-  changeFile( file );
-
+  changeFile( current_file );
   } else {
-  changeFile( 0 );
+  changeFile( current_file );
   }
 
 
@@ -59,13 +58,17 @@ function setup() {
 // FILE LOADER FUNCTIONS
 
 function changeFile( file ) {
-  reset()
+  reset();
+  console.log(file);
   current_file = file;
   // var loc = current_set + '/' + current_bank + '/' + current_file;
   var loc = current_bank + '/' + current_file;
   var filename = 'art/0/' + loc + '.js';
   loadJS( filename );
   document.location.hash = loc;
+  ctx.background(0);
+  ctx2.clearRect( 0, 0, w, h );
+  ctx3.clearRect( 0, 0, w, h );
   //console.log("File: " + loc);
 }
 
@@ -75,14 +78,14 @@ function changeSet( set ) {
   current_bank = 0;
   console.log( "changeSet: " + current_bank );
   // reset
-  changeFile( 0 );
+  changeFile( 'a' );
 }
 
 
 function changeBank( bank ) {
   current_bank = bank;
   console.log( "changeBank: " + current_bank );
-  changeFile( 0 );
+  changeFile( 'a' );
 }
 
 

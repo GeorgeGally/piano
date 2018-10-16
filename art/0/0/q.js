@@ -11,6 +11,7 @@ rbvj = function () {
     g.start_sz = 0;
     g.speed.y = 0;
     g.speed.x = random(1,8);
+    g.c =  colours.get(Math.round(Sound.mapSound(i, grid.length, 0, colours.pool.length)));
   }
 
   for (var i = 0; i < engine.particles.length; i++) {
@@ -36,7 +37,7 @@ rbvj = function () {
     for (var i = 0; i < grid.length; i++) {
 
       var g = grid.particles[i];
-
+      g.c =  colours.get(Math.round(map(i, 0, grid.length, 0, colours.pool.length)));
       for (var j = 0; j < engine.length; j++) {
         var p = engine.particles[j];
 
@@ -64,13 +65,13 @@ rbvj = function () {
   function drawParticles(){
     for (var i = 0; i < engine.length; i++) {
       var g = engine.particles[i];
-      ctx.fillMe( colours2.get(colour_count) );
+      ctx.fillMe( g.c );
       ctx.fillCircle(g.pos.x, g.pos.y, g.sz, g.sz);
       ctx.fillMe( 0 );
       ctx.fillCircle(g.pos.x, g.pos.y, g.sz/3, g.sz/3);
       ctx.fillMe( 255 );
       ctx.fillCircle(g.pos.x, g.pos.y, g.sz/5, g.sz/5);
-      ctx.fillMe( colours2.get(colour_count) );
+      ctx.fillMe( g.c );
       ctx.LfillEllipse(g.pos.x, g.pos.y, g.sz/10, g.sz/10);
 
       if (g.sz > g.start_sz) g.sz = tween(g.sz, g.start_sz, 15);
@@ -82,17 +83,14 @@ rbvj = function () {
   function drawGrid(){
     for (var i = 0; i < grid.length; i++) {
       var g = grid.particles[i];
-      // ctx.strokeMe( 255, 0.3 );
-      // ctx.strokeEllipse(g.pos.x, g.pos.y, g.sz, g.sz);
-      // ctx.LstrokeEllipse(g.pos.x, g.pos.y, g.sz/5, g.sz/5);
-      // ctx.LstrokeEllipse(g.pos.x, g.pos.y, g.sz/10, g.sz/10);
-      ctx.fillMe( colours2.get(colour_count) );
+
+      ctx.fillMe( g.c );
       ctx.fillCircle(g.pos.x, g.pos.y, g.sz, g.sz);
       ctx.fillMe( 0 );
       ctx.fillCircle(g.pos.x, g.pos.y, g.sz/3, g.sz/3);
       ctx.fillMe( 255 );
       ctx.fillCircle(g.pos.x, g.pos.y, g.sz/5, g.sz/5);
-      ctx.fillMe( colours2.get(colour_count) );
+      ctx.fillMe( g.c );
       ctx.LfillEllipse(g.pos.x, g.pos.y, g.sz/10, g.sz/10);
       if (g.sz > g.start_sz) g.sz = tween(g.sz, g.start_sz, 15);
     }

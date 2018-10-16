@@ -1,4 +1,4 @@
-rbvj = function(){
+rbvj = function () {
 
   var grid = new particleEngine( 1, 1 );
   var engine = new particleEngine( 1, 2 );
@@ -6,22 +6,9 @@ rbvj = function(){
   ctx.lineWidth = 0.2;
   var dir = 1;
   var radius = 200;
-  var color1 = '#67aeda';
   ctx.strokeMe( 255 );
 
-  var colours = new colourPool()
-      //
-      .add('#ECECEC')
-      .add('#CCCCCC')
-      // .add('#333333')
-      .add('#0095a8')
-      .add('#00616f')
-      .add('#FF3300')
-      .add('#FF6600')
-      .add('#FFFFFF')
-      .add('#FFFF00')
-      .add('#FF00FF')
-      ;
+
 
   for (var i = 0; i < grid.length; i++) {
     var g = grid.particles[i];
@@ -39,8 +26,15 @@ rbvj = function(){
     p.speed.x = 4;
     p.sz = random(10, 200);
     p.sw = 8;
-    // p.c = randomGrey(0, 225, 0.1 );
-    p.c = rgba(randomInt(100, 255), randomInt(55), 0, 0.5 );
+    var spectrum = Sound.spectrum;
+    var freq = getNoteFromFFT(spectrum);
+    var note = getNoteNumberFromFFT(spectrum);
+    //console.log(freq);
+    //console.log(colours.pool.length-1);
+    var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
+    //console.log(c);
+    var col = colours.get(c);
+    p.c = col;
     p.start_sz = 0;
     //if(i%2 == 0) p.dir.x = -1;
     p.dir.x = posNeg();
@@ -61,6 +55,7 @@ rbvj = function(){
     var note = getNoteNumberFromFFT(spectrum);
     //console.log(freq);
     //console.log(colours.pool.length-1);
+    // var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
     var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
     //console.log(c);
     var col = colours.get(c);
@@ -72,7 +67,7 @@ rbvj = function(){
     }
     moveParticles();
     drawParticles();
-    if (chance(200)) dir *=-1;
+    if (chance(100)) dir *=-1;
 
   }
 
@@ -92,7 +87,8 @@ rbvj = function(){
       //var y = h/2;
       ctx.lineWidth = 2;
       //ctx.strokeCircle(x, y, g.sz, g.sz);
-      ctx.centreStrokeRect(x, y, g.sz, g.sz);
+      // ctx.centreStrokeRect(x, y, g.sz, g.sz);
+      ctx.strokePolygon(x, y, 3, g.sz);
 
 
     }

@@ -69,8 +69,8 @@ rbvj = function () {
       // ctx.fillCircle(g.pos.x, g.pos.y, g.sz/3, g.sz/3);
       // ctx.fillMe( 0 );
       // ctx.fillCircle(g.pos.x, g.pos.y, g.sz/10, g.sz/10);
-      ctx.strokeMe( colours2.get(colour_count) );
-      ctx.fillMe( colours2.get(colour_count) );
+      ctx.strokeMe( colours.get(4) );
+      ctx.fillMe( colours.get(4) );
       ctx.fillCircle(g.pos.x, g.pos.y, g.sz/15, g.sz/15);
 
       if (g.sz > g.start_sz) g.sz = tween(g.sz, g.start_sz, 45);

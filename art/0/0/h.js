@@ -1,5 +1,7 @@
 rbvj = function () {
 
+  ctx.background( 0 );
+
   var circs = [];
   var r = width / 8;
   var j = 0;
@@ -16,7 +18,6 @@ rbvj = function () {
         vol: 0,
         dir: posNeg(),
         y: _y,
-        myfill: rgb( 255, 255, 255 ),
         lw: lw
       }
       circs.push( circle );
@@ -29,10 +30,10 @@ rbvj = function () {
   draw = function () {
 
     ctx.background( 0 );
-    ctx.strokeStyle = colours.get(colour_count);
+
 
     for ( var i = 0; i < circs.length; i++ ) {
-
+      ctx.strokeStyle = colours.get(i%colours.pool.length);
       var p = circs[ i ];
       var s = p.dir * Sound.mapSound( i, circs.length * 2, 0, 10 );
       p.vol = tween( p.vol, s, 10 );
