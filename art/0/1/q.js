@@ -10,12 +10,14 @@ rbvj = function () {
   var vel = [];
   var acc = [];
   var c = [];
+  colour_count  = randomInt(0, palettes.length-1);
+  colours = palettes [ colour_count ];
 
     for(var i = 0; i < num; i++) {
         pos[i] = new Vector(random(w), random(h));
         vel[i] = new Vector(0, 0);
         acc[i] = new Vector(0, 0);
-        c[i] = colours2.get(randomInt(colours2.pool.length));
+        c[i] = colours.get(randomInt(colours.pool.length));
     }
 
 

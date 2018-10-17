@@ -8,20 +8,8 @@ rbvj = function () {
   var radius = 200;
   var color1 = '#67aeda';
   ctx.strokeMe( 255 );
-
-  // var colours = new colourPool()
-  //     //
-  //     .add('#ECECEC')
-  //     .add('#CCCCCC')
-  //     // .add('#333333')
-  //     .add('#0095a8')
-  //     .add('#00616f')
-  //     .add('#FF3300')
-  //     .add('#FF6600')
-  //     .add('#FFFFFF')
-  //     .add('#FFFF00')
-  //     .add('#FF00FF')
-  //     ;
+  var mode = 0;
+  var blur = 0;
 
   for ( var i = 0; i < grid.length; i++ ) {
     var g = grid.particles[ i ];
@@ -54,7 +42,18 @@ rbvj = function () {
 
   draw = function () {
 
-    ctx.background( 0 );
+    if (blur) {
+      ctx.background( 0, 0.09 );
+    } else {
+      ctx.background( 0 );
+
+    }
+
+    if (chance(500)) mode = (mode + 1) % 3;
+    if (chance(500)) {
+      blur = !blur;
+      if (!blur) mode = (mode + 1) % 3;
+    }
     if ( Sound.getVol() > 60 && frameCount % 4 == 0 ) {
       var spectrum = Sound.spectrum;
       var freq = getNoteFromFFT( spectrum );
@@ -90,8 +89,16 @@ rbvj = function () {
       var x = w / 2 + Math.cos( g.direction * f ) * w / 2;
       // var y = h/2 + Math.sin(g.direction * f) * w/4;
       var y = h / 2;
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 5;
+      if( mode == 0) {
       ctx.strokeCircle( x, y, g.sz, g.sz );
+    } else if( mode == 1) {
+      ctx.centreStrokeRect(x, y, g.sz, g.sz);
+    } else {
+      ctx.strokePolygon(x, y, 3, g.sz);
+    }
+
+
 
 
     }

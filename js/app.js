@@ -25,7 +25,6 @@ var current_file = 'a';
 var current_set = 0;
 var current_bank = 0;
 
-//var colours = ["white","red", "blue", "green", "purple", "magenta", "orange", "pink", "yellow"];
 var colour_count = 0;
 
 function setup() {
@@ -39,17 +38,7 @@ function setup() {
   renderer.localClippingEnabled = true;
   document.getElementById( "canvas3D" ).appendChild( renderer.domElement );
 
-  if (window.location.hash) {
-  //var set = window.location.hash.substr(1, 1);
-  var bank = window.location.hash.substr(1, 1);
-  current_file = window.location.hash.substr(3);
-  //console.log(set);
-  //changeSet( set );
-  changeBank( bank );
-  changeFile( current_file );
-  } else {
-  changeFile( current_file );
-  }
+  checkLocationHash();
 
 
 }
@@ -96,6 +85,20 @@ function reset(){
   ctx.lineCap = "butt";
   ctx.lineWidth = 1;
   ctx.globalCompositeOperation = "normal";
+}
+function checkLocationHash(){
+  if (window.location.hash) {
+  //var set = window.location.hash.substr(1, 1);
+  var bank = window.location.hash.substr(1, 1);
+  current_file = window.location.hash.substr(3);
+  console.log("bank:" + bank);
+  console.log("current_file:" + current_file);
+  //changeSet( set );
+  changeBank( bank );
+  changeFile( current_file );
+  } else {
+  changeFile( current_file );
+  }
 }
 
 // INJECT JS ONTO PAGE

@@ -3,7 +3,7 @@ rbvj = function () {
   var circs = [];
   var r = width / 14;
   var vol = 0;
-  ctx.strokeStyle = colours.get(colour_count);
+  ctx.strokeStyle = rgb(255);
 
   var gx = randomInt( 3, 25 );
   var gy = Math.floor( h / 15 );
@@ -30,7 +30,7 @@ rbvj = function () {
 
       var p = engine.particles[ i ];
       vol = Sound.mapSound( i % 100, 100, -4, 4 ) - random( 0.3 );
-      if ( vol > 0 ) p.pos.y = tween( p.pos.y, p.pos.y - vol, 3 );
+      if ( vol > 0 ) p.pos.y = tween( p.pos.y, p.pos.y - vol, 20 );
       if ( p.pos.y > height ) p.pos.y = 0;
       if ( p.pos.y < 0 ) p.pos.y = height;
       ctx.lineWidth = p.lw;

@@ -2,7 +2,9 @@ rbvj = function() {
 
   var vol = 0;
   ctx.fillStyle = rgb(0);
-
+  ctx2.clearRect(0,0,w,h);
+  ctx3.clearRect(0,0,w,h);
+  
   var gx = randomInt(5, 50);
   var gy = randomInt(5, 50);
   var volX = 10;

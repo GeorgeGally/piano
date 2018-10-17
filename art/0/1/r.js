@@ -6,7 +6,7 @@ rbvj = function () {
 
   ctx.lineWidth = 0.2;
   var mode = 7;
-  var speed = 2;
+  var speed = 1;
   var pix = false;
 
   // create particles
@@ -47,7 +47,7 @@ rbvj = function () {
       drawBall(b);
     }
     //mirror();
-    if (pix) pixelate(20);
+    if (pix) pixelate(40);
     //triangulate(40);
   }
 
@@ -57,7 +57,7 @@ rbvj = function () {
       if (mode == 0) {
         var new_me = b.me%50;
         //var s = map(audioChannelVolume[new_me], 0, 200, 4, grid.spacing_y/2);
-        var s = Sound.mapRawSound(b.me, balls.length *2, 10, 100);
+        var s = Sound.mapSound(b.me, balls.length *2, 10, 100);
       } else if (mode == 1) {
         var s = Sound.mapSound(b.me, balls.length * 1, 10, 100);
         var new_me = b.me%50;
@@ -81,12 +81,12 @@ rbvj = function () {
 
       if(s > 0) {
 
-      b.sz = tween(b.sz, s, 2);
+      b.sz = tween(b.sz, s, 12);
       }
       if (mode == 6) {
       b.x -= speed;
       } else {
-      b.y += speed;
+      b.y -= speed;
       }
       if( b.x > w) b.x = 0;
       if( b.x < 0) b.x = w;
@@ -96,25 +96,16 @@ rbvj = function () {
 
 
   function drawBall(b){
-    ctx.fillStyle = colours.get(colour_count);
-    var c = ctx.getCurrentFillValues();
-      if (mode == 2 || mode == 1) {
-        //ctx.fillStyle = hsl(b.sz*2, 80, 50);
-        //ctx.fillStyle = rgb(b.sz*5, 0, 0);
-      } else if (mode == 4) {
-        //ctx.fillStyle = hsl(b.sz*2, 80, 50);
-        //ctx.fillStyle = rgb(0, 0, 200);
-      } else {
-        //ctx.fillStyle = rgb(b.sz*5);
-      }
+    var s = Math.round(map(b.sz, 0, grid.spacing_y, 0, colours.pool.length-1))
+    //console.log(s);
+    ctx.fillStyle = colours.get(s);
       if (mode == 6) {
         ctx.fillEllipse(b.x, b.y - b.sz, b.sz/2, b.sz/2);
       } else if (mode == 7) {
-
         //ctx.fillStyle = rgb(255);
-        ctx.fillRect(b.x, b.y, b.sz, grid.spacing_y/2);
+        ctx.fillRect(b.x - b.sz/2, b.y, b.sz, grid.spacing_y/2);
       } else {
-        ctx.fillRect(b.x, b.y - b.sz, grid.spacing_x - 2, b.sz);
+        ctx.fillRect(b.x - b.sz/2, b.y - b.sz, grid.spacing_x - 2, b.sz);
       }
 
 

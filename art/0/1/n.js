@@ -4,7 +4,7 @@ rbvj = function () {
   noise.seed( randomInt( 20 ) );
 
 
-  var scl = 6;
+  var scl = 8;
   var xvec, yvec;
   var noiseInc = .01;
   var time = 0;

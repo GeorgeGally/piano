@@ -134,7 +134,7 @@ rbvj = function () {
 
     if ( Sound.getVol() < 60 ) {
       matter_engine.world.gravity.x = 0;
-      matter_engine.world.gravity.y = 0.5;
+      matter_engine.world.gravity.y = 0.3;
     }
 
 

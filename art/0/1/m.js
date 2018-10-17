@@ -1,11 +1,12 @@
 rbvj = function () {
 
-  ctx.lineWidth = 0.2;
-  var radius = 350;
-  var flies = [];
-  var balls = new particleEngine(130);
   ctx.background(0);
-  
+  ctx.lineWidth = 0.2;
+  var radius = 280;
+  var flies = [];
+  var balls = new particleEngine(130, 10);
+
+
   for (var i = 0; i < balls.particles.length; i++) {
       b = balls.particles[i];
       b.pos.x = b.x = random(55);
@@ -38,7 +39,7 @@ rbvj = function () {
       ctx.fillRect(0, 0, w, h);
       //particle.draw();
       //console.log();
-        ctx.fillStyle = colours.get(colour_count);
+      ctx.fillStyle = colours.get(0);
     var c = ctx.getCurrentFillValues();
 
       for (var i = 0; i < balls.particles.length; i++) {
@@ -70,11 +71,11 @@ rbvj = function () {
               p.speed.limit(13);
               //p.sz = 2;
               // p.sz =  map(audioChannelVolume[p.me%80], 0, 120, 0.2, 3);
-              p.sz =  Sound.mapSound(p.me%80, 160, 0.2, 3);
+              p.sz =  Sound.mapSound(p.me%180, 320, 0.1, 1.5);
               //ctx.strokeStyle = p.c;
               ctx.fillStyle = rgba(c.r, c.g, c.b, p.a);
 
-              ctx.LfillEllipse(p.pos.x, p.pos.y, p.sz, p.sz);
+              ctx.fillRect(p.pos.x, p.pos.y, p.sz, p.sz);
 
 
           }

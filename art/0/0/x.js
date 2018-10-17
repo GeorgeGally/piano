@@ -25,7 +25,7 @@ rbvj = function () {
     p.sw = 8;
     // p.c = randomGrey(0, 225, 0.1 );
     // p.c = rgba(randomInt(100, 255), randomInt(55), 0, 0.5 );
-    p.c = colours3.get(colour_count);
+    p.c = colours.get(1);
     p.start_sz = 0;
     //if(i%2 == 0) p.dir.x = -1;
     p.dir.x = posNeg();
@@ -46,10 +46,10 @@ rbvj = function () {
     var note = getNoteNumberFromFFT(spectrum);
     //console.log(freq);
     //console.log(colours.pool.length-1);
-    var c = Math.round(map(note, 0, 100, 0, colours4.pool.length));
+    var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
     console.log(c);
     var col = colours.get(c);
-    //ctx.strokeMe( colours.get(c) );
+    ctx.strokeMe( colours.get(c) );
     if (Sound.getVol() > 20) engine.add();
     engine.last.sz = 10;
     engine.last.c = col;

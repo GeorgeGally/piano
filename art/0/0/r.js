@@ -5,8 +5,6 @@ rbvj = function () {
   var hit_dist = 285;
   ctx.lineWidth = 0.4;
 
-  var color1 = '#67aeda';
-
   for (var i = 0; i < grid.length; i++) {
     var g = grid.particles[i];
     g.sz = 5;
@@ -41,13 +39,13 @@ rbvj = function () {
       for (var j = 0; j < engine.length; j++) {
         var p = engine.particles[j];
           var d = Math.abs(getDist(g, p));
-          hit_dist = Sound.mapSound( (Math.round( j + frameCount/100)) % engine.length, engine.length * 3, 0, 80);
+          hit_dist = Sound.mapSound( (Math.round( j + frameCount/100)) % engine.length, engine.length * 3, 0, 70);
           if(d < hit_dist) {
-            var target_sz = Sound.mapSound(i, grid.length * 3, 0, hit_dist * 0.8)
+            var target_sz = Sound.mapSound(i, grid.length * 3, 0, hit_dist * 0.7)
             p.speed.x = Sound.mapSound(i, engine.length * 3, -2, 2)/ 2;
             p.speed.y = Sound.mapSound( (Math.round( j + frameCount/100)) % engine.length, engine.length * 3, -2, 2) /2;
-            if (g.sz < target_sz) g.sz = target_sz * 2;
-            if (p.sz < target_sz) p.sz = target_sz * 2;
+            if (g.sz < target_sz) g.sz = target_sz;
+            if (p.sz < target_sz) p.sz = target_sz;
             ctx.line(p.pos.x, p.pos.y, g.pos.x, g.pos.y);
           }
         }
@@ -63,17 +61,21 @@ rbvj = function () {
   function drawParticles(){
     for (var i = 0; i < engine.length; i++) {
       var g = engine.particles[i];
-      // ctx.fillMe( color1 );
-      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz, g.sz);
-      // ctx.fillMe( 0 );
-      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz/3, g.sz/3);
-      // ctx.fillMe( 0 );
-      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz/10, g.sz/10);
-      ctx.strokeMe( colours.get(4) );
-      ctx.fillMe( colours.get(4) );
+
+      //if ( Sound.getVol() > 60 && frameCount % 4 == 0 ) {
+      var spectrum = Sound.spectrum;
+      var freq = getNoteFromFFT(spectrum);
+      var note = getNoteFreqPerc(spectrum);
+      var note1 = (freq.substring(0, 1)).charCodeAt(0) - 65;
+      c = Math.round(map(note1, 0, 7, 0, colours.pool.length));
+      var col = colours.get( c );
+      //console.log( col );
+      ctx.strokeStyle =  "#ffffff";
+      ctx.fillStyle =  "#ffffff";
+      //}
       ctx.fillCircle(g.pos.x, g.pos.y, g.sz/15, g.sz/15);
 
-      if (g.sz > g.start_sz) g.sz = tween(g.sz, g.start_sz, 45);
+      if (g.sz > g.start_sz) g.sz = tween(g.sz, g.start_sz, 5);
     }
 
   }
@@ -82,19 +84,6 @@ rbvj = function () {
   function drawGrid(){
     for (var i = 0; i < grid.length; i++) {
       var g = grid.particles[i];
-
-      // ctx.fillMe( color1 );
-      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz, g.sz);
-      // ctx.fillMe( 0 );
-      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz/3, g.sz/3);
-      ctx.fillMe( 255 );
-      //ctx.fillCircle(g.pos.x, g.pos.y, 10, 10);
-      // ctx.fillMe( color1 );
-      // ctx.LfillEllipse(g.pos.x, g.pos.y, g.sz/15, g.sz/15);
-      // ctx.strokeMe( 255, 0.3 );
-      // ctx.strokeEllipse(g.pos.x, g.pos.y, g.sz, g.sz);
-      // ctx.LstrokeEllipse(g.pos.x, g.pos.y, g.sz/5, g.sz/5);
-      // ctx.LstrokeEllipse(g.pos.x, g.pos.y, g.sz/10, g.sz/10);
       if (g.sz > g.start_sz) g.sz = tween(g.sz, g.start_sz, 5);
     }
 
