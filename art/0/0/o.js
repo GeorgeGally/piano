@@ -27,7 +27,7 @@ rbvj = function () {
     ctx.background( 0 )
     ctx.save();
     ctx.translate( w / 2, h / 2 );
-    if(Sound.getVol() > 0) t = tween(t, t + Sound.mapSound( 50, particles.length * 2, 1, 10 ) * 0.000001, 14);
+    if(Sound.getVol() > 0) t = tween(t, t + Sound.mapSound( 50, particles.length * 2, 1, 10 ) * 0.0000001, 14);
     //var t = 0.0002;
     for ( var i = 0; i < particles.length; i++ ) {
 
