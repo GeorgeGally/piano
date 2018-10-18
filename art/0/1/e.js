@@ -14,14 +14,15 @@ rbvj = function () {
     p = engine.particles[ i ];
     p.pos.y = h;
 
-    p.speed.x = 15;
-    p.speed.y = random( 2, 6 );
+    p.speed.x = 2;
+    p.speed.y = random( 0.5, 2 );
     p.dir.x = 1;
     p.dir.y = -1;
     //console.log(p.speed.y);
   }
 
   draw = function () {
+
     ctx.background( 0 );
     ctx.fillStyle = "white";
 
@@ -54,7 +55,8 @@ rbvj = function () {
 
       var c = Math.round( Sound.mapSound( g.sz, 35, 0, 7 ) );
       //console.log(c);
-      ctx.fillStyle = colours.get( c );
+      ctx.fillStyle = colours.get(c);
+      if (g.sz < 10) ctx.fillStyle = rgb(255);
       ctx.fillEllipse( g.pos.x, g.pos.y, g.sz, g.sz );
       if ( g.sz > g.start_sz ) g.sz = tween( g.start_sz, g.sz, 35 );
     }
@@ -76,14 +78,6 @@ rbvj = function () {
     //engine.update();
   }
 
-  function drawParticles() {
-    for ( var j = 0; j < engine.length; j++ ) {
-      var p = engine.particles[ j ];
-      var c = Math.round( Sound.mapSound( g.sz, 35, 0, 7 ) );
-      ctx.fillStyle = colours.get( c );
-      ctx.fillEllipse( p.pos.x, p.pos.y, 5, 5 );
-    }
-  }
 
 
 

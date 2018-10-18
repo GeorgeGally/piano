@@ -44,17 +44,17 @@ rbvj = function () {
 
 
   	this.moveParticles = function(){
-      ctx.fillStyle = colours.get(colour_count);
-      ctx.strokeStyle = colours.get(colour_count);
+      ctx.fillStyle = rgb(255);
+      ctx.strokeStyle = rgb(255);
       //var c = ctx.getCurrentFillValues();
   		for (var i = 0; i < particles.length; i++) {
 
   			p = particles[i];
 
   			//DISTRIBUTED MAPPED SOUND VALUE
-  			var s = Sound.mapSound(num_waves - p.me, num_waves);
-  			p.sz = tween(p.sz, map(s, 0, 255, 10, 36), 20);
-        p.speedx = tween(p.speedx, map(s, 0, 255, 0, 360), 20);
+  			var s = Sound.mapSound(num_waves - p.me, num_waves*2, 0, 100);
+  			p.sz = tween(p.sz, map(s, 0, 255, 10, 36), 10);
+        p.speedx = tween(p.speedx, map(s, 0, 100, 0, 15), 30);
   			var arc =  p.speedx * Math.PI;
   			p.angle += p.speedx/50;
   			// if (p.angle > 180) p.angle = 180;
@@ -107,7 +107,7 @@ rbvj = function () {
   // DRAW WAVES CLASS
 
   draw = function(){
-  	ctx.background(0, 0.3);
+  	ctx.background(0, 0.08);
   	for (var i = 0; i < num_waves; i++) {
   		waves[i].draw();
   	};

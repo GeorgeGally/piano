@@ -1,5 +1,6 @@
 rbvj = function () {
 
+  ctx.background(0);
   var fov = 240;
 
   var point = [];
@@ -73,7 +74,7 @@ rbvj = function () {
       var x2d = ( x3d * scale ) + HALF_WIDTH;
       var y2d = ( y3d * scale ) + HALF_HEIGHT;
 
-      var s = Sound.mapSound( i % 90, numPoints * 2, 0, 1 );
+      var s = Sound.mapSound( i % 90, numPoints * 2, 0, 1.5 );
 
       // ctx.fillEllipse( x2d, y2d, scale * s, scale * s );
       ctx.centreFillRect( x2d, y2d, scale * s, scale * s );

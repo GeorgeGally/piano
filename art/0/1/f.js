@@ -104,8 +104,8 @@ rbvj = function(){
   function shuffleGrid(){
     for (var i = 0; i < grid.length; i++) {
       var g = grid.particles[i];
-      if (Math.round(g.pos.x) == Math.round(g.target.x) && Math.round(g.pos.y) == Math.round(g.target.y) && chance(10)) newPosX(g);
-      if (Math.round(g.pos.x) == Math.round(g.target.x) && Math.round(g.pos.y) == Math.round(g.target.y) && chance(10)) newPosY(g);
+      if (chance(5) && Math.round(g.pos.x) == Math.round(g.target.x) && Math.round(g.pos.y) == Math.round(g.target.y) && Sound.mapSound(i, grid.length * 2, 0, 100) > 80) newPosX(g);
+      if (chance(5) && Math.round(g.pos.x) == Math.round(g.target.x) && Math.round(g.pos.y) == Math.round(g.target.y) && Sound.mapSound(i, grid.length * 2, 0, 100) > 80) newPosY(g);
       }
   }
 

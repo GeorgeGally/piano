@@ -27,7 +27,7 @@ rbvj = function () {
       var x = Math.sin( frameCount / 100 ) * 50 + i;
       var y = Math.cos( frameCount / 100 ) * 50 + i;
       //p.sz = tween(g.sz, Sound.mapSound(i, particles.length * 2, 1, 12), 6);
-       var sz = Sound.mapSound(i, particles.length * 2, 2, 12);
+      var sz = Sound.mapSound(i, particles.length * 2, 2, 12);
       ctx.fillStyle =  colours.get(Sound.mapSound(i, particles.length * 2, 0, colours.pool.length-1));
       ctx.fillCircle( x, y, sz, sz );
       //ctx.HfillEllipse( 10+i*2, 0, i*1.3+1,i*1.3+1);

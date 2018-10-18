@@ -55,9 +55,9 @@ rbvj = function () {
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
       ctx.fillStyle = p.colour;
-  		var s = Sound.mapSound(i, particles.length * 2, 0.01, 3.2);
+  		var s = Sound.mapSound(i, particles.length * 2, 0.01, 1.2);
   		//p.speed_z = s;
-  		var sz = Math.abs(p.scale * 2);
+  		var sz = s + Math.abs(p.scale * 1.8);
   		//if (sz> 30) sz = 30;
       ctx.fillCircle(p.x3d, p.y3d, sz, sz);
     }
