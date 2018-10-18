@@ -53,7 +53,8 @@ rbvj = function () {
 
   			//DISTRIBUTED MAPPED SOUND VALUE
   			var s = Sound.mapSound(num_waves - p.me, num_waves);
-  			p.speedx = tween(p.speedx, map(s, 0, 255, 0, 360), 20);
+  			p.sz = tween(p.sz, map(s, 0, 255, 10, 36), 20);
+        p.speedx = tween(p.speedx, map(s, 0, 255, 0, 360), 20);
   			var arc =  p.speedx * Math.PI;
   			p.angle += p.speedx/50;
   			// if (p.angle > 180) p.angle = 180;
@@ -71,7 +72,10 @@ rbvj = function () {
   			ctx.line(0, -120, 0, 120);
   			ctx.rotate(radians(-p.angle-180));
   			ctx.translate(-p.x, -p.y);
-  			ctx.fillEllipse(p.x, p.y, 16, 16);
+        ctx.fillStyle = rgb(255);
+  			ctx.fillEllipse(p.x, p.y, p.sz, p.sz);
+        ctx.fillStyle = rgb(0);
+        ctx.fillEllipse(p.x, p.y, 8, 8);
   		};
 
   	}
@@ -103,7 +107,7 @@ rbvj = function () {
   // DRAW WAVES CLASS
 
   draw = function(){
-  	ctx.background(0);
+  	ctx.background(0, 0.3);
   	for (var i = 0; i < num_waves; i++) {
   		waves[i].draw();
   	};

@@ -67,7 +67,7 @@ function changeSet( set ) {
   current_bank = 0;
   console.log( "changeSet: " + current_bank );
   // reset
-  changeFile( 'a' );
+  //changeFile( 'a' );
 }
 
 
@@ -79,22 +79,28 @@ function changeBank( bank ) {
 
 
 function reset(){
+
   ctx.background(0);
   ctx2.clearRect( 0, 0, w, h );
   ctx3.clearRect( 0, 0, w, h );
   ctx.lineCap = "butt";
   ctx.lineWidth = 1;
   ctx.globalCompositeOperation = "normal";
+  frameRate = 60;
 }
+
+
 function checkLocationHash(){
   if (window.location.hash) {
   //var set = window.location.hash.substr(1, 1);
   var bank = window.location.hash.substr(1, 1);
-  current_file = window.location.hash.substr(3);
+  file = window.location.hash.substr(3);
   console.log("bank:" + bank);
-  console.log("current_file:" + current_file);
+
   //changeSet( set );
   changeBank( bank );
+  current_file = file;
+  console.log("current_file:" + current_file);
   changeFile( current_file );
   } else {
   changeFile( current_file );

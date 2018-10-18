@@ -364,7 +364,7 @@ this.resetParticle = function(p){
 	p.speed.y = random(1);
 	p.start_accel.y = random(0.5);
 	p.accel.y = p.start_accel.y;
-	p.me == 10 ? console.log(p.start_accel.y) : null;
+	//p.me == 10 ? console.log(p.start_accel.y) : null;
 }
 
 

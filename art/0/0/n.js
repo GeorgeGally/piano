@@ -2,14 +2,18 @@ var particle_array = [];
 var imgData;
 var maxParticles = 10000;
 ctx.background(0);
+frameRate = 60;
 
 function draw() {
 
   ctx.fillStyle = rgba( 0, 0, 0, 0.04 );
   ctx.fillRect( 0, 0, width, height );
 
-  if ( chance( 2 ) ) {
-    addParticle( random( w ), random( h ) );
+  if ( Sound.getVol() > 70 ) {
+    var s = Sound.mapSound (10, 200, 0, w);
+    var s2 = Sound.mapSound (100, 400, 0, h);
+    addParticle( s, s2 );
+    addParticle( s, s2 );
     addParticle( random( w ), random( h ) );
   }
 
@@ -29,7 +33,7 @@ function draw() {
         p.y = p.orig_y + random( -4, 4 );
         p.size = 4;
         p.speedx = random( -1, 1 ),
-          p.speedy = random( -1, 1 )
+        p.speedy = random( -1, 1 )
       }
 
       p.x += p.speedx;
@@ -50,8 +54,8 @@ function addParticle( _x, _y ) {
     x: _x + random( -4, 4 ),
     y: _y + random( -4, 4 ),
     c: rgb( random( 40, 255 ), random( 10, 255 ), random( 255 ) ),
-    size: 6,
-    reduce: random( 0.99, 0.9999 ),
+    size: Sound.getVol(2, 8),
+    reduce: random( 0.999, 0.9999 ),
     alpha: 0,
     speedx: random( -1, 1 ),
     speedy: random( -1, 1 )

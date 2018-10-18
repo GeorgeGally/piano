@@ -7,6 +7,9 @@ function onKeyDown(event) {
     //console.log(event);
     // CHANGE FILE // keys a-z
     if (keyCode >= 65 && keyCode <= 90) {
+      ctx.background(0);
+      ctx2.clearRect(0, 0, w, h);
+      ctx3.clearRect(0, 0, w, h);
       changeFile(event.key);
 
       // CHANGE SET AND BANK // keys 0-9

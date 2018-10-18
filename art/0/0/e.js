@@ -3,7 +3,7 @@ rbvj = function() {
   ctx.background( 0 );
   colour_count = 3;
   colours = palettes [ colour_count ]
-  var grid = new particleEngine( 80, 60 );
+  var grid = new particleEngine( 60, 40 );
   var engine = new particleEngine( 2, 4 );
   var hit_dist = 55;
   ctx.lineWidth = 2;
@@ -95,7 +95,7 @@ rbvj = function() {
       var note = getNoteFreqPerc(spectrum);
       var note1 = (freq.substring(0, 1)).charCodeAt(0) - 65;
       //console.log(note1);
-      
+
       for (var i = 0; i < engine.particles.length; i++) {
         if(i == note1) {
           p.speed.y = tween(p.speed.y, randomInt(2, 5), 20);

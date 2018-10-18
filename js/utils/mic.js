@@ -39,7 +39,7 @@ function Microphone (_fft) {
         analyser.smoothingTimeConstant = 0.2;
         analyser.fftSize = FFT_SIZE;
         self.FFT_FREQ_RES = ( self.SAMPLE_RATE / 2 ) / ( FFT_SIZE / 2 );
-        
+
         var node = context.createScriptProcessor(FFT_SIZE*2, 1, 1);
 
         node.onaudioprocess = function () {
@@ -52,7 +52,7 @@ function Microphone (_fft) {
           //analyser.getByteTimeDomainData(dataArray);
           self.vol = self.getRMS(self.spectrum) + self.volume_adjust;
           // get peak
-          if (self.vol > self.peak_volume) self.peak_volume = self.vol;
+          if (self.vol > self.peak_volume) self.peak_volume = Math.min(self.vol, 100);;
           self.volume = self.vol;
         };
 
@@ -172,7 +172,8 @@ function Microphone (_fft) {
   this.getHighsVol = function(_min, _max){
     var min = _min || 0;
     var max = _max || 100;
-    var v = map(this.getRMS(this.getMix().highs), 0, self.peak_volume, min, max);
+    var v = map(this.getRMS(this.getMix().mids), 0, self.peak_volume, min, max);
+    //console.log(this.getRMS(this.getMix().mids));
     return v;
   }
 

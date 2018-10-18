@@ -8,11 +8,12 @@ rbvj = function () {
     p.counter = 0;
   }
 
+  ctx.background( 0 );
 
   draw = function () {
 
     ctx.background( 0, 0.2 );
-    if (Sound.getHighsVol() > 80 && frameCount%20 == 0) reset();
+    if (Sound.getHighsVol(0, 100) > 85 && frameCount%60 == 0) reset();
     //console.log(Sound.getHighsVol());
     for ( let p of engine.particles ) {
 

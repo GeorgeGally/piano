@@ -20,14 +20,15 @@ rbvj = function () {
   }
 
   var v = 1.3;
+  var t = 0;
 
   this.draw = function () {
     //ctx.clearRect(0, 0,w,h);
     ctx.background( 0 )
     ctx.save();
     ctx.translate( w / 2, h / 2 );
-    //var t = Sound.mapSound( 50, particles.length * 2, 1, 10 ) * 0.0001;
-    var t = 0.0002;
+    if(Sound.getVol() > 0) t = tween(t, t + Sound.mapSound( 50, particles.length * 2, 1, 10 ) * 0.000001, 14);
+    //var t = 0.0002;
     for ( var i = 0; i < particles.length; i++ ) {
 
       ctx.rotate( radians( time ) );

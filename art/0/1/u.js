@@ -1,13 +1,13 @@
 rbvj = function () {
 
 
-  var engine = new particleEngine(300, 10);
+  var engine = new particleEngine(250, 40);
   var particles = engine.particles;
 
-  engine.setSpeed(0, 0, -1, 15);
-  engine.setAccel(0, 0, 0.05, 0.2);
+  engine.setSpeed(0, 0, -1, 3);
+  engine.setAccel(0, 0, 0.01, 0.06);
   engine.setDir(1, -1);
-
+  frameRate = 30;
 
   engine.edge = true;
   engine.border = true;
@@ -18,6 +18,11 @@ rbvj = function () {
   ctx.fillStyle = rgb(255);
   ctx.background(0);
 
+  for (var i = 0; i < engine.particles.length; i++) {
+    var p = engine.particles[i];
+    p.on = false;
+    if(chance(50)) p.on = true;
+  }
 
 
   draw = function (){
@@ -25,12 +30,12 @@ rbvj = function () {
     ctx.background(0, 0.1);
     ctx.fillStyle = colours.get(colour_count);
     //var c = ctx.getCurrentFillValues();
-    engine.update();
+    //engine.update();
     for (var i = 0; i < particles.length; i++) {
 
       var p = particles[i];
       //p.speed.y > MAXSPEED ?  p.speed.y += 0.1 : null;
-      //p.accel.y < 1 ? p.accel.y +=0.01 :  1;
+
       moveParticle(p);
       drawParticle(p)
     }
@@ -39,15 +44,28 @@ rbvj = function () {
 
 
   function moveParticle(p){
-    // p.pos.x += (p.speed.x * p.accel.x);
-    // p.pos.y += (p.speed.y * p.accel.y);
-    p.accel.y < 2 ? p.accel.y +=0.02 :  2;
-    //p.speed.y > MAXSPEED ?
-    p.speed.y += 0.3;
+    p.accel.y +=0.1;
+    p.speed.y = Sound.mapSound(p.me + randomInt(10), particles.length, 0, 100)/ (190 - p.accel.y);
+    p.pos.y -= (p.speed.y);
+    //p.accel.y < 1.5 ? p.accel.y +=0.1 :  1.5;
+
+    //p.speed.y += Sound.mapSound(p.me, particles.length * 2, 0, 100)/200;
+
+    if (p.pos.y < 0) {
+      p.pos.y = h;
+      p.speed.y = random(-2, 4);
+      p.accel.y = 0;
+    }
     //p.me == 10 ? console.log(p.accel.y) : null;
   }
 
   function drawParticle(p){
+    if (p.on){
+      ctx.fillStyle = colours.get(5);
+    } else {
+      ctx.fillStyle = rgb(255);
+    }
+
     ctx.fillRect(p.pos.x, p.pos.y, 4, 4);
   }
 

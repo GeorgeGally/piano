@@ -19,7 +19,6 @@ rbvj = function () {
 
     ctx.background(0, 0.08);
     particles = engine.particles
-
     update();
     //drawParticles();
 
@@ -36,8 +35,9 @@ rbvj = function () {
     p.speed.y = randomWhole(2, 5);
     p.curve = radians(random(50));
     p.t = 0;
+    //p.c = randomGrey();
 
-    if (p.me <10) {
+    if (p.me < 1) {
       p.move = false;
       p.pos.x = w/2+ randomInt(-10, 10);
       p.pos.y = h/2+ randomInt(-10, 10);
@@ -68,13 +68,12 @@ rbvj = function () {
   }
 
   function drawParticles(b){
+
     ctx.fillStyle = colours.get(colour_count);
     ctx2.fillStyle = colours.get(colour_count);
-    var c = ctx.getCurrentFillValues();
-    //  ctx2.fillStyle = "white";
-      ctx2.fillEllipse(b.pos.x, b.pos.y, b.size, b.size);
-      ctx2.fillStyle = rgb ( 0 );
-      ctx2.fillEllipse(b.pos.x, b.pos.y, b.size/5, b.size/5);
+    //var c = ctx.getCurrentFillValues();
+    ctx2.fillStyle = b.c;
+    ctx2.fillCircle(sticky(b.pos.x, 10), sticky(b.pos.y, 10), b.size/1.5, b.size/1.5);
 
   }
 
@@ -121,8 +120,8 @@ rbvj = function () {
         if (p.pos.x < 0) p.pos.x = random(w-50);
         if (p.pos.y < 0) p.pos.y = h;
 
-        //ctx.strokeStyle = rgba(255);
-        ctx.strokeStyle = colours.get(colour_count);
+        ctx.strokeStyle = rgba(255);
+        //ctx.strokeStyle = colours.get(colour_count);
         ctx.strokeRect(p.pos.x, p.pos.y, p.size, p.size);
 
       }
@@ -139,17 +138,31 @@ rbvj = function () {
       if (_i!=j){
         b1 = particles[_i];
         b2 = particles[j];
-        if (b1.move && !b2.move  && dist(b1.pos.x, b1.pos.y, b2.pos.x, b2.pos.y) <=  b1.size/2 + b2.size/2) {
+        if (b1!=b2 && b1.move && !b2.move  && dist(b1.pos.x, b1.pos.y, b2.pos.x, b2.pos.y) <=  b1.size/2 + b2.size/2) {
           //b1.pos.x = sticky(b1.pos.x, b1.size/2);
           //b1.pos.y = sticky(b1.pos.y, b1.size/2);
+          b1.c = getColourFromNote();
+          b2.c = getColourFromNote();
           drawParticles(b1);
           b1.move = false;
 
+          //console.log(b1.c);
           engine.particles.splice(0, 1);
           addParticles();
         }
       }
     }
+  }
+
+  function getColourFromNote(){
+    var spectrum = Sound.spectrum;
+    var freq = getNoteFromFFT( spectrum );
+    var note = getNoteNumberFromFFT( spectrum );
+    num = Math.round( note / 60 * colours.pool.length );
+    //num = Math.round(i/engine.particles.length * 360);
+    var note_num = (freq.substring(0, 1)).charCodeAt(0) - 65;
+    //console.log(note_num);
+    return colours.get( Math.round(map(note_num, 0, 7, 0,  colours.pool.length-1)));
   }
 
 }();

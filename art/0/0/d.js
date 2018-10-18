@@ -64,7 +64,8 @@ rbvj = function () {
       // if (Sound.spectrum[p.me] > 80) {
       //   p.on == true;
       ctx.fillStyle = getNoteFromSz( p );
-      ctx.centreFillRect( p.x, p.y, p.sz, p.sz );
+      // ctx.centreFillRect( p.x, p.y, p.sz, p.sz );
+      ctx.fillCircle( p.x, p.y, p.sz, p.sz );
       // } else {
       //   ctx.fillStyle = rgba( 255, 0.08 );
       // }
