@@ -8,6 +8,7 @@ var ctx3 = createCanvas( 'canvas3' );
 var renderer;
 var hidden_ctx = createHiddenCanvas( 'canvas4' );
 
+var speed_reduce = 1;
 
 
 // setFileLocation to defaults

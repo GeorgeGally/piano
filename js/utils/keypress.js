@@ -31,18 +31,25 @@ function onKeyDown(event) {
       changeColourFwd();
       // <> sign volume adjust
     } else if (keyCode == 188 ) {
-			Sound.volume_adjust -=1;
-			Sound.peak_volume-=1;
-			//if (Sound.volume_adjust < 0) Sound.volume_adjust = 0;
-			console.log("volume_adjust: " + Sound.volume_adjust);
+      speedAdjust(-0.1);
+			// Sound.volume_adjust -=1;
+			// Sound.peak_volume-=1;
+			// //if (Sound.volume_adjust < 0) Sound.volume_adjust = 0;
+			console.log("speedAdjust: " + speed_reduce);
     } else if (keyCode == 190 ) {
-			Sound.volume_adjust +=1;
-			Sound.peak_volume+=1;
-			console.log("volume_adjust: " + Sound.volume_adjust);
+      speedAdjust(0.1);
+			// Sound.volume_adjust +=1;
+			// Sound.peak_volume+=1;
+			console.log("speedAdjust: " + speed_reduce);
 		}
 
 }
 
+function speedAdjust(speed){
+
+  speed_reduce *=  1 + speed;
+
+}
 // window.addEventListener('keydown', function(e) {
 //     if (typeof onKeyDown == 'function') onKeyDown(e);
 //   });
