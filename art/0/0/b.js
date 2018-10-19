@@ -54,7 +54,7 @@ rbvj = function () {
 
 
   function resetSpeed() {
-    var s = new Vector( random( -1, 1 ), random( -1, 1 ) );
+    var s = new Vector( random( -1.8, 1.8 ), random( -1.8, 1.8 ) );
     console.log(speed_reduce);
     for ( var i = 0; i < blocks.particles.length; i++ ) {
       blocks.particles[ i ].speed = (s);

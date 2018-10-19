@@ -1,5 +1,8 @@
 rbvj = function () {
 
+  ctx.background( 0 );
+  hidden_ctx.background( 0 );
+  ctx2.clearRect( 0, 0, w, h );
 
   var engine = new particleEngine(220, 30);
   var particles = engine.particles;
