@@ -1,5 +1,5 @@
 rbvj = function () {
-
+  ctx2.clearRect(0, 0, w, h);
   var grid = new particleEngine( 60, 30 );
   var engine = new particleEngine( 20, 2 );
   var hit_dist = 50;

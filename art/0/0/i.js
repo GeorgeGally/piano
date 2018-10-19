@@ -16,7 +16,7 @@ rbvj = function () {
     //p.pos.y =  Math.sin(i/3000) * h;
 
     p.speed.y = 0;
-    p.speed.x = random(1,8);
+    p.speed.x = random(0.5,3);
     p.dir.x = 1;
     p.sz = 5;
     p.start_sz = 0;
@@ -37,9 +37,9 @@ rbvj = function () {
       for (var j = 0; j < engine.length; j++) {
         var p = engine.particles[j];
           var d = Math.abs(getDist(g, p));
-          hit_dist = tween(hit_dist, Sound.mapSound(j, engine.length * 3, 0, 80), 20);
+          hit_dist = tween(hit_dist, Sound.mapSound(j, engine.length * 3, 0, 60), 30);
           if(d < hit_dist) {
-            if(Sound.getVol() > 0) target_sz = tween(target_sz, Sound.mapSound(i, grid.length * 3, 0, hit_dist), 80);
+            if(Sound.getVol() > 0) target_sz = tween(target_sz, Sound.mapSound(i, grid.length * 3, 0, hit_dist * 0.9), 80);
             //var target_sz = hit_dist;
             if (g.sz < target_sz) g.sz = target_sz * 2;
             if (p.sz < target_sz) p.sz = target_sz * 2;

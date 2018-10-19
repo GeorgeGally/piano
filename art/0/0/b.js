@@ -11,13 +11,14 @@ rbvj = function () {
   for ( var i = 0; i < blocks.particles.length; i++ ) {
     var b = blocks.particles[ i ];
     b.pos = new Vector( grid[ i ].x, grid[ i ].y );
-    b.speed = new Vector( 2, 2 );
     b.c = rgb( 0 );
     // b.c =  (i%2 == 0) ? rgb(0): rgb(255);
     b.w = w / grid_w;
     b.h = h / grid_h;
     b.s = 0;
   }
+
+  resetSpeed();
 
   this.draw = function () {
     //ctx.background(0);
@@ -34,13 +35,10 @@ rbvj = function () {
         var _s = Sound.mapSound( b.me, blocks.particles.length * 2, 0, 250 );
         //console.log(_s);
         if ( _s < 80 ) {
-          // b.c = rgb( 100 );
           b.c = colours.get( 1 );
         } else if ( _s < 200 ) {
-          //b.c = rgb( _s * 2 );
           b.c = colours.get( 2 );
         } else {
-          //b.c = rgb( 225, 0, 0 );
           b.c = colours.get( 3 );
         }
       }
@@ -53,9 +51,10 @@ rbvj = function () {
 
 
   function resetSpeed() {
-    var s = new Vector( random( -3, 3 ), random( -3, 3 ) );
+    var s = new Vector( random( -1, 1 ), random( -1, 1 ) );
+    console.log(speed_reduce);
     for ( var i = 0; i < blocks.particles.length; i++ ) {
-      blocks.particles[ i ].speed = s;
+      blocks.particles[ i ].speed = (s);
     }
   }
 

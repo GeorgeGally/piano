@@ -1,83 +1,42 @@
 rbvj = function () {
 
-  var block_size = 20;
-  var maxballs = 500;
-  var balls = [];
-  var motion = [];
-  var gridx = 20;
-  var gridy = 5;
-  var number_of_balls = gridx * gridy;
-  var grid = createGrid( gridx, gridy );
-  var grid2 = createGrid( gridx * 2, gridy * 2 );
 
-  for ( var i = 0; i < number_of_balls; i++ ) {
-    addBall( grid[ i ].x, grid[ i ].y );
-  }
-
-  ctx.background( colours[colour_count] );
+  ctx.lineWidth = 1;
 
 
-  function addBall( _x, _y ) {
-    var sz = ave( random( 20, 200 ), gridx * 2 );
-
-    var ball = {
-      x: _x,
-      y: _y,
-      speed_x: random( -2, 2 ),
-      speed_y: random( -5, -1 ),
-      c: rgba( 0 ),
-      sz: sz
-    }
-
-    balls.push( ball );
-    if ( balls.length > maxballs ) removeBall();
-
-  }
-
-  function removeBall() {
-    balls.splice( 0, 1 );
-  }
-
-  for ( var i = 0; i < number_of_balls; i++ ) {
-    addBall( grid[ i ].x, grid[ i ].y );
-  }
-
-  function update() {
-
-    for ( var i = 0; i < balls.length; i++ ) {
-
-      b = balls[ i ];
-
-      if ( b.x > width - b.size / 2 || b.x < b.size / 2 ) {
-        b.speed_x = b.speed_x * -1;
-      }
-
-      if ( b.y < 0 ) {
-        b.y = height;
-      }
-      vol = Sound.mapSound( i, balls.length, 0, 10 );
-      //b.x += b.speed_x;
-      b.y += b.speed_y - vol / 10;
-
-      b.sz = Math.abs( Math.sin( frameCount / ( 20 + i + vol ) ) * 50 );
-    } // end for loop
-
-  }
-
+  var x = w / 2;
+  var y = h / 2;
+  ctx.background( 0 );
+  var hue = 0;
+  ctx.strokeStyle = hsl( hue, 60, 10 );
+  var x_offset = 0;
+  var y_offset = 0;
 
   draw = function () {
 
-    ctx.background( 0, 0.2 );
-    update();
+    ctx.globalCompositeOperation = "screen";
+    // ctx.strokeStyle = rgba(255, 0.1);
+    hue = Math.abs( Math.sin( frameCount / 1000 ) ) * 200
+    ctx.strokeStyle = hsl( hue, 60, 10 );
+    //if (chance(50)) ctx.strokeStyle = getColourFromNote();
+    x_offset = Math.cos( frameCount / 100 );
+    x = w / 2 + Math.sin( frameCount / 200 ) * ( w / 4 * x_offset );
+    y = h / 2 + Math.sin( frameCount / 400 ) * h / 4;
+    var spectrum = Sound.spectrum;
+    var freq = getNoteFromFFT( spectrum );
+    //var note = getNoteNumberFromFFT( spectrum );
+    var note1 = ( freq.substring( 0, 1 ) ).charCodeAt( 0 ) - 65;
+    //num = Math.round( map( note1, 0, 7, 0, 4 ) );
+    ctx.HstrokeEllipse( x, y, 200, 200 );
 
-    for ( var i = 0; i < balls.length; i++ ) {
-      b = balls[ i ];
-      ctx.fillStyle = colours.get(colour_count);
-      ctx.fillEllipse( b.x, b.y, b.sz, b.sz );
+    //mirror();
+    //mirror(2);
 
-    } // end for loop
+  }
 
 
-  } // end draw
+
+
+
 
 }();

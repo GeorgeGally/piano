@@ -1,106 +1,153 @@
-rbvj = function(){
+rbvj = function () {
 
-  var grid = new particleEngine( 2, 2 );
-  var engine = new particleEngine( 2, 2 );
-  var hit_dist = 345;
-  ctx.lineWidth = 0.2;
-  var dir = 1;
-  var radius = 200;
-  var color1 = '#67aeda';
-  ctx.strokeMe( 255 );
+  hidden_ctx.background( 0 );
+  hidden_ctx.lineWidth = 2;
+  ctx.background( 0 );
+  colour_count = 3;
+
+  var grid = new Grid( 1, 1, w / 2, h / 2, w / 4, h / 4 )
+
+  var MatterEngine = Matter.Engine,
+    Render = Matter.Render,
+    World = Matter.World,
+    Body = Matter.Body,
+    Bodies = Matter.Bodies;
+
+  var world;
+  var circles = [];
+  var boundries = [];
+
+  var radius = 140;
+
+  matter_engine = MatterEngine.create();
+  matter_engine.density = 0.008;
+  //matter_engine.restitution = 0.5;
+  //frictionAir: 0.06,
+  //restitution: 0.3}
+  world = matter_engine.world;
+  MatterEngine.run( matter_engine );
+
+  var offset = 5;
 
 
-  for (var i = 0; i < grid.length; i++) {
-    var g = grid.particles[i];
-    g.sz = 5;
-    g.start_sz = 0;
-    g.speed = new Vector(random(1,8), random(1,8));
-    g.dir = -1;
+  options = {
+    friction: 0.9,
+    restitution: 0.4,
+    isStatic: true
   }
 
-  for (var i = 0; i < engine.particles.length; i++) {
-    p = engine.particles[i];
-    //p.pos.y =  Math.sin(i/3000) * h;
+  //var topWall = Bodies.rectangle(400, 0, 810, 30, options);
+  var leftWall = Bodies.rectangle( -100, 0, 200, h * 2, options );
+  var rightWall = Bodies.rectangle( w + 100, 0, 200, h * 2, options );
+  var topWall = Bodies.rectangle( w / 2, -100, w, 200, options );
 
-    p.speed.y = 4;
-    p.speed.x = 4;
-    p.sz = random(10, 200);
-    p.sw = 8;
-    // p.c = randomGrey(0, 225, 0.1 );
-    p.c = colours.get(randomInt( colours.pool.length ));
-    p.start_sz = 0;
-    //if(i%2 == 0) p.dir.x = -1;
-    p.dir.x = posNeg();
-    p.dir.y = posNeg();
-    p.direction = 1;
-    if(i%2 == 0) p.dir.y = 1;
-    //console.log(p.speed.y);
+  World.add( matter_engine.world, [ leftWall, rightWall, topWall ] );
+
+
+  //////////////////////// OBJECTS
+
+  var Circ = function ( x, y, r, c ) {
+    this.options = {
+      friction: 0.9,
+      restitution: 0.2,
+      mass: r * 4
+    }
+    this.r = r;
+    this.c = c;
+
+    this.body = Bodies.circle( x, y, this.r / 2, this.options );
+    this.pos = this.body.position;
+
+    World.add( world, this.body );
+
+    this.show = function () {
+      this.pos = this.body.position;
+      var angle = this.body.angle;
+
+      ctx.fillMe( this.c );
+      ctx.save();
+      ctx.translate( this.pos.x, this.pos.y );
+      ctx.fillEllipse( 0, 0, this.r, this.r );
+      ctx.restore();
+      ctx2.fillEllipse( this.pos.x, this.pos.y, this.r, this.r );
+      // ctx2.strokeMe(255);
+      // ctx2.strokeEllipse(this.pos.x, this.pos.y, this.r, this.r);
+    }
+
+    this.isOffScreen = function () {
+      var pos = this.body.position;
+      return ( this.pos.y > h + 100 );
+    }
+
+    this.removeFromWorld = function () {
+      World.remove( world, this.body );
+    }
   }
 
 
+
+  for ( var i = 0; i < grid.length; i++ ) {
+    var g = grid.grid[ i ];
+    var x = g.x;
+    var y = g.y;
+  }
+
+
+  for ( var i = 0; i < 10; i++ ) {
+    addCircle( 255 );
+  }
+
+  matter_engine.timing.timeScale = 0.6;
+  matter_engine.world.gravity.x = posNeg() * 0.4;
+  matter_engine.world.gravity.y = -1;
 
   draw = function () {
 
-    ctx.background( 0, 0.07 );
-    if( Sound.getVol() > 60 && frameCount%4 == 0) {
+    ctx2.clearRect( 0, 0, w, h );
+    if ( chance( 100 ) ) matter_engine.world.gravity.x *= posNeg();
+
+    if ( Sound.getVol() > 75 ) {
+
+      matter_engine.world.gravity.y = -0.3;
+      addCircle();
+
+    } else if ( Sound.getVol() < 50 ) {
+      matter_engine.world.gravity.x = matter_engine.world.gravity.x *= posNeg();
+      matter_engine.world.gravity.y = 0.25;
+
+    }
+
+
+    for ( var i = 0; i < boundries.length; i++ ) {
+      boundries[ i ].show();
+    }
+
+    for ( var i = 0; i < circles.length; i++ ) {
+      var b = circles[ i ];
+      b.show();
+
+      if ( b.isOffScreen() ) {
+        b.removeFromWorld();
+        circles.splice( i, 1 );
+        i--;
+      }
+
+    }
+
+  }
+
+
+
+  function addCircle() {
     var spectrum = Sound.spectrum;
-    var freq = getNoteFromFFT(spectrum);
-    var note = getNoteNumberFromFFT(spectrum);
-    //console.log(freq);
-    //console.log(colours.pool.length-1);
-    var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
-    //console.log(c);
-    var col = colours.get(c);
-    //ctx.strokeMe( colours.get(c) );
-    engine.add();
-    engine.last.sz = 10;
-    engine.last.c = col;
-    engine.last.direction = dir;
-    }
-    moveParticles();
-    drawParticles();
-    if (chance(200)) dir *=-1;
+    var freq = getNoteFromFFT( spectrum );
+    var note = getNoteNumberFromFFT( spectrum );
+    var c = getColourFromNote();
+    var sz = map( note, 0, 60, 40, 80 );
+    circles.push( new Circ( random( w ), h + sz + random( 30 ), sz, c ) );
 
   }
 
-  function drawParticles(){
-    for (var i = 0; i < engine.length; i++) {
-      var g = engine.particles[i];
-      // var spectrum = Sound.spectrum;
-      // var freq = getNoteFromFFT(spectrum);
-      // var note = getNoteNumberFromFFT(spectrum);
-      // var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
-      // g.c = colours.get(c);
-      ctx.strokeMe( g.c );
-
-      // if (g.direction == -1) {
-      var f = (frameCount/150);
-      var x = w/2 + Math.cos(g.direction * f) * w/1.5;
-      var y = h/2 + Math.sin(g.direction * f) * w/4;
-      //var y = h/2;
-      ctx.lineWidth = 2;
-      //ctx.strokeCircle(x, y, g.sz, g.sz);
-      ctx.centreStrokeRect(x, y, g.sz, g.sz);
-
-
-    }
-
-  }
-
-
-
-
-  function moveParticles(){
-    for (var i = 0; i < engine.particles.length; i++) {
-      var p = engine.particles[i];
-      var sz = Sound.mapSound( i, engine.length * 2, 0, 15);
-      // p.sz = tween(p.sz, p.sz + sz, 4);
-      p.sz += 5;
-      if (p.sz > w * 2.5) engine.delete(p.me);
-
-    }
-
-  }
 
 
 }();

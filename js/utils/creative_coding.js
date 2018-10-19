@@ -583,6 +583,16 @@ function CosOsc(angle, ammt) {
   return Math.cos(angle) * ammt;
 }
 
+var hiFreq = 0;
+var loFreq = 1000;
+
+function findMapping(f, max){
+  if (f > hiFreq) hiFreq = f;
+  if (f < loFreq) loFreq = f;
+  if (max == undefined) max = width;
+  return map(f, loFreq, hiFreq, 0, max);
+}
+
 // RANDOM UTILS
 
 
@@ -716,16 +726,16 @@ function ave(num, clamper) {
   return Math.round(num / clamper) * clamper;
 }
 
-function randomGrey(_min, _max, _stick) {
+function randomGrey(_min, _max, _stick, _alpha) {
   if (_max == undefined) {
     _max = _min;
     _min = 0;
   }
   var min = _min || 0;
   var max = _max || 240;
-
+  var alpha = _alpha || 1;
   var stick = _stick || 10;
-  return rgb(sticky(randomInt(min, max), stick));
+  return rgb(sticky(randomInt(min, max), stick), alpha);
 }
 
 

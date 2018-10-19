@@ -32,10 +32,10 @@ rbvj = function() {
 
   draw = function() {
 
-    //ctx.background( 0, 0.2 );
-    if(chance(20)) ctx.fillRect(0,0, w, h)
-    ctx.fillStyle = rgb(0, 0.05);
-
+    ctx.background( 0, 0.2 );
+    //if(chance(20)) ctx.fillRect(0,0, w, h)
+    ctx.fillStyle = rgb(0, 0.19);
+    //ctx2.clearRect(0,0,w,h);
 
 
     for (var i = 0; i < grid.length; i++) {
@@ -50,7 +50,7 @@ rbvj = function() {
           var d = Math.abs(getDist(g, p));
           hit_dist = tween(hit_dist, Sound.mapSound(j, engine.length * 2, 0, 100), 10);
           if(d < hit_dist) {
-            var target_sz = Sound.mapSound(i, grid.length * 2, 0, 4)
+            var target_sz = Sound.mapSound(i, grid.length * 2, 0, 6)
             //var target_sz = hit_dist;
             if (g.sz < target_sz) g.sz = 4;
             ctx.line( g.pos.x, g.pos.y, p.pos.x, p.pos.y );
@@ -98,7 +98,7 @@ rbvj = function() {
 
       for (var i = 0; i < engine.particles.length; i++) {
         if(i == note1) {
-          p.speed.y = tween(p.speed.y, randomInt(2, 5), 20);
+          p.speed.y = tween(p.speed.y, randomInt(1, 3), 20);
           p.dir.x*=-1;
           p.dir.y*=-1;
         } else {

@@ -1,5 +1,6 @@
 rbvj = function () {
 
+  ctx.background( 0 );
   var grid = new particleEngine( 1, 1 );
   var engine = new particleEngine( 1, 2 );
   var hit_dist = 345;
@@ -15,7 +16,7 @@ rbvj = function () {
     var g = grid.particles[ i ];
     g.sz = 5;
     g.start_sz = 0;
-    g.speed = new Vector( random( 1, 8 ), random( 1, 8 ) );
+    g.speed = new Vector( random( 1, 2 ), random( 1, 2 ) );
     g.dir = -1;
   }
 
@@ -23,8 +24,8 @@ rbvj = function () {
     p = engine.particles[ i ];
     //p.pos.y =  Math.sin(i/3000) * h;
 
-    p.speed.y = 4;
-    p.speed.x = 4;
+    p.speed.y = 1;
+    p.speed.x = 1;
     p.sz = random( 10, 200 );
     p.sw = 8;
     // p.c = randomGrey(0, 225, 0.1 );
@@ -42,31 +43,26 @@ rbvj = function () {
 
   draw = function () {
 
-    if (blur) {
+    if ( blur ) {
       ctx.background( 0, 0.09 );
     } else {
       ctx.background( 0 );
 
     }
 
-    if (chance(500)) mode = (mode + 1) % 3;
-    if (chance(500)) {
+    if ( chance( 500 ) ) mode = ( mode + 1 ) % 3;
+
+    if ( chance( 500 ) ) {
       blur = !blur;
-      if (!blur) mode = (mode + 1) % 3;
+      if ( !blur ) mode = ( mode + 1 ) % 3;
     }
-    if ( Sound.getVol() > 60 && frameCount % 4 == 0 ) {
-      var spectrum = Sound.spectrum;
-      var freq = getNoteFromFFT( spectrum );
-      var note = getNoteNumberFromFFT( spectrum );
-      //console.log(freq);
-      //console.log(colours.pool.length-1);
-      var c = Math.round( map( note, 0, 100, 0, colours.pool.length ) );
-      //console.log(c);
-      var col = colours.get( c );
+
+    if ( Sound.getVol() > 60 && frameCount % 8 == 0 ) {
+      var c = getColourFromNote();
       //ctx.strokeMe( colours.get(c) );
       engine.add();
       engine.last.sz = 10;
-      engine.last.c = col;
+      engine.last.c = c;
       engine.last.direction = dir;
     }
     moveParticles();
@@ -78,28 +74,21 @@ rbvj = function () {
   function drawParticles() {
     for ( var i = 0; i < engine.length; i++ ) {
       var g = engine.particles[ i ];
-      // ctx.fillMe( g.c );
-      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz, g.sz);
-      // ctx.fillMe( 0 );
-      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz/3, g.sz/3);
       ctx.strokeMe( g.c );
 
       // if (g.direction == -1) {
-      var f = ( frameCount / 180 ) % 360;
+      var f = ( frameCount / 280 ) % 360;
       var x = w / 2 + Math.cos( g.direction * f ) * w / 2;
-      // var y = h/2 + Math.sin(g.direction * f) * w/4;
+
       var y = h / 2;
-      ctx.lineWidth = 5;
-      if( mode == 0) {
-      ctx.strokeCircle( x, y, g.sz, g.sz );
-    } else if( mode == 1) {
-      ctx.centreStrokeRect(x, y, g.sz, g.sz);
-    } else {
-      ctx.strokePolygon(x, y, 3, g.sz);
-    }
-
-
-
+      ctx.lineWidth = 1;
+      if ( mode == 0 ) {
+        ctx.strokeCircle( x, y, g.sz, g.sz );
+      } else if ( mode == 1 ) {
+        ctx.centreStrokeRect( x, y, g.sz, g.sz );
+      } else {
+        ctx.strokePolygon( x, y, 3, g.sz );
+      }
 
     }
 
@@ -113,7 +102,7 @@ rbvj = function () {
       var p = engine.particles[ i ];
       var sz = Sound.mapSound( i, engine.length * 2, 0, 25 );
       // p.sz = tween(p.sz, p.sz + sz, 4);
-      p.sz += 5;
+      p.sz += 4;
       if ( p.sz > w * 2.5 ) engine.delete( p.me );
 
     }

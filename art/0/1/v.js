@@ -10,14 +10,15 @@ rbvj = function () {
   var simplex3 = simplex.noise3D.bind(simplex)
   var simplexScale = 0.6;
   var change = 0;
+  ctx.lineWidth = 1;
 
-  for (var i = 0; i < 650; i++) {
+  for (var i = 0; i < 250; i++) {
     addParticles();
   }
 
   draw = function (){
 
-    ctx.background(0, 0.08);
+    ctx.background(0, 0.05);
     particles = engine.particles
     update();
     //drawParticles();
@@ -31,8 +32,8 @@ rbvj = function () {
     var p = engine.last;
     p.move = true;
     p.size = 12;
-    p.speed.x = randomWhole(2, 5);
-    p.speed.y = randomWhole(2, 5);
+    p.speed.x = randomWhole(0.1, 2);
+    p.speed.y = randomWhole(0.1, 2);
     p.curve = radians(random(50));
     p.t = 0;
     //p.c = randomGrey();
@@ -46,34 +47,35 @@ rbvj = function () {
       // p.pos.y = engine.particles[randomInt(particles.length-10, particles.length-1)].pos.x + randomWhole(20);
       // p.pos.x = engine.particles[randomInt(particles.length-10, particles.length-1)].pos.y + randomWhole(20);
       // top
-      if (chance(2)) {
-        p.pos.y = random(150);
-        p.pos.x = random(150, w-150);
-      // bottom
-    } else if (chance(2)) {
-        p.pos.y = random(h-150, h);
-        p.pos.x = random(150, w-150);
-        //left
-      } else if (chance(2)) {
-        p.pos.x = random(150);
-        p.pos.y = random(150, h-150);
-      } else  {
-        //right
-        p.pos.x = random(w - 150, w);
-        p.pos.y = random(h - 150);
-      }
-
+    //   if (chance(2)) {
+    //     p.pos.y = random(150);
+    //     p.pos.x = random(150, w-150);
+    //   // bottom
+    // } else if (chance(2)) {
+    //     p.pos.y = random(h-150, h);
+    //     p.pos.x = random(150, w-150);
+    //     //left
+    //   } else if (chance(2)) {
+    //     p.pos.x = random(150);
+    //     p.pos.y = random(150, h-150);
+    //   } else  {
+    //     //right
+    //     p.pos.x = random(w - 150, w);
+    //     p.pos.y = random(h - 150);
+    //   }
+    p.pos.x = Math.cos(random(360)) * 200;
+    p.pos.y = Math.sin(random(360)) * 200;
     }
 
   }
 
   function drawParticles(b){
 
-    ctx.fillStyle = colours.get(colour_count);
+    //ctx.fillStyle = colours.get(colour_count);
     ctx2.fillStyle = colours.get(colour_count);
     //var c = ctx.getCurrentFillValues();
     ctx2.fillStyle = b.c;
-    ctx2.fillCircle(sticky(b.pos.x, 10), sticky(b.pos.y, 10), b.size/1.5, b.size/1.5);
+    ctx2.fillCircle(sticky(b.pos.x, 10), sticky(b.pos.y, 10), b.size/1.1, b.size/1.1);
 
   }
 

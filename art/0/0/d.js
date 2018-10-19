@@ -1,89 +1,54 @@
-rbvj = function () {
+rbvj = function() {
 
-  ctx.background( 0 );
-
-  var grid_w = 60;
-  var grid_h = 40;
-  var grid = createGrid( grid_w, grid_h, w, h );
-  var counter = 0;
+  var numParticles = 60;
   var particles = [];
-  var num_particles = grid_w * grid_h;
-  var angle = 360 / num_particles;
-  var circ_sz = 4;
-  var t_size = 250;
-  var middle = 0;
-  var mirror1_on = false;
-  var mirror2_on = false;
-  var ammt = 1;
 
-  for ( var i = 0; i < num_particles; i += 1 ) {
-    var x = grid[ i ][ 0 ];
-    var y = grid[ i ][ 1 ];
-    addParticle( x, y, colours.get( 6 ), i );
-  };
-
-
-
-  draw = function () {
-    ctx.background( 0 );
-
-    if ( chance( 400 ) ) mirror1_on = !mirror1_on;
-    if ( chance( 400 ) ) mirror2_on = !mirror2_on;
-
-    drawParticles();
-    // if (mirror1_on) mirror();
-    // if (mirror2_on) mirror(2);
+  for (var i = 0; i < numParticles; i++) {
+    addParticle(i);
   }
 
-
-  function addParticle( _x, _y, _colour, _me ) {
+  function addParticle(i) {
+    var x = map(i, 0, numParticles, 0, window.innerWidth);
     var particle = {
-      x: _x,
-      y: _y,
-      c: _colour,
-      me: ( _me + randomInt( -4, 4 ) ) % 100,
-      offset: 0,
-      on: false,
-      speedx: posNeg() * random( 0.4, 4 ),
-      speedy: posNeg() * random( 0.4, 4 ),
-      sz: circ_sz,
-      counter: _x / 100 + _y / 50
+      x: 0,
+      y: 0,
+      r: random(1000),
+      strokeColor: rgb(random(100, 255)),
+      fillColor: rgba(0, random(55), random(0, 255), random(0, 255)),
+      strokeWeight: randomInt(1, 4),
+      size: 450,
+      me: i
     }
 
-    particles.push( particle );
+    particles.push(particle);
   }
 
 
-  function drawParticles() {
-    ammt = tween(ammt, Sound.getBassVol( 0, 8 ), 10);
-    //console.log(ammt);
-    for ( var i = 0; i < particles.length; i++ ) {
-      p = particles[ i ];
-      p.counter += ammt / 320;
-      p.sz = tween( p.sz, Math.abs( Math.sin( p.counter ) ) * 20, 2 );
-      // if (Sound.spectrum[p.me] > 80) {
-      //   p.on == true;
-      ctx.fillStyle = getNoteFromSz( p );
-      // ctx.centreFillRect( p.x, p.y, p.sz, p.sz );
-      ctx.fillCircle( p.x, p.y, p.sz, p.sz );
-      // } else {
-      //   ctx.fillStyle = rgba( 255, 0.08 );
-      // }
-      // if ( chance( 10000 ) && p.on == true ) {
-      //   p.on == false;
-      // }
+
+  draw = function() {
+    ctx.background(0);
+    for (var i = 0; i < particles.length; i++) {
+      var vol = Sound.mapSound(i, particles.length, 0, w / 2);
+      particles[i].strokeWeight = map( vol, 0, w/2, 1, 6);
+      particles[i].size = tween(particles[i].size, vol * 1.6, 28);
+
     }
+    moveParticles();
 
   }
 
-  function getNoteFromSz( p ) {
-    // var spectrum = Sound.spectrum;
-    //   var freq = getNoteFromFFT(spectrum);
-    //   var note = getNoteFreqPerc(spectrum);
-    //   //console.log(spectrum[note]);
-    //   var note1 = (freq.substring(0, 1)).charCodeAt(0) - 65;
-    num = Math.round( map( p.sz, 0, 30, 0, colours.pool.length ) );
-    return colours.get( num );
+  function moveParticles() {
+
+    for (var i = 0; i < particles.length; i++) {
+      particle = particles[i];
+      ctx.strokeStyle = particles[i].strokeColor;
+      ctx.lineWidth = particles[i].strokeWeight;
+      ctx.HstrokeEllipse(w/2, h/2, particle.size, particle.size);
+    };
+
   }
+
+
+
 
 }();

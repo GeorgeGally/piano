@@ -120,7 +120,7 @@ function Microphone (_fft) {
     }
 
     //freq = n * SAMPLE_RATE / MY_FFT_SIZE
-    function mapFreq(i){
+    this.mapFreq = function (i){
       // var freq = i * SAMPLE_RATE / FFT_SIZE;
       var freq = i * self.SAMPLE_RATE / self.spectrum.length;
       return freq;
@@ -141,7 +141,7 @@ function Microphone (_fft) {
     var bass = [];
     var bass = [];
     for (var i = 0; i < self.spectrum.length; i++) {
-      var band = mapFreq(i);
+      var band = this.mapFreq(i);
       var v = map(self.spectrum[i], 0, self.peak_volume, 0, 100);
       if (band < 500) {
         bass.push(v);

@@ -25,7 +25,7 @@ rbvj = function () {
   draw = function () {
 
     var s = Sound.mapSound( 10, 100, 80, w );
-    t_size = tween( t_size, s, 6 );
+    t_size = tween( t_size, s, 16 );
 
     ctx.fillStyle = rgb( 0 );
     ctx.fillRect( 0, 0, w, h );
@@ -62,8 +62,8 @@ rbvj = function () {
       y: _y,
       c: _colour,
       me: _me,
-      speedx: posNeg() * random( 0.4, 4 ),
-      speedy: posNeg() * random( 0.4, 4 ),
+      speedx: posNeg() * random( 0.1, 1 ),
+      speedy: posNeg() * random( -2, 1 ),
       sz: random( 2, 10 ),
       angle: random( 1 )
     }

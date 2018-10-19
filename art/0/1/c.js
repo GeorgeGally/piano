@@ -1,113 +1,130 @@
 rbvj = function () {
 
-  var grid = new particleEngine( 1, 1 );
-  var engine = new particleEngine( 1, 2 );
-  var hit_dist = 345;
-  ctx.lineWidth = 0.2;
-  var dir = 1;
-  var radius = 200;
-  ctx.strokeMe( 255 );
+  ctx.background( 0 );
+  ctx2.clearRect( 0, 0, w, h );
+  var num = Math.floor( w / 40 );
+  ctx.lineWidth = 0.8;
+  ctx2.lineWidth = 1;
+  ctx.strokeStyle = rgb( 255 );
+
+  var grid = createGrid( num, 1 );
+  var engine = new particleEngine( 8 );
+  var planets = [];
+  var moons = [];
 
 
 
-  for (var i = 0; i < grid.length; i++) {
-    var g = grid.particles[i];
-    g.sz = 5;
-    g.start_sz = 0;
-    g.speed = new Vector(random(1,8), random(1,8));
-    g.dir = -1;
+  for ( var i = 0; i < engine.particles.length; i++ ) {
+
+    p = engine.particles[ i ];
+    p.speed.x = 0.001;
+    p.radius = 20;
+    p.start_radius = p.radius;
+    p.pos.y = h / 2;
+    p.counter = 360 * engine.particles.length / i;
+    planets[ i ] = new particleEngine( 5 );
+
+    for ( var j = 0; j < planets[ i ].particles.length; j++ ) {
+      var b = planets[ i ].particles[ j ];
+      b.speed.x = sticky( random( 100 ), 10 ) / 15000;
+      //b.speed.x = 0.001;
+      b.radius = 20;
+      b.start_radius = b.radius;
+      b.counter = randomInt( 20 );;
+      moons[ j ] = new particleEngine( 2 );
+      for ( var k = 0; k < moons[ j ].particles.length; k++ ) {
+        var m = moons[ j ].particles[ k ];
+        m.speed.x = 0.01;
+        // m.radius = random(20, 90);
+        m.radius = 80;
+        m.sz = 80;
+        m.start_radius = m.radius;
+        m.counter = randomInt( 300 );
+      }
+    }
   }
-
-  for (var i = 0; i < engine.particles.length; i++) {
-    p = engine.particles[i];
-    //p.pos.y =  Math.sin(i/3000) * h;
-
-    p.speed.y = 4;
-    p.speed.x = 4;
-    p.sz = random(10, 200);
-    p.sw = 8;
-    var spectrum = Sound.spectrum;
-    var freq = getNoteFromFFT(spectrum);
-    var note = getNoteNumberFromFFT(spectrum);
-    //console.log(freq);
-    //console.log(colours.pool.length-1);
-    var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
-    //console.log(c);
-    var col = colours.get(c);
-    p.c = col;
-    p.start_sz = 0;
-    //if(i%2 == 0) p.dir.x = -1;
-    p.dir.x = posNeg();
-    p.dir.y = posNeg();
-    p.direction = 1;
-    if(i%2 == 0) p.dir.y = 1;
-    //console.log(p.speed.y);
-  }
-
 
 
   draw = function () {
 
-    ctx.background( 0 );
-    if( Sound.getVol() > 60 && frameCount%4 == 0) {
-    var spectrum = Sound.spectrum;
-    var freq = getNoteFromFFT(spectrum);
-    var note = getNoteNumberFromFFT(spectrum);
-    //console.log(freq);
-    //console.log(colours.pool.length-1);
-    // var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
-    var c = Math.round(map(note, 0, 100, 0, colours.pool.length));
-    //console.log(c);
-    var col = colours.get(c);
-    //ctx.strokeMe( colours.get(c) );
-    engine.add();
-    engine.last.sz = 10;
-    engine.last.c = col;
-    engine.last.direction = dir;
+    //ctx.background(0, 0.06);;
+    ctx2.clearRect( 0, 0, w, h );
+    ctx.save();
+
+    for ( var i = 0; i < engine.particles.length; i++ ) {
+      p = engine.particles[ i ];
+
+      //p.radius = p.start_radius/2 + Math.cos(p.counter)* p.start_radius;
+
+      if ( i == 0 ) {
+        s = Sound.getHighsVol( 0, w / 4 );
+      } else if ( i == 1 ) {
+        s = Sound.getMidsVol( 0, w / 4 );
+      } else {
+        s = Sound.getBassVol( 0, w / 4 );
+      }
+
+      p.radius = tween( p.radius, w / 2 + Math.sin( p.counter ) * s, 40 );
+      p.pos.x = w / 2 + Math.cos( p.counter ) * p.radius;
+      ctx2.fillStyle = rgb( 255, 0, 0 );
+      ctx2.fillEllipse( p.pos.x, p.pos.y, 10, 10 );
+      p.counter += p.speed.x;
+      ctx2.strokeStyle = rgb( 255 );
+      //ctx.line(p.pos.x, p.pos.y, w/2, h/2);
+      if ( i > 0 ) {
+        ctx2.line( p.pos.x, p.pos.y, engine.particles[ i - 1 ].pos.x, engine.particles[ i - 1 ].pos.y );
+      } else {
+        ctx2.line( p.pos.x, p.pos.y, engine.particles[ engine.particles.length - 1 ].pos.x, engine.particles[ engine.particles.length - 1 ].pos.y );
+      }
+
+
+      for ( var j = 0; j < planets[ i ].particles.length; j++ ) {
+        var b = planets[ i ].particles[ j ];
+
+        //var s = Sound.mapSound(i, engine.particles.length, 0, 2);
+        b.radius = b.start_radius / 2 + Math.cos( b.counter ) * b.start_radius;
+        //b.radius = tween(b.radius, b.start_radius/2 + Math.cos(s)* b.start_radius, 20);
+        b.pos.x = p.pos.x + ( Math.cos( b.counter ) * b.radius / 2 ) + b.radius / 2;
+        b.pos.y = p.pos.y + ( Math.sin( b.counter ) * b.radius / 2 ) + b.radius / 2;
+
+
+        drawJoints( b );
+
+        b.counter += b.speed.x;
+        for ( var k = 0; k < moons[ j ].particles.length; k++ ) {
+          var m = moons[ j ].particles[ k ];
+
+          m.radius = tween( m.radius, m.start_radius / 2 + Math.cos( m.counter ) * m.start_radius, 10 );
+          m.pos.x = b.pos.x + Math.cos( m.counter ) * m.radius;
+          m.pos.y = b.pos.y + Math.sin( m.counter ) * m.radius;
+
+          ctx2.fillStyle = rgb( 255, 0, 0 );
+          ctx2.fillEllipse( m.pos.x, m.pos.y, 4, 4 );
+
+          var s = Sound.mapSound( k, moons[ j ].particles.length, 60, 80 );
+          //console.log(s);
+          if ( s > 0 ) m.sz = tween( m.sz, s, 20 );
+
+          ctx.fillStyle = rgba( 255, 0.07 );
+          ctx.fillEllipse( m.pos.x, m.pos.y, m.sz, m.sz );
+
+          ctx.strokeStyle = rgba( 0, 0.4 );
+          ctx.strokeCircle( m.pos.x, m.pos.y, m.sz, m.sz );
+          ctx2.line( m.pos.x, m.pos.y, b.pos.x, b.pos.y );
+          m.counter += m.speed.x;
+        }
+      }
     }
-    moveParticles();
-    drawParticles();
-    if (chance(100)) dir *=-1;
+
+
 
   }
 
-  function drawParticles(){
-    for (var i = 0; i < engine.length; i++) {
-      var g = engine.particles[i];
-      // ctx.fillMe( g.c );
-      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz, g.sz);
-      // ctx.fillMe( 0 );
-      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz/3, g.sz/3);
-      ctx.strokeMe( g.c );
-
-      // if (g.direction == -1) {
-      var f = (frameCount/150);
-      var x = w/2 + Math.cos(g.direction * f) * w/1.5;
-      var y = h/2 + Math.sin(g.direction * f) * w/4;
-      //var y = h/2;
-      ctx.lineWidth = 2;
-      //ctx.strokeCircle(x, y, g.sz, g.sz);
-      // ctx.centreStrokeRect(x, y, g.sz, g.sz);
-      ctx.strokePolygon(x, y, 3, g.sz);
-
-
-    }
-
-  }
-
-
-
-
-  function moveParticles(){
-    for (var i = 0; i < engine.particles.length; i++) {
-      var p = engine.particles[i];
-      var sz = Sound.mapSound( i, engine.length * 2, 0, 15);
-      // p.sz = tween(p.sz, p.sz + sz, 4);
-      p.sz += 5;
-      if (p.sz > w * 2.5) engine.delete(p.me);
-
-    }
-
+  function drawJoints( b ) {
+    ctx2.fillStyle = rgb( 0 );
+    ctx2.fillEllipse( b.pos.x, b.pos.y, 20, 20 );
+    ctx2.strokeStyle = rgb( 0 );
+    ctx2.line( p.pos.x, p.pos.y, b.pos.x, b.pos.y );
   }
 
 

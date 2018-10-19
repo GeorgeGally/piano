@@ -65,7 +65,7 @@ palettes[ 5 ] = new colourPool()
   //.add( '#FFFF00' )
   //.add( '#FF00FF' )
 
-var colour_count = 4
+var colour_count = 3
 var colours = palettes[ colour_count ];
 
 function changeColourFwd() {

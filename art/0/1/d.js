@@ -25,8 +25,8 @@ rbvj = function() {
 
     for (var i = 0; i < engine.particles.length; i++) {
       p = engine.particles[i];
-      p.speed.y = 4;
-      p.speed.x = 4;
+      p.speed.y = 1;
+      p.speed.x = 1;
       p.sz = 2;
       p.sz2 = 2;
       //p.pos.x = -5;
@@ -47,6 +47,7 @@ rbvj = function() {
     draw = function () {
 
       ctx.background( 0 );
+      ctx2.clearRect(0,0,w,h);
       // if( Sound.getVol() > 80 && frameCount%2 == 0) {
       //
       // //ctx.strokeMe( colours.get(c) );
@@ -80,8 +81,8 @@ rbvj = function() {
 
 
 
-        ctx.fillMe( 255 );
-        ctx.fillCircle(p.pos.x, p.pos.y, 5, 5);
+        ctx2.fillMe( 255 );
+        ctx2.fillCircle(p.pos.x, p.pos.y, 5, 5);
         //ctx.fillCircle(x, y, 10, 10);
 
 
@@ -98,13 +99,13 @@ rbvj = function() {
       for (var i = 0; i < engine.particles.length; i++) {
       note = Math.floor(note);
       var p = engine.particles[i];
-      ctx.strokeMe(255, 0.3);
-      ctx.line(p.pos.x, 0, p.pos.x, h);
-      var sz = Sound.mapSound(i, engine.length * 2, 1, 30);
+      ctx2.strokeMe(255, 0.3);
+      ctx2.line(p.pos.x, 0, p.pos.x, h);
+      var sz = Sound.mapSound(i, engine.length * 2, 1, 20);
       //p.pos.x += Sound.mapSound(i, engine.length * 2, 0, 2);;
       //p.pos.y -= Sound.mapSound(i, engine.length * 3, -2, 2);
-      p.pos.y -= 4;
-      p.sz = tween(p.sz, sz, 10);
+      p.pos.y -= 1;
+      p.sz = tween(p.sz, sz, 20);
       p.sz2 = tween(p.sz2, 0, 30);
       if (sz > 29) {
         p.sz2 = 180;

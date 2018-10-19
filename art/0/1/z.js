@@ -46,7 +46,7 @@ rbvj = function () {
     renderer.setClearColor( 0x000000 );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
-    //container.appendChild( renderer.domElement );
+    container.appendChild( renderer.domElement );
 
     // add subtle ambient lighting
     var ambientLight = new THREE.AmbientLight( 0xaaaaaa );
@@ -91,8 +91,8 @@ rbvj = function () {
       p.old.x = p.pos.x;
       p.old.y = p.pos.y;
 
-      p.vel.x = 20 * PerlinNoise.noise( 90 + p.pos.x * .005, 50 + p.pos.y * p.speed, p.noisy * .07 ) * Math.cos( 0.7 * PerlinNoise.noise( p.pos.x * .007, p.pos.y * .007, p.noisy * .9 ) );
-      p.vel.y = 40 * PerlinNoise.noise( 90 + p.pos.x * .0007, 20 + p.pos.y * .0007, p.noisy * 19 ) * Math.sin( 0.3 * 22 / 7 * PerlinNoise.noise( p.pos.x * .007, p.pos.y * .007, p.noisy * 5 ) );
+      p.vel.x = 10 * PerlinNoise.noise( 90 + p.pos.x * .005, 50 + p.pos.y * p.speed, p.noisy * .07 ) * Math.cos( 0.7 * PerlinNoise.noise( p.pos.x * .007, p.pos.y * .007, p.noisy * .9 ) );
+      p.vel.y = 20 * PerlinNoise.noise( 90 + p.pos.x * .0007, 20 + p.pos.y * .0007, p.noisy * 19 ) * Math.sin( 0.3 * 22 / 7 * PerlinNoise.noise( p.pos.x * .007, p.pos.y * .007, p.noisy * 5 ) );
 
       p.pos.x += p.vel.x;
       p.pos.y += p.vel.y;
@@ -128,7 +128,7 @@ rbvj = function () {
     texture.needsUpdate = true;
     var delta = clock.getDelta();
     tick += delta;
-    scene.rotation.y -= 0.02;
+    scene.rotation.y -= 0.014;
     controls.update();
     renderer.render( scene, camera );
   }

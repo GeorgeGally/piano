@@ -1,80 +1,90 @@
 rbvj = function () {
 
-  var circSize = 30;
-  var t = 0;
-  var numDots = 120;
-  var circs = [];
-  var hiFreq;
-  var loFreq;
-  var r = 180;
-  var rot;
-  ctx.lineWidth = 1;
-  resetMe();
-  ctx.strokeStyle = colours.get(colour_count);
 
-  function resetMe() {
-    rot = 0;
-    hiFreq = 0;
-    loFreq = 1000;
-    r = 180;
-    t = 0;
+  var numParticles = 25;
+  var movers=4
+  var d=200
+  var d2=120
+  var frames=400;
+  var angle;
+  var theta = 0;
 
-    for ( var i = 0; i < numDots; i++ ) {
+  var dir = 1;
 
-      var circle = {
-        r: r,
-        me: i,
-        x: r * Math.cos( t ),
-        y: r * Math.sin( t ),
-        orgi_x: r * Math.cos( t ),
-        orgi_y: r * Math.sin( t ),
-        theta: t
+  var particles = [];
+  for (var i = 0; i < numParticles; i++) {
+    addParticle(i);
+  }
+
+  function addParticle(i){
+        var particle = {
+          x: 0,
+          y: 0,
+          size: 10,
+          speedx: 0,
+          speedy: 0,
+          kind: "line",
+          r:random(1000),
+          strokeColor: rgb(random(100,255),random(55),random(155)),
+          fillColor: rgb(random(100,255),random(55),random(255)),
+          strokeWeight: 2,
+          size: random(10),
+          me: i,
+          flip: dir
       }
-      circs.push( circle );
-      t += radians( 360 / numDots );
-    }
-
-    for ( var i = 0; i < numDots; i++ ) {
-      drawCirc( circs[ i ], 80 );
-    }
-  }
-
-  this.draw = function () {
-
-    ctx.background( 0 );
-
-    for ( var i = 0; i < numDots; i++ ) {
-      var vol = Sound.mapSound( i, numDots * 2, 0, 500 );
-      drawCirc( circs[ i ], vol );
-
-    }
-
-    if ( randomInt( 100 ) > 90 ) resetMe();
-
+      dir *=-1;
+      particles.push(particle);
   }
 
 
-  function drawCirc( p, vol ) {
+  draw = function () {
+    //counter+=1;
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    for (var i = 0; i < particles.length; i++) {
+      //var f = findMapping(Sound.mapFreq(i), w*4);
+      var f = Sound.mapSound(i, particles.length, 0, w/2);
+      // particles[i].x = mic.getSprectrum(i*10);
+      particles[i].x = tween(particles[i].x, Math.sin(theta/10)*w/2 +w/2 + (f*particles[i].flip), 4);
 
-    ctx.save();
-    ctx.translate( width / 2, height / 2 );
-    p.r = Math.abs( r - vol ) / 3;
-    p.r = clamp( p.r, 140, 400 );
+    }
+    moveParticles();
 
-    p.theta += 0.01;
-
-    var xx = r * Math.cos( p.r )
-    var yy = r * Math.cos( p.r )
-
-    ctx.lineWidth = 3;
-    ctx.line( p.x, p.y, p.x + xx, p.y + yy );
-    ctx.rotate( rot );
-    p.x = p.r * Math.cos( p.theta );
-    p.y = p.r * Math.sin( p.theta );
-    ctx.restore();
+    theta += 2*Math.PI/frames;
 
   }
+
+  function moveParticles(){
+    for (var i = 0; i < particles.length; i++) {
+      particle = particles[i];
+      //particle.x = (particle.x+particle.speedx)%window.innerWidth;
+      ctx.strokeStyle= particle.strokeColor;
+      ctx.lineWidth = particle.strokeWeight;
+      if(particle.kind=="line"){
+        ctx.line(particle.x, 0, particle.x, window.innerHeight);
+      }
+    };
+
+  }
+
+
+  // move this into keypress eventually
+
+  window.onkeydown=function(event){
+
+    if (event.which == 38) movers = (movers+1)%40
+      if (event.which == 40) movers = (movers-1); if (movers < 0) movers = 40;
+    if (event.which == 39) {
+      numParticles = (numParticles+1)%100;
+      addParticle(particles.length);
+      }
+    if (event.which == 37)
+       {
+        numParticles = (numParticles-2);
+        if (numParticles < 1) {numParticles = 1; } else {particles.shift();}
+      }
+        console.log(numParticles);
+    //movers = randomInt(1,40);
+  };
 
 }
-
 rbvj();

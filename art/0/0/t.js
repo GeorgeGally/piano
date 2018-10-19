@@ -1,81 +1,103 @@
 rbvj = function () {
 
-  ctx.background( 0 );
-  var vol = 0;
-  var balls = [];
-
-  var gridx = 20;
-  var gridy = 5;
-
-  var number_of_balls = gridx * gridy;
-  var grid = createGrid( gridx, gridy );
-
-  for ( var i = 0; i < number_of_balls; i++ ) {
-    addBall( grid[ i ].x, grid[ i ].y );
-  }
-
-
-
-
-  function addBall( _x, _y ) {
-    var sz = ave( random( 20, 200 ), gridx * 2 );
-
-    var ball = {
-      x: _x,
-      y: _y,
-      speed_x: random( -2, 2 ),
-      speed_y: random( -5, -1 ),
-      c: colours.get(colour_count),
-      sz: sz
-    }
-
-    balls.push( ball );
-
-  }
-
-
-  for ( var i = 0; i < number_of_balls; i++ ) {
-    addBall( grid[ i ].x, grid[ i ].y );
-  }
-
-  function update() {
-
-    for ( var i = 0; i < balls.length; i++ ) {
-
-      b = balls[ i ];
-
-      if ( b.x > width - b.size / 2 || b.x < b.size / 2 ) {
-        b.speed_x = b.speed_x * -1;
-      }
-
-      if ( b.y < 0 ) {
-        b.y = height;
-      }
-      if ( Sound.volume > 0 ) vol = tween(vol, Sound.mapSound( i, balls.length, 0, 10 ), 20);
-      //b.x += b.speed_x;
-      b.y += b.speed_y - vol / 10;
-
-      b.sz = Math.abs( Math.sin( frameCount / ( 20 + i + vol ) ) * 110 );
-    } // end for loop
-
-  }
+  var particle_array = [];
+  var imgData;
+  var maxParticles = 1000;
+  var word_num = -1;
+  ctx.background(0);
+  
+  hidden_ctx.font = "200px georgia";
+  hidden_ctx.fillStyle = "blue";
+  hidden_ctx.textAlign = "center";
+  hidden_ctx.textBaseline = "middle";
+  // var words = ['Freedom', 'Happiness', 'Health', 'Wealth'];
+  var words = [ 'Is', 'This', 'The', 'Freedom', 'You', 'Promised' ];
+  brightSpark();
 
 
   draw = function () {
+    if(chance(600)) brightSpark();
+    ctx.save();
+    for ( var i = particle_array.length - 1; i >= 0; i-- ) {
 
-    ctx.background( 0 );
-    update();
+      p = particle_array[ i ];
+      // c.fillRect(p.x, p.y, p.size, p.size);
+      if ( p.x != 0 && p.y != 0 ) {
+        // ctx.globalCompositeOperation = 'multiply';
+        // ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.c;
+        //c.drawImage(img,p.x, p.y, p.size, p.size);
+        ctx.fillCircle( p.x, p.y, p.size, p.size );
+        if ( p.alpha < 1 ) p.alpha += 0.0019999;
+        if ( p.size < 0.005  || p.x < 0 || p.y < 0 || p.x > w || p.y > h) {
+          p.x = p.orig_x + random( -4, 4 );
+          p.y = p.orig_y + random( -4, 4 );
+          p.size = 3;
+          p.speedx = random( -1, 1 ),
+          p.speedy = random( -1, 1 )
+        }
+        p.x += p.speedx + random( -1, 1 );
+        p.y += p.speedy + random( -1, 1 );
+        p.size *= p.reduce;
+      }
+    };
+    ctx.restore();
 
-    for ( let b of balls ) {
 
-      ctx.fillStyle = colours.get(colour_count);
-      ctx.fillRect( b.x - b.sz / 2, b.y - b.sz / 2, b.sz, b.sz );
-      ctx.fillStyle = rgb( 0 );
-      ctx.fillRect( b.x - ( b.sz / 1.2 ) / 2, b.y - ( b.sz / 1.2 ) / 2, b.sz / 1.2, b.sz / 1.2 );
-
-    }
-
-
+    if ( particle_array.size > maxParticles ) particle_array.shift();
   }
+
+
+  function addParticle( _x, _y ) {
+    var r = randomInt( 50, 175 );
+    var g = randomInt( 120, 190 );
+    var b = randomInt( 10, 35 );
+    var particle = {
+      orig_x: _x,
+      orig_y: _y,
+      x: _x + random( -3, 3 ),
+      y: _y + random( -3, 3 ),
+      c: randomGrey(0, 240, 30, 0.06),
+      size: 3,
+      reduce: random( 0.9, 0.999 ),
+      alpha: 0.05,
+      speedx: random( -1, 1 ),
+      speedy: random( -1, 1 )
+    };
+    particle_array.push( particle );
+  }
+
+  function brightSpark() {
+    hidden_ctx.clearRect( 0, 0, w, h );
+    particle_array = [];
+    word_num = ( word_num + 1 ) % ( words.length - 1 );
+    hidden_ctx.fillStyle = "white";
+    console.log(word_num);
+    hidden_ctx.fillText( words[ word_num ], window.innerWidth / 2, window.innerHeight / 2 );
+    //c.eqTriangle(w/2, h/2, 100);
+    //c.fillEllipse(width/2, h/2, 200,200);
+    draw();
+    imgData = hidden_ctx.getImageData( 0, 0, window.innerWidth, window.innerHeight )
+      .data;
+
+    for ( var y = 0; y < window.innerHeight; y += 4 ) {
+
+      for ( var x = 0; x < window.innerWidth; x += 4 ) {
+
+        var pt = ( y * window.innerWidth + x ) * 4;
+        var fBrightness;
+        fBrightness = ( 0.3 * imgData[ pt ] + 0.59 * imgData[ pt + 1 ] + 0.11 * imgData[ pt + 2 ] );
+
+        if ( fBrightness > 10 ) {
+          addParticle( x, y );
+        }
+
+      }
+    }
+    ctx.background(0, 0.6);
+    hidden_ctx.clearRect( 0, 0, w, h );
+  }
+
+
 
 }();

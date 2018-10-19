@@ -1,64 +1,66 @@
 rbvj = function () {
 
   ctx.background( 0 );
-  var engine = new particleEngine( 80, 60 );
-  var row = 0;
-  for ( var i = 0; i < engine.particles.length; i++ ) {
-    var b = engine.particles[ i ];
-    //b.position = new Vector(grid[i].x, grid[i].y);
-    b.speed = new Vector( 0, -2 );
-    b.c = rgb( 0 );
-    // b.c =  (i%2 == 0) ? rgb(0): rgb(255);
-    b.w = engine.grid.spacing.x;
-    b.h = engine.grid.spacing.y;
-    b.s = 0;
+
+  var engine = new particleEngine(3);
+  for (var i = 0; i < engine.particles.length; i++) {
+    var p = engine.particles[i];
+    p.size = random(20,60);
+    p.angle = radians(random(360));
+    if (i>0) p.parent = engine.particles[i-1];
   }
 
-  draw = function () {
+  draw = function() {
 
-    ctx.background( 0 );
-    //engine.draw(ctx);
-    var s = Sound.getVol(0, 2);
-    for ( var i = 0; i < engine.particles.length; i++ ) {
-      var b = engine.particles[ i ];
-      b.pos.y -= s;
-      if ( b.pos.y < 0 ) b.pos.y = h;
+    //ctx.background(250, 0.005);
+    ctx3.clearRect(0,0,w,h);
 
-      if ( b.pos.y >= h - 20 ) {
+      update();
 
-        b.c = getNoteGrey();
+        for (var i = 0; i < engine.particles.length; i++) {
+            var p = engine.particles[i];
+            drawArm(p);
+                ctx3.fillStyle = rgba(255, 0.5);
 
-      } else if ( b.pos.y < h - 220 && b.pos.y > h - 240 ) {
-        // var _s = Sound.mapSound(b.me, engine.particles.length);
+            ctx3.fillEllipse(p.pos.x, p.pos.y, 5, 5);
 
-        b.c = getNoteColour();
-      }
-      ctx.fillStyle = b.c;
-      ctx.fillRect( b.pos.x, b.pos.y, b.w - 2, b.h - 2 );
+            if (i==engine.particles.length-1) {
+              ctx.fillStyle = rgba(240,0,0, 0.7);
+              ctx.fillEllipse(p.pos.x, p.pos.y, 3, 3);
+            }
+
     }
+
+  //mirror();
+
   }
 
-  function getNoteColour() {
-    var spectrum = Sound.spectrum;
-    var freq = getNoteFromFFT( spectrum );
-    var note = getNoteFreqPerc( spectrum );
-    //console.log(spectrum[note]);
-    var note1 = ( freq.substring( 0, 1 ) )
-      .charCodeAt( 0 ) - 65;
-    num = Math.round( map( note1, 0, 7, 0, 4 ) );
-    return colours.get( num );
+  function drawArm(p){
+    ctx.strokeStyle = rgba(255,0.1);
+    ctx.line(p.pos.x, p.pos.y, p.end.x, p.end.y);
+
+
   }
 
-  function getNoteGrey() {
-    var spectrum = Sound.spectrum;
-    var freq = getNoteFromFFT( spectrum );
-    var note = getNoteFreqPerc( spectrum );
-    //console.log(spectrum[note]);
-    var note1 = ( freq.substring( 0, 1 ) )
-      .charCodeAt( 0 ) - 65;
-    num = Sound.mapSound( note1, 7, 0, 55 );
-    //console.log(num);
-    return rgb( num );
+
+  function update() {
+    for (var i = 0; i < engine.particles.length; i++) {
+      var p = engine.particles[i];
+
+      p.acceleration.x += p.speed.x/100;
+      p.angle = Math.sin(p.acceleration.x)* 1.2;
+    if (i>0) {
+      p.pos = engine.getEnd(p.parent)
+    } else {
+      p.pos.x = w/2 + Math.cos(frameCount/100) * 200;
+      p.pos.y = h/2 + Math.sin(frameCount/200) * 200;
+    }
+
+    p.end = engine.getEnd(p);
+
+
+    }
+
   }
 
 }();

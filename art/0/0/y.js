@@ -1,72 +1,84 @@
 rbvj = function () {
 
-  var particles = [];
-  var radius = 160;
-  var c = 0;
-  var num_particles = 4000;
-  ctx.strokeStyle = colours.get(colour_count);
-  ctx.lineWidth = 0.5;
+  var grid = new particleEngine( 1, 100 );
+  var engine = new particleEngine( 30, 20 );
+  var hit_dist = 345;
+  ctx.lineWidth = 0.2;
+  var dir = 1;
+  var radius = 200;
+  var color1 = '#67aeda';
+  ctx.strokeMe( 255 );
 
-  for ( var i = 0; i < num_particles; i++ ) {
+  for (var i = 0; i < grid.length; i++) {
+    var g = grid.particles[i];
+    g.sz = 5;
+    g.start_sz = 0;
+    g.speed = new Vector(random(1,8), random(1,8));
+    g.dir = -1;
+  }
 
-    var m = map( i, 0, num_particles, 0, 360 );
-    var cc = hsl( m, 96, 60 );
-    addParticle( random( 55 ), random( 55 ), cc, i );
+  for (var i = 0; i < engine.particles.length; i++) {
+    p = engine.particles[i];
+    //p.pos.y =  Math.sin(i/3000) * h;
 
+    p.speed.y = 4;
+    p.speed.x = 4;
+    p.sz = random(10, 200);
+    p.sw = randomInt(1,10);
+    p.c = randomGrey(0, 225, 0.1 );
+    p.start_sz = 0;
+    //if(i%2 == 0) p.dir.x = -1;
+    p.dir.x = posNeg();
+    p.dir.y = posNeg();
+    p.direction = posNeg();
+    if(i%2 == 0) p.dir.y = 1;
+    //console.log(p.speed.y);
   }
 
 
   draw = function () {
 
-    ctx.fillStyle = rgb( 0 );
-    ctx.fillRect( 0, 0, w, h );
+    ctx.background( 0, 0.5 );
+
     moveParticles();
+    drawParticles();
+
 
   }
 
+  function drawParticles(){
+    for (var i = 0; i < engine.length; i++) {
+      var g = engine.particles[i];
+      ctx.fillMe( g.c );
+      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz, g.sz);
+      // ctx.fillMe( 0 );
+      // ctx.fillCircle(g.pos.x, g.pos.y, g.sz/3, g.sz/3);
+      ctx.strokeMe( 0 );
+      ctx.lineWidth = g.sw;
+      if (g.direction == -1) {
+        ctx.strokeCircle(w/2, h/2, g.sz, g.sz);
+      } else {
+        ctx.fillCircle(w/2, h/2, g.sz, g.sz);
+      }
 
-
-  function addParticle( _x, _y, _colour, _me ) {
-    var particle = {
-      x: w / 2,
-      y: h / 2,
-      xx: w / 2,
-      yy: h / 2,
-      c: _colour,
-      me: _me,
-      r: 0,
-      r2: 0,
-      me2: ( _me + randomInt( -30, 30 ) ) % num_particles,
-      speedx: random( -2, 2 ) / 2,
-      speedy: random( 2, 20 ),
-      sz: 0,
-      angle: radians( ( _me * 2 ) )
     }
 
-    particles.push( particle );
   }
 
-  function moveParticles() {
-    for ( var i = 0; i < particles.length; i++ ) {
-      p = particles[ i ];
-      var r = radius + Sound.mapSound( p.me + randomInt( -20, 20 ) % 100, particles.length, -20, 20 );
-      if ( !isNaN( r ) ) p.r = tween( p.r, randomInt( -40, 40 ) + r, 5 );
-
-      x2 = p.x + ( radius / 2 * Math.cos( p.angle + radians( Sound.mapSound( i, particles.length, 0, 30 ) ) ) );
-      y2 = p.y + ( radius / 2 * Math.sin( p.angle + radians( Sound.mapSound( i, particles.length, 0, 30 ) ) ) );
-
-      p.xx = p.x + p.r * Math.cos( p.angle );
-      p.yy = p.y + p.r * Math.sin( p.angle );
 
 
-      if ( i > 0 ) {
-        ctx.line( p.xx, p.yy, particles[ ( i - 1 ) ].xx, particles[ ( i - 1 ) ].yy );
-      } else {
-        ctx.line( p.xx, p.yy, particles[ 0 ].xx, particles[ 0 ].yy );
-      }
-    };
+
+  function moveParticles(){
+    for (var i = 0; i < engine.particles.length; i++) {
+      var p = engine.particles[i];
+      var sz = Sound.mapSound( i, engine.length * 2, 0, 15);
+      p.sz = tween(p.sz, p.sz + sz, 10);
+      if (p.sz > w) p.sz = 0;
+
+    }
 
   }
+
 
 
 }();

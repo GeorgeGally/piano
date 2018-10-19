@@ -47,7 +47,7 @@ function onKeyDown(event) {
 
 function speedAdjust(speed){
 
-  speed_reduce *=  1 + speed;
+  speed_reduce += speed;
 
 }
 // window.addEventListener('keydown', function(e) {
