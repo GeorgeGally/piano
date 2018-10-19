@@ -1,7 +1,7 @@
 rbvj = function() {
 
   ctx.background( 0 );
-  colour_count = 3;
+  colour_count = 2;
   colours = palettes [ colour_count ]
   var grid = new particleEngine( 60, 40 );
   var engine = new particleEngine( 2, 4 );

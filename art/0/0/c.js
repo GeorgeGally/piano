@@ -47,7 +47,7 @@ rbvj = function () {
     for (var i = 0; i < engine.particles.length; i++) {
       var p = engine.particles[i];
 
-      p.acceleration.x += p.speed.x/100;
+      p.acceleration.x += p.speed.x/200;
       p.angle = Math.sin(p.acceleration.x)* 1.2;
     if (i>0) {
       p.pos = engine.getEnd(p.parent)

@@ -75,7 +75,7 @@ rbvj = function () {
     ctx2.fillStyle = colours.get(colour_count);
     //var c = ctx.getCurrentFillValues();
     ctx2.fillStyle = b.c;
-    ctx2.fillCircle(sticky(b.pos.x, 10), sticky(b.pos.y, 10), b.size/1.1, b.size/1.1);
+    ctx2.fillCircle(sticky(b.pos.x, 10), sticky(b.pos.y, 10), b.size/1.5, b.size/1.5);
 
   }
 

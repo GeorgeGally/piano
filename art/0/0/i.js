@@ -37,7 +37,7 @@ rbvj = function () {
       for (var j = 0; j < engine.length; j++) {
         var p = engine.particles[j];
           var d = Math.abs(getDist(g, p));
-          hit_dist = tween(hit_dist, Sound.mapSound(j, engine.length * 3, 0, 60), 30);
+          hit_dist = tween(hit_dist, Sound.mapSound(j, engine.length * 3, 0, 50), 30);
           if(d < hit_dist) {
             if(Sound.getVol() > 0) target_sz = tween(target_sz, Sound.mapSound(i, grid.length * 3, 0, hit_dist * 0.9), 80);
             //var target_sz = hit_dist;

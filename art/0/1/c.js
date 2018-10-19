@@ -1,131 +1,153 @@
 rbvj = function () {
 
   ctx.background( 0 );
+  hidden_ctx.background( 0 );
   ctx2.clearRect( 0, 0, w, h );
-  var num = Math.floor( w / 40 );
-  ctx.lineWidth = 0.8;
-  ctx2.lineWidth = 1;
-  ctx.strokeStyle = rgb( 255 );
+  hidden_ctx.lineWidth = 2;
 
-  var grid = createGrid( num, 1 );
-  var engine = new particleEngine( 8 );
-  var planets = [];
-  var moons = [];
+  colour_count = 1;
+
+  var grid = new Grid( 1, 1, w / 2, h / 2, w / 4, h / 4 )
+
+  var MatterEngine = Matter.Engine,
+    Render = Matter.Render,
+    World = Matter.World,
+    Body = Matter.Body,
+    Bodies = Matter.Bodies;
+
+  var world;
+  var circles = [];
+  var boundries = [];
+
+  var radius = 140;
+
+  matter_engine = MatterEngine.create();
+  matter_engine.density = 0.008;
+
+  world = matter_engine.world;
+  MatterEngine.run( matter_engine );
+
+  var offset = 5;
 
 
+  options = {
+    friction: 0.9,
+    restitution: 0.4,
+    isStatic: true
+  }
 
-  for ( var i = 0; i < engine.particles.length; i++ ) {
 
-    p = engine.particles[ i ];
-    p.speed.x = 0.001;
-    p.radius = 20;
-    p.start_radius = p.radius;
-    p.pos.y = h / 2;
-    p.counter = 360 * engine.particles.length / i;
-    planets[ i ] = new particleEngine( 5 );
+  var leftWall = Bodies.rectangle( -100, 0, 200, h * 2, options );
+  var rightWall = Bodies.rectangle( w + 100, 0, 200, h * 2, options );
+  var topWall = Bodies.rectangle( w / 2, -100, w, 200, options );
 
-    for ( var j = 0; j < planets[ i ].particles.length; j++ ) {
-      var b = planets[ i ].particles[ j ];
-      b.speed.x = sticky( random( 100 ), 10 ) / 15000;
-      //b.speed.x = 0.001;
-      b.radius = 20;
-      b.start_radius = b.radius;
-      b.counter = randomInt( 20 );;
-      moons[ j ] = new particleEngine( 2 );
-      for ( var k = 0; k < moons[ j ].particles.length; k++ ) {
-        var m = moons[ j ].particles[ k ];
-        m.speed.x = 0.01;
-        // m.radius = random(20, 90);
-        m.radius = 80;
-        m.sz = 80;
-        m.start_radius = m.radius;
-        m.counter = randomInt( 300 );
-      }
+  World.add( matter_engine.world, [ leftWall, rightWall, topWall ] );
+
+
+  //////////////////////// OBJECTS
+
+  var Circ = function ( x, y, r, c ) {
+    this.options = {
+      friction: 0.8,
+      restitution: 0.2,
+      mass: r * 4
+    }
+    this.r = r;
+    this.c = c;
+
+    this.body = Bodies.circle( x, y, this.r / 2, this.options );
+    this.pos = this.body.position;
+
+    World.add( world, this.body );
+
+    this.show = function () {
+      this.pos = this.body.position;
+      var angle = this.body.angle;
+
+      ctx.fillMe( this.c );
+      ctx.save();
+      ctx.translate( this.pos.x, this.pos.y );
+      ctx.fillEllipse( 0, 0, this.r, this.r );
+      ctx.restore();
+
+    }
+
+    this.isOffScreen = function () {
+      var pos = this.body.position;
+      return ( this.pos.y > h + 100 );
+    }
+
+    this.removeFromWorld = function () {
+      World.remove( world, this.body );
     }
   }
 
+
+
+  for ( var i = 0; i < grid.length; i++ ) {
+    var g = grid.grid[ i ];
+    var x = g.x;
+    var y = g.y;
+  }
+
+
+  for ( var i = 0; i < 10; i++ ) {
+    addCircle( 255 );
+  }
+
+  matter_engine.timing.timeScale = 0.5;
+  matter_engine.world.gravity.x = posNeg() * 0.1;
+  matter_engine.world.gravity.y = -1;
 
   draw = function () {
-
-    //ctx.background(0, 0.06);;
+    ctx.background( 0 );
     ctx2.clearRect( 0, 0, w, h );
-    ctx.save();
+    if ( chance( 100 ) ) matter_engine.world.gravity.x *= posNeg();
 
-    for ( var i = 0; i < engine.particles.length; i++ ) {
-      p = engine.particles[ i ];
+    if ( Sound.getVol() > 80 ) {
 
-      //p.radius = p.start_radius/2 + Math.cos(p.counter)* p.start_radius;
+      matter_engine.world.gravity.y = -0.3;
+      addCircle();
 
-      if ( i == 0 ) {
-        s = Sound.getHighsVol( 0, w / 4 );
-      } else if ( i == 1 ) {
-        s = Sound.getMidsVol( 0, w / 4 );
-      } else {
-        s = Sound.getBassVol( 0, w / 4 );
-      }
+    } else if ( Sound.getVol() < 55 ) {
+      matter_engine.world.gravity.x = matter_engine.world.gravity.x *= posNeg();
+      matter_engine.world.gravity.y = 0.28;
 
-      p.radius = tween( p.radius, w / 2 + Math.sin( p.counter ) * s, 40 );
-      p.pos.x = w / 2 + Math.cos( p.counter ) * p.radius;
-      ctx2.fillStyle = rgb( 255, 0, 0 );
-      ctx2.fillEllipse( p.pos.x, p.pos.y, 10, 10 );
-      p.counter += p.speed.x;
-      ctx2.strokeStyle = rgb( 255 );
-      //ctx.line(p.pos.x, p.pos.y, w/2, h/2);
-      if ( i > 0 ) {
-        ctx2.line( p.pos.x, p.pos.y, engine.particles[ i - 1 ].pos.x, engine.particles[ i - 1 ].pos.y );
-      } else {
-        ctx2.line( p.pos.x, p.pos.y, engine.particles[ engine.particles.length - 1 ].pos.x, engine.particles[ engine.particles.length - 1 ].pos.y );
-      }
-
-
-      for ( var j = 0; j < planets[ i ].particles.length; j++ ) {
-        var b = planets[ i ].particles[ j ];
-
-        //var s = Sound.mapSound(i, engine.particles.length, 0, 2);
-        b.radius = b.start_radius / 2 + Math.cos( b.counter ) * b.start_radius;
-        //b.radius = tween(b.radius, b.start_radius/2 + Math.cos(s)* b.start_radius, 20);
-        b.pos.x = p.pos.x + ( Math.cos( b.counter ) * b.radius / 2 ) + b.radius / 2;
-        b.pos.y = p.pos.y + ( Math.sin( b.counter ) * b.radius / 2 ) + b.radius / 2;
-
-
-        drawJoints( b );
-
-        b.counter += b.speed.x;
-        for ( var k = 0; k < moons[ j ].particles.length; k++ ) {
-          var m = moons[ j ].particles[ k ];
-
-          m.radius = tween( m.radius, m.start_radius / 2 + Math.cos( m.counter ) * m.start_radius, 10 );
-          m.pos.x = b.pos.x + Math.cos( m.counter ) * m.radius;
-          m.pos.y = b.pos.y + Math.sin( m.counter ) * m.radius;
-
-          ctx2.fillStyle = rgb( 255, 0, 0 );
-          ctx2.fillEllipse( m.pos.x, m.pos.y, 4, 4 );
-
-          var s = Sound.mapSound( k, moons[ j ].particles.length, 60, 80 );
-          //console.log(s);
-          if ( s > 0 ) m.sz = tween( m.sz, s, 20 );
-
-          ctx.fillStyle = rgba( 255, 0.07 );
-          ctx.fillEllipse( m.pos.x, m.pos.y, m.sz, m.sz );
-
-          ctx.strokeStyle = rgba( 0, 0.4 );
-          ctx.strokeCircle( m.pos.x, m.pos.y, m.sz, m.sz );
-          ctx2.line( m.pos.x, m.pos.y, b.pos.x, b.pos.y );
-          m.counter += m.speed.x;
-        }
-      }
     }
 
 
+    for ( var i = 0; i < boundries.length; i++ ) {
+      boundries[ i ].show();
+    }
+
+    for ( var i = 0; i < circles.length; i++ ) {
+      var b = circles[ i ];
+      b.show();
+
+      if ( b.isOffScreen() ) {
+        b.removeFromWorld();
+        circles.splice( i, 1 );
+        i--;
+      }
+
+    }
 
   }
 
-  function drawJoints( b ) {
-    ctx2.fillStyle = rgb( 0 );
-    ctx2.fillEllipse( b.pos.x, b.pos.y, 20, 20 );
-    ctx2.strokeStyle = rgb( 0 );
-    ctx2.line( p.pos.x, p.pos.y, b.pos.x, b.pos.y );
+
+
+  function addCircle() {
+    var spectrum = Sound.spectrum;
+    var freq = getNoteFromFFT( spectrum );
+    var note = getNoteNumberFromFFT( spectrum );
+    // var c = getColourFromNote();
+    var c = rgb( 255 );
+    if (chance(10) && Sound.getVol() > 60) c = getColourFromNote();
+    var sz = map( note, 0, 60, 20, 40 );
+    circles.push( new Circ( random( w ), h + sz + random( 30 ), sz, c ) );
+
   }
+
 
 
 }();

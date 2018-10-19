@@ -1,6 +1,8 @@
 rbvj = function () {
 
-  ctx.background(0);
+  ctx.background( 0 );
+  ctx2.clearRect( 0, 0, w, h );
+
   var fov = 240;
 
   var point = [];
@@ -27,8 +29,8 @@ rbvj = function () {
   spacing = ( ( Math.PI * 2 ) / dim );
   numPoints = dim * dim;
   points = [];
-  ctx.fillStyle = colours.get(colour_count);
-  ctx.strokeStyle = rgb(0);
+  ctx.fillStyle = rgb( 255 );
+  ctx.strokeStyle = rgb( 0 );
 
   for ( var i = 0; i < dim; i++ ) {
 
@@ -51,8 +53,8 @@ rbvj = function () {
 
     ctx.background( 0 );
 
-    angleX = Math.sin( frameCount / 100 ) * 0.01;
-    angleY = Math.cos( frameCount / 200 ) * 0.01;
+    angleX = Math.sin( frameCount / 400 ) * 0.01;
+    angleY = Math.cos( frameCount / 500 ) * 0.01;
 
     for ( var i = 0; i < numPoints; i++ ) {
       point3d = points[ i ];
@@ -74,10 +76,10 @@ rbvj = function () {
       var x2d = ( x3d * scale ) + HALF_WIDTH;
       var y2d = ( y3d * scale ) + HALF_HEIGHT;
 
-      var s = Sound.mapSound( i % 90, numPoints * 2, 0, 1.5 );
+      var s = Sound.mapSound( i % 90, numPoints * 2, 0, 1.6 );
 
-      // ctx.fillEllipse( x2d, y2d, scale * s, scale * s );
-      ctx.centreFillRect( x2d, y2d, scale * s, scale * s );
+      ctx.fillCircle( x2d, y2d, scale * s, scale * s );
+      //ctx.centreFillRect( x2d, y2d, scale * s, scale * s );
       //ctx.strokeEllipse( x2d, y2d, scale * s, scale * s );
 
     }

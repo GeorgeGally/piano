@@ -1,10 +1,10 @@
 rbvj = function () {
 
 
-  var engine = new particleEngine(250, 40);
+  var engine = new particleEngine(220, 30);
   var particles = engine.particles;
 
-  engine.setSpeed(0, 0, -1, 3);
+  engine.setSpeed(0, 0, -1, 2);
   engine.setAccel(0, 0, 0.01, 0.06);
   engine.setDir(1, -1);
   frameRate = 30;
@@ -45,7 +45,7 @@ rbvj = function () {
 
   function moveParticle(p){
     p.accel.y +=0.1;
-    p.speed.y = Sound.mapSound(p.me + randomInt(10), particles.length, 0, 100)/ (190 - p.accel.y);
+    p.speed.y = Sound.mapSound(p.me + randomInt(10), particles.length, 0, 70)/ (190 - p.accel.y);
     p.pos.y -= (p.speed.y);
     //p.accel.y < 1.5 ? p.accel.y +=0.1 :  1.5;
 

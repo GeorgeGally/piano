@@ -2,13 +2,17 @@ rbvj = function () {
 
   var grid = new Grid( 1, 1, w / 2, h / 2, w / 4, h / 4 )
 
+  ctx.background( 0 );
+  hidden_ctx.background( 0 );
+  ctx2.clearRect( 0, 0, w, h );
+  
+  colour_count = 4;
 
   var MatterEngine = Matter.Engine,
     Render = Matter.Render,
     World = Matter.World,
     Body = Matter.Body,
     Bodies = Matter.Bodies;
-
 
   var matter_engine, world;
   var circles = [];
@@ -27,8 +31,6 @@ rbvj = function () {
     }
     this.r = r;
     this.c = c;
-    // this.c = hsl(c, 90, 50);
-    //this.c = randomGrey();
 
     this.body = Bodies.circle( x, y, this.r / 2, this.options );
     this.pos = this.body.position;
@@ -56,13 +58,11 @@ rbvj = function () {
 
     this.isTooSmall = function () {
       var sz = this.r;
-      //console.log(pos.y);
       return ( sz < 2 );
     }
 
     this.isOffScreen = function () {
       var pos = this.body.position;
-      //console.log(pos.y);
       return ( this.pos.y > h + 100 );
     }
 
@@ -93,7 +93,7 @@ rbvj = function () {
 
   World.add( matter_engine.world, [ leftWall, rightWall, topWall ] );
 
-  matter_engine.timing.timeScale = 0.9;
+  matter_engine.timing.timeScale = 0.4;
   matter_engine.world.gravity.x = 0;
   matter_engine.world.gravity.y = -1;
 
@@ -115,16 +115,13 @@ rbvj = function () {
   draw = function () {
 
     ctx.background( 0, 0.09 );
-
-    //ctx.fillStyle = rgb(255);
-    //ctx.clearRect( 0, 0, w, h );
     ctx2.clearRect( 0, 0, w, h );
 
 
-    if ( Sound.getVol() > 90 ) matter_engine.world.gravity.x = ( posNeg() * 1.2 );
+    if ( Sound.getVol() > 90 ) matter_engine.world.gravity.x = ( posNeg() * 1.02 );
 
     if ( Sound.getVol() > 70 ) {
-      matter_engine.world.gravity.y = -0.5;
+      matter_engine.world.gravity.y = -0.4;
     }
 
     if ( Sound.getVol() > 50 ) {
@@ -134,7 +131,7 @@ rbvj = function () {
 
     if ( Sound.getVol() < 60 ) {
       matter_engine.world.gravity.x = 0;
-      matter_engine.world.gravity.y = 0.3;
+      matter_engine.world.gravity.y = 0.2;
     }
 
 
@@ -154,26 +151,17 @@ rbvj = function () {
 
     }
 
-    //ctx.drawImage(hidden_canvas, 0, 0, w, h);
-
   }
 
 
 
   function addCircle() {
     var spectrum = Sound.spectrum;
-    var freq = getNoteFromFFT( spectrum );
     var note = getNoteFreqPerc( spectrum );
-    var note1 = ( freq.substring( 0, 1 ) )
-      .charCodeAt( 0 ) - 65;
-    num = Math.round( map( note1, 0, 7, 0, colours.pool.length ) );
-    //console.log( freq + " : " + note1 );
-    //num = Math.round(i/matter_engine.particles.length * 360);
-    //console.log(num);
-    var c = colours.get( num );
+    var c = getColourFromNote();
     //var c = rgb(0, 0, 30 + note * 4)
     //var c = map(note, 0, 60, 90, 270);
-    var sz = map( note, 0, 80, 40, 180 );
+    var sz = map( note, 0, 80, 50, 150 );
     circles.push( new MyCircle( random( w ), h + sz + random( 30 ), sz, c ) );
 
   }

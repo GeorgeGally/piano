@@ -15,8 +15,8 @@ rbvj = function () {
     var ball = {
       x: random( w ),
       y: random( h ),
-      speed_x: random( 3, 5 ),
-      speed_y: random( 3, 5 ),
+      speed_x: random( 0.1, 2 ),
+      speed_y: random( 0.1, 2 ),
       size: 70,
       c: rgb( 255 ),
       rotation: random( 1 )
@@ -37,9 +37,9 @@ rbvj = function () {
     var note = getNoteNumberFromFFT( spectrum );
 
     num = Math.round( note / 60 * colours.pool.length );
-    //num = Math.round(i/engine.particles.length * 360);
+
     var note_num = (freq.substring(0, 1)).charCodeAt(0) - 65;
-    //console.log(note_num);
+
     var c = colours.get( Math.round(map(note_num, 0, 7, 0,  colours.pool.length-1)));
     var sz = Sound.getVol( 10, 50 );
 

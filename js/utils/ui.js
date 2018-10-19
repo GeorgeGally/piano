@@ -11,12 +11,12 @@ function showMouse() {
 }
 
 var palettes = []
+// palettes[ 0 ] = new colourPool()
+//   .add( '#000000' )
+//   .add( '#ffffff' )
+
+
 palettes[ 0 ] = new colourPool()
-  .add( '#000000' )
-  .add( '#ffffff' )
-
-
-palettes[ 1 ] = new colourPool()
   // .add('#FFFFFF')
   .add( '#99B898' )
   .add( '#FECEAB' )
@@ -25,7 +25,7 @@ palettes[ 1 ] = new colourPool()
   .add( '#2A363B' );
 
 
-palettes[ 2 ] = new colourPool()
+palettes[ 1 ] = new colourPool()
 
   .add( '#A8A7A7' )
   .add( '#CC527A' )
@@ -35,7 +35,7 @@ palettes[ 2 ] = new colourPool()
   .add( '#474747' );
 
 
-palettes[ 3 ] = new colourPool()
+palettes[ 2 ] = new colourPool()
   // .add('#FFFFFF')
   .add( '#E1F5C4' )
   .add( '#EDE574' )
@@ -44,7 +44,7 @@ palettes[ 3 ] = new colourPool()
   .add( '#FC913A' )
   .add( '#FF4E50' );
 
-palettes[ 4 ] = new colourPool()
+palettes[ 3 ] = new colourPool()
   .add( '#FFFFFF' )
   .add( '#E5FCC2' )
   .add( '#9DE0AD' )
@@ -52,7 +52,7 @@ palettes[ 4 ] = new colourPool()
   .add( '#547980' )
   .add( '#594F4F' );
 
-palettes[ 5 ] = new colourPool()
+palettes[ 4 ] = new colourPool()
   //
   .add( '#ECECEC' )
   .add( '#CCCCCC' )
@@ -65,7 +65,7 @@ palettes[ 5 ] = new colourPool()
   //.add( '#FFFF00' )
   //.add( '#FF00FF' )
 
-var colour_count = 3
+var colour_count = 4
 var colours = palettes[ colour_count ];
 
 function changeColourFwd() {

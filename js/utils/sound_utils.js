@@ -164,8 +164,7 @@ function isSharp(note) {
           var freq = getNoteFromFFT( spectrum );
           var note = getNoteNumberFromFFT( spectrum );
           num = Math.round( note / 60 * colours.pool.length );
-          //num = Math.round(i/engine.particles.length * 360);
           var note_num = (freq.substring(0, 1)).charCodeAt(0) - 65;
-          //console.log(note_num);
-          return colours.get( Math.round(map(note_num, 0, 7, 0,  colours.pool.length-1)));
+          var c = Math.round(map(note_num, 0, 7, 0,  colours.pool.length));
+          return colours.get( c );
         }

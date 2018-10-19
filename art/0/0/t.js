@@ -4,8 +4,12 @@ rbvj = function () {
   var imgData;
   var maxParticles = 1000;
   var word_num = -1;
-  ctx.background(0);
-  
+
+  ctx.background( 0 );
+  hidden_ctx.background( 0 );
+  ctx2.clearRect( 0, 0, w, h );
+  ctx3.clearRect( 0, 0, w, h );
+
   hidden_ctx.font = "200px georgia";
   hidden_ctx.fillStyle = "blue";
   hidden_ctx.textAlign = "center";
@@ -94,7 +98,7 @@ rbvj = function () {
 
       }
     }
-    ctx.background(0, 0.6);
+    ctx.background(0);
     hidden_ctx.clearRect( 0, 0, w, h );
   }
 

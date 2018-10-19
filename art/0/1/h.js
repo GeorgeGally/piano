@@ -1,10 +1,13 @@
 rbvj = function () {
   ctx.lineWidth = 1;
   ctx.strokeStyle = rgba(0,0,0,0.8);
-  ctx.background(0);
+  ctx.background( 0 );
+  hidden_ctx.background( 0 );
+  ctx2.clearRect( 0, 0, w, h );
+  
   var particles = [];
   var group = new particleEngine(80);
-
+  colour_count = 1;
 
   for (var i = 0; i < group.particles.length; i++) {
 
@@ -19,7 +22,8 @@ rbvj = function () {
 
           var p = particles[i].particles[j];
           p.speed.y = 2 + random(0.2, 2)/20;
-          p.pos.x = group.particles[i].pos.x + random(-20,20);
+          p.pos.x = random(w);
+          //p.pos.x = group.particles[i].pos.x + random(-20,20);
           p.pos.y = random(-10, 10);
           p.sz = 6;
           p.c = group.particles[i].c;

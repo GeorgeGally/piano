@@ -84,7 +84,7 @@ rbvj = function () {
       b.sz = tween(b.sz, s, 12);
       }
       if (mode == 6) {
-      b.x -= speed;
+      //b.x -= speed;
       } else {
       b.y -= speed;
       }

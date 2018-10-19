@@ -30,7 +30,7 @@ rbvj = function () {
     xvec = Math.floor( ( w + 50 ) / scl );
     yvec = Math.floor( ( h + 50 ) / scl );
     flowfield = new Array( xvec * yvec );
-    var timeInc = Sound.getVol( 0, 1 ) / 500;
+    var timeInc = Sound.getVol( 0, 1 ) / 1500;
     var yNoise = 0;
     for ( var y = 0; y < yvec; y++ ) {
       var xNoise = 0;
@@ -41,10 +41,10 @@ rbvj = function () {
         var index = x + y * xvec;
         //flowfield[index] = dir;
 
-        xNoise += noiseInc;
+        xNoise += noiseInc + Sound.mapSound( x + y, xvec + yvec, 0, 1 ) / 1000;
 
-
-        ctx.fillStyle = colours.get( Sound.mapSound( dir, scl, 0, colours.pool.length-1 ) )
+        ctx.fillStyle = rgb( 255 );
+        //ctx.fillStyle = colours.get( Sound.mapSound( dir, scl, 0, colours.pool.length-1 ) )
         ctx.fillCircle( Math.round( x * scl ), Math.round( y * scl ), dir, dir );
       }
       yNoise += noiseInc;

@@ -1,9 +1,11 @@
 rbvj = function () {
 
+  ctx.background( 0 );
   hidden_ctx.background( 0 );
+  ctx2.clearRect( 0, 0, w, h );
   hidden_ctx.lineWidth = 2;
   ctx.background( 0 );
-  colour_count = 3;
+  colour_count = 2;
 
   var grid = new Grid( 1, 1, w / 2, h / 2, w / 4, h / 4 )
 
@@ -69,6 +71,7 @@ rbvj = function () {
       ctx.translate( this.pos.x, this.pos.y );
       ctx.fillEllipse( 0, 0, this.r, this.r );
       ctx.restore();
+      ctx2.fillMe( 0 );
       ctx2.fillEllipse( this.pos.x, this.pos.y, this.r, this.r );
       // ctx2.strokeMe(255);
       // ctx2.strokeEllipse(this.pos.x, this.pos.y, this.r, this.r);
@@ -111,9 +114,9 @@ rbvj = function () {
       matter_engine.world.gravity.y = -0.3;
       addCircle();
 
-    } else if ( Sound.getVol() < 50 ) {
+    } else if ( Sound.getVol() < 55 ) {
       matter_engine.world.gravity.x = matter_engine.world.gravity.x *= posNeg();
-      matter_engine.world.gravity.y = 0.25;
+      matter_engine.world.gravity.y = 0.28;
 
     }
 
@@ -143,7 +146,7 @@ rbvj = function () {
     var freq = getNoteFromFFT( spectrum );
     var note = getNoteNumberFromFFT( spectrum );
     var c = getColourFromNote();
-    var sz = map( note, 0, 60, 40, 80 );
+    var sz = map( note, 0, 60, 30, 60 );
     circles.push( new Circ( random( w ), h + sz + random( 30 ), sz, c ) );
 
   }
