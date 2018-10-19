@@ -1,8 +1,10 @@
 rbvj = function () {
 
+  ctx.background( 0 );
   var particles = [];
   var radius = 220;
   var c = 0;
+  ctx.fillStyle = rgb(255);
 
   var grid_w = 10;
   var grid_h = 5;
@@ -22,7 +24,7 @@ rbvj = function () {
 
     ctx.background( 0 );
     moveParticles();
-    ctx.fillStyle = colours.get(colour_count);
+    //ctx.fillStyle = colours.get(colour_count);
 
   }
 
@@ -44,7 +46,7 @@ rbvj = function () {
   function moveParticles() {
     for ( var i = 0; i < particles.length; i++ ) {
       p = particles[ i ];
-      var sz = Sound.mapSound( 10, 100, 0, 50 );
+      var sz = Sound.mapSound( i, particles.length * 2, 0, 50 );
       if ( sz < p.sz ) {
         p.sz = sz;
       } else {
@@ -56,7 +58,9 @@ rbvj = function () {
       p.angle = tween( p.angle, radians( 4 * p.sz ), 5 );
       ctx.translate( p.x, p.y );
       ctx.rotate( p.angle );
-
+      //var spectrum = Sound.spectrum;
+      if (frameCount%10 == 0) ctx.fillStyle = getColourFromNote();
+      //console.log(getNoteNumber(spectrum));
       cross( 0, 0, p.sz * 0.6, p.sz * 2.2 );
       ctx.rotate( -p.angle );
       ctx.translate( -p.x, -p.y );

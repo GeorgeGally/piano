@@ -1,6 +1,6 @@
 rbvj = function () {
 
-  ctx2.font="10px Arial";
+  ctx.lineWidth= 1;
   var grid = new particleEngine( 30, 22 );
   var engine = new particleEngine( 10, 10 );
   var hit_dist = 55;

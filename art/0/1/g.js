@@ -19,10 +19,11 @@ rbvj = function () {
     var ball = {
       x:  width/2,
       y: height/2,
-      speed_x: random(-2, 2),
-      speed_y: random(-2, 2),
-      c: rgb(random(255), 0, 0),
-      size: 20,
+      speed_x: random(-1, 1),
+      speed_y: random(-1, 1),
+      // c: rgb(random(255), 0, 0),
+      c: getColourFromNote(),
+      size: Sound.mapSound(balls.length, maxballs, 5, 20),
       a: random(1)
     }
 
@@ -37,18 +38,19 @@ rbvj = function () {
 
   function update(){
 
-    for (var i = 0; i < number_of_balls; i++) {
-      addBall(w/2, h/2);
-    }
+    //for (var i = 0; i < number_of_balls; i++) {
+      if(Sound.getVol() > 80) addBall(w/2, h/2);
+    //}
 
 
-    for (var i = 0; i < balls.length; i++) {
+    for (var i = balls.length-1; i >0 ; i--) {
       b = balls[i];
-
+      b.size -= 0.02;
+      if (b.size < 0.5) balls.splice(i,1);
       b.x += b.speed_x;
       b.y += b.speed_y;
 
-      if (b.x > width - b.size/2  || b.x < b.size/2  ) {
+      if (b.x > width - b.sz/2  || b.x < b.sz/2  ) {
         b.speed_x = b.speed_x *-1;
       }
 
@@ -66,11 +68,6 @@ rbvj = function () {
     ctx.background(0, 0.05);
     update();
 
-    // ctx.fillStyle = "#00aeef";
-    // for (var i = 0; i < motion.length; i++) {
-    //   m = motion[i];
-    //   ctx.fillRect(m.x, m.y, block_size, block_size)
-    // }
     ctx.fillStyle = colours.get(colour_count);
     var c = ctx.getCurrentFillValues();
 
@@ -78,7 +75,6 @@ rbvj = function () {
 
     for (var i = 0; i < balls.length; i++) {
       b = balls[i];
-      //ctx.fillStyle = rgb( c.r + b.a*10, c.g + b.a*10, c.b + b.a*10, b.a );
       ctx.fillStyle = b.c;
       ctx.fillEllipse(b.x, b.y, b.size, b.size);
 

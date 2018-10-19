@@ -87,7 +87,7 @@ function reset(){
   ctx.lineCap = "butt";
   ctx.lineWidth = 1;
   ctx.globalCompositeOperation = "normal";
-  frameRate = 60;
+  frameRate = 30;
 }
 
 

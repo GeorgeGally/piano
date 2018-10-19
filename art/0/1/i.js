@@ -104,10 +104,10 @@ rbvj = function () {
     var p = engine.particles[i];
     ctx.strokeMe(255, 0.3);
     ctx.line(p.pos.x, 0, p.pos.x, h);
-    var sz = Sound.mapSound(i, engine.length * 2, 1, 30);
+    var sz = Sound.mapSound(i, engine.length * 2, 1, 20);
     p.pos.y -= 4;
     p.sz = tween(p.sz, sz, 4);
-    p.sz2 = tween(p.sz2, 0, 30);
+    p.sz2 = tween(p.sz2, 0, 60);
     if (sz > 29) {
       p.sz2 = 180;
     }
