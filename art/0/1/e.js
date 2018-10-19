@@ -23,12 +23,12 @@ rbvj = function() {
       for (var i = grid.num_items_vert; i > 0; i--) {
         var pos = i * grid.num_items_horiz + counter;
         //var pos2 = i*grid.num_items_horiz + (counter+1)%grid.num_items_vert;
-        var s = Math.round(Sound.mapSound(i / 2, grid.num_items_vert * 2, 0, 6));
+        var s = Math.round(Sound.mapSound(i / 2, grid.num_items_vert * 2, 0, 4));
 
-        if (s < 4) {
+        if (s < 2) {
           grid.sides[pos] = 1;
         } else {
-          grid.sides[pos] = s - 4;
+          grid.sides[pos] = s - 2;
         }
         //grid.sides[pos2] = 2;
       }
