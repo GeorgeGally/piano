@@ -70,7 +70,7 @@ rbvj = function () {
       ctx.strokeMe( g.c );
 
       // if (g.direction == -1) {
-      ctx.lineWidth = 10;
+      ctx.lineWidth = 5;
       ctx.strokeCircle(w/2, h/2, g.sz, g.sz);
 
 
@@ -86,7 +86,7 @@ rbvj = function () {
       var p = engine.particles[i];
       var sz = Sound.mapSound( i, engine.length * 2, 0, 15);
       // p.sz = tween(p.sz, p.sz + sz, 4);
-      p.sz += 4;
+      p.sz += 1;
       if (p.sz > w * 1.5) engine.delete(p.me);
 
     }

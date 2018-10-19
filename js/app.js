@@ -27,6 +27,7 @@ var current_set = 0;
 var current_bank = 0;
 
 var colour_count = 0;
+colours = palettes [ colour_count];
 
 function setup() {
   renderer = new THREE.WebGLRenderer( {

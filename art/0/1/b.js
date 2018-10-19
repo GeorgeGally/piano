@@ -6,7 +6,7 @@ rbvj = function () {
   hidden_ctx.lineWidth = 2;
   ctx.background( 0 );
   colour_count = 2;
-
+  colours = palettes [ colour_count];
   var grid = new Grid( 1, 1, w / 2, h / 2, w / 4, h / 4 )
 
   var MatterEngine = Matter.Engine,
@@ -109,7 +109,7 @@ rbvj = function () {
     ctx2.clearRect( 0, 0, w, h );
     if ( chance( 100 ) ) matter_engine.world.gravity.x *= posNeg();
 
-    if ( Sound.getVol() > 75 ) {
+    if ( Sound.getVol() > 65 ) {
 
       matter_engine.world.gravity.y = -0.3;
       addCircle();

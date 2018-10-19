@@ -5,9 +5,10 @@ rbvj = function () {
   ctx.background( 0 );
   hidden_ctx.background( 0 );
   ctx2.clearRect( 0, 0, w, h );
-  
-  colour_count = 4;
 
+  colour_count = 4;
+  colours = palettes [ colour_count];
+  
   var MatterEngine = Matter.Engine,
     Render = Matter.Render,
     World = Matter.World,

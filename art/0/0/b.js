@@ -3,6 +3,7 @@ rbvj = function () {
   ctx.background(0);
   ctx2.clearRect(0,0,w,h);
   colour_count =3;
+  colours = palettes [ colour_count];
   var grid_w = 20;
   var grid_h = 20;
   var grid = createGrid( grid_w, grid_h );

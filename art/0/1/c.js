@@ -6,7 +6,8 @@ rbvj = function () {
   hidden_ctx.lineWidth = 2;
 
   colour_count = 1;
-
+  colours = palettes [ colour_count];
+  
   var grid = new Grid( 1, 1, w / 2, h / 2, w / 4, h / 4 )
 
   var MatterEngine = Matter.Engine,

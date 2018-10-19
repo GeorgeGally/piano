@@ -4,11 +4,12 @@ rbvj = function () {
   ctx.background( 0 );
   hidden_ctx.background( 0 );
   ctx2.clearRect( 0, 0, w, h );
-  
+
   var particles = [];
   var group = new particleEngine(80);
   colour_count = 1;
-
+  colours = palettes [ colour_count];
+  
   for (var i = 0; i < group.particles.length; i++) {
 
       group.particles[i].c = rgb(randomInt(150,255));
