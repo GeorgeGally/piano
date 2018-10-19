@@ -1,10 +1,11 @@
 rbvj = function () {
 
+  clearAll();
   var circs = [];
   var r = width / 14;
   var vol = 0;
   ctx.strokeStyle = rgb(255);
-
+  ctx.lineWidth = 2;
   var gx = randomInt( 3, 25 );
   var gy = Math.floor( h / 15 );
 
@@ -33,7 +34,7 @@ rbvj = function () {
       if ( vol > 0 ) p.pos.y = tween( p.pos.y, p.pos.y - vol, 30 );
       if ( p.pos.y > h ) p.pos.y = 0;
       if ( p.pos.y < 0 ) p.pos.y = h;
-      ctx.lineWidth = p.lw;
+      //ctx.lineWidth = p.lw;
 
       if ( vol > 0 ) ctx.line( p.pos.x - engine.grid.spacing_x / 2, p.pos.y, p.pos.x + engine.grid.spacing_x / 2 - 5, p.pos.y );
 

@@ -13,7 +13,7 @@ rbvj = function () {
   var counter = 0;
   var start = 0;
   ctx.lineWidth = 1;
-
+  var vol = 0;
 
     for (var i=0; i<numDots; i++){
 
@@ -42,7 +42,7 @@ rbvj = function () {
 
     for (var i = Math.abs(start); i < Math.round(Math.abs(counter)); i++){
 
-      var vol = Sound.mapSound(i*2, 500, 0, 100);
+      vol = tween(vol, Sound.mapSound(i*2, 500, 0, 100), 10);
       drawCirc(circs[i],vol);
       drawCirc2(circs[i],vol);
       ctx.save();
@@ -56,7 +56,7 @@ rbvj = function () {
 
       if (counter<numDots ) {
         start = 0;
-        counter+=0.2;
+        counter+=0.1;
       } else {
         counter = numDots;
         dir =-1;

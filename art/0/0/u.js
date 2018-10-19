@@ -17,12 +17,12 @@ rbvj = function () {
 
     ctx.globalCompositeOperation = "screen";
     // ctx.strokeStyle = rgba(255, 0.1);
-    hue = Math.abs( Math.sin( frameCount / 1000 ) ) * 200
+    hue = Math.abs( Math.sin( frameCount / 2000 ) ) * 200
     ctx.strokeStyle = hsl( hue, 60, 10 );
     //if (chance(50)) ctx.strokeStyle = getColourFromNote();
     x_offset = Math.cos( frameCount / 100 );
-    x = w / 2 + Math.sin( frameCount / 200 ) * ( w / 4 * x_offset );
-    y = h / 2 + Math.sin( frameCount / 400 ) * h / 4;
+    x = w / 2 + Math.sin( frameCount / 400 ) * ( w / 4 * x_offset );
+    y = h / 2 + Math.sin( frameCount / 800 ) * h / 4;
     var spectrum = Sound.spectrum;
     var freq = getNoteFromFFT( spectrum );
     //var note = getNoteNumberFromFFT( spectrum );

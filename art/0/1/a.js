@@ -5,7 +5,7 @@ rbvj = function () {
   var grid = new particleEngine( 1, 1 );
   var engine = new particleEngine( 1, 2 );
   var hit_dist = 345;
-  ctx.lineWidth = 0.2;
+  ctx.lineWidth = 0.5;
   var dir = 1;
   var radius = 200;
   var color1 = '#67aeda';
@@ -58,7 +58,7 @@ rbvj = function () {
       if ( !blur ) mode = ( mode + 1 ) % 3;
     }
 
-    if ( Sound.getVol() > 60 && frameCount % 8 == 0 ) {
+    if ( Sound.getVol() > 60 && frameCount % 16 == 0 ) {
       var c = getColourFromNote();
       //ctx.strokeMe( colours.get(c) );
       engine.add();

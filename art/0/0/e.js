@@ -3,8 +3,8 @@ rbvj = function() {
   ctx.background( 0 );
   colour_count = 2;
   colours = palettes [ colour_count ]
-  var grid = new particleEngine( 60, 40 );
-  var engine = new particleEngine( 2, 4 );
+  var grid = new particleEngine( 50, 30 );
+  var engine = new particleEngine( 4, 4 );
   var hit_dist = 55;
   ctx.lineWidth = 2;
   for (var i = 0; i < grid.length; i++) {

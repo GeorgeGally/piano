@@ -1,6 +1,6 @@
 rbvj = function () {
 
-
+  clearAll();
   var balls = [];
   var grid;
 
@@ -30,12 +30,9 @@ rbvj = function () {
     }
     if (chance(500)) speed *=-1;
     if (chance(500)) pix = !pix;
-    if (chance(100)) reset();
-    if (mode == 7) {
+    if (chance(300)) reset();
+
       ctx.background(0);
-    } else {
-      ctx.background(0, 0.2);
-    }
 
     for (var i = 0; i < balls.length; i++) {
       var b = balls[i];
@@ -79,15 +76,11 @@ rbvj = function () {
         //var s = map(Mic.spectrum[b.me%(m-1)], 0, 255, 4, grid.spacing_y - 2);
       }
 
-      if(s > 0) {
+      if(s > 0) b.sz = tween(b.sz, s, 32);
 
-      b.sz = tween(b.sz, s, 12);
-      }
-      if (mode == 6) {
-      //b.x -= speed;
-      } else {
+
       b.y -= speed;
-      }
+
       if( b.x > w) b.x = 0;
       if( b.x < 0) b.x = w;
       if( b.y > h) b.y = 0;

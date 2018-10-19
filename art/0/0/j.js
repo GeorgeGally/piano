@@ -22,7 +22,7 @@ rbvj = function () {
       ctx.lineWidth = s2;
       p.counter = Math.round(p.counter + s) % colours.pool.length;
       p.c = colours.get(p.counter);
-      p.pos.x += s;
+      p.pos.x = tween(p.pos.x, p.pos.x + s, 10);
       //p.c = colours.get( p.c )
       if(p.pos.x > w) p.pos.x = 0;
       let x = p.pos.x + Math.sin( frameCount / 10 ) * w;
@@ -36,7 +36,7 @@ rbvj = function () {
 
   function reset() {
     console.log("reset");
-    gy = randomInt(2, 60);
+    gy = randomInt(2, 30);
     engine = new particleEngine(200, gy);
     for ( let p of engine.particles ) {
       p.dir = posNeg();
