@@ -1,5 +1,7 @@
 rbvj = function () {
 
+  clearAll();
+
   var grid_w = 30;
   var grid_h = 30;
 

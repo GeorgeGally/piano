@@ -75,3 +75,10 @@ function createHiddenCanvas(canvas_name){
 	canvas.style.left = -w+"px";
 	return ctx;
 }
+
+
+function clearAll(){
+	ctx.background( 0 );
+  ctx2.clearRect( 0,0,w,h );
+  ctx3.clearRect( 0,0,w,h );
+}

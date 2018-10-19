@@ -44,7 +44,7 @@ rbvj = function () {
       //var f = findMapping(Sound.mapFreq(i), w*4);
       var f = Sound.mapSound(i, particles.length, 0, w/2);
       // particles[i].x = mic.getSprectrum(i*10);
-      particles[i].x = tween(particles[i].x, Math.sin(theta/10)*w/2 +w/2 + (f*particles[i].flip), 4);
+      particles[i].x = tween(particles[i].x, Math.sin(theta/10)*w/2 +w/2 + (f*particles[i].flip), 10);
 
     }
     moveParticles();

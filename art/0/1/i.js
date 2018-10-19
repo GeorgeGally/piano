@@ -1,5 +1,6 @@
 rbvj = function () {
 
+  clearAll();
   var engine = new particleEngine( 22, 22 );
 
   var dir = 1;

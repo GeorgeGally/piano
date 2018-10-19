@@ -1,6 +1,7 @@
 rbvj = function () {
 
-  ctx.strokeStyle = colours.get(colour_count);
+  clearAll()
+  ctx.strokeStyle = rgb(255);
   ctx.lineWidth = 1;
   var num = 120;
   var particles = [];

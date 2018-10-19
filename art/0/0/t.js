@@ -1,5 +1,6 @@
 rbvj = function () {
 
+  clearAll();
   var particle_array = [];
   var imgData;
   var maxParticles = 1000;

@@ -1,5 +1,6 @@
 rbvj = function () {
 
+  clearAll();
   var grid = new particleEngine( 15, 5 );
   var engine = new particleEngine( 25, 25 );
   var hit_dist = 285;
@@ -73,7 +74,7 @@ rbvj = function () {
       ctx.strokeStyle =  "#ffffff";
       ctx.fillStyle =  "#ffffff";
       //}
-      ctx.fillCircle(g.pos.x, g.pos.y, g.sz/15, g.sz/15);
+      ctx.fillCircle(g.pos.x, g.pos.y, g.sz/20, g.sz/20);
 
       if (g.sz > g.start_sz) g.sz = tween(g.sz, g.start_sz, 5);
     }

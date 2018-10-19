@@ -1,5 +1,6 @@
 rbvj = function () {
 
+  clearAll();
 
   ctx.lineWidth = 1;
 

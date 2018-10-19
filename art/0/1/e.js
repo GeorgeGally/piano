@@ -1,89 +1,101 @@
-rbvj = function () {
-  ctx2.clearRect(0, 0, w, h);
-  var grid = new particleEngine( 60, 30 );
-  var engine = new particleEngine( 20, 2 );
-  var hit_dist = 50;
+rbvj = function() {
 
-  for ( var i = 0; i < grid.length; i++ ) {
-    var g = grid.particles[ i ];
-    g.sz = 5;
-    g.start_sz = 6;
+  clearAll();
+
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  var grid = new Grid(20, 10);
+  var nums = [3, 3, 4, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 30, 32, 34]
+  grid.sides = [];
+  grid.r = [];
+
+  for (var i = 0; i < grid.length; i++) {
+    grid.sides[i] = 2;
+    grid.r[i] = randomInt(4) * 90;
   }
 
-  for ( var i = 0; i < engine.particles.length; i++ ) {
-    p = engine.particles[ i ];
-    p.pos.y = h;
+  var counter = 0;
 
-    p.speed.x = 2;
-    p.speed.y = random( 0.5, 2 );
-    p.dir.x = 1;
-    p.dir.y = -1;
-    //console.log(p.speed.y);
-  }
+  draw = function() {
+    ctx.background(0);
 
-  draw = function () {
+    if (frameCount % 4 == 0) {
+      for (var i = grid.num_items_vert; i > 0; i--) {
+        var pos = i * grid.num_items_horiz + counter;
+        //var pos2 = i*grid.num_items_horiz + (counter+1)%grid.num_items_vert;
+        var s = Math.round(Sound.mapSound(i / 2, grid.num_items_vert * 2, 0, 6));
 
-    ctx.background( 0 );
-    ctx.fillStyle = "white";
-
-    for ( var i = 0; i < grid.length; i++ ) {
-
-      var g = grid.particles[ i ];
-      for ( var j = 0; j < engine.length; j++ ) {
-        var p = engine.particles[ j ];
-
-        var d = Math.abs( getDist( g, p ) );
-        if ( d < hit_dist ) {
-          var target_sz = hit_dist - d + g.start_sz;
-          if ( g.sz < target_sz ) g.sz = target_sz / 2;
+        if (s < 4) {
+          grid.sides[pos] = 1;
+        } else {
+          grid.sides[pos] = s - 4;
         }
-
-
-
+        //grid.sides[pos2] = 2;
       }
+      // counter = Math.round(grid.num_items_horiz/2 + Math.sin(frameCount/12)*grid.num_items_horiz/2);
+      counter++;
+    }
+    for (var i = 0; i < grid.length; i++) {
+      var sides = grid.sides[i];
+      ctx.save();
+      ctx.translate(grid.x[i], grid.y[i]);
+      ctx.rotateDeg(grid.r[i]);
+      Block(0, 0, grid.spacing.y, sides);
+      ctx.restore();
     }
 
-    moveParticles();
-    drawGrid();
-    //drawParticles();
-
-  }
-
-  function drawGrid() {
-    for ( var i = 0; i < grid.length; i++ ) {
-      var g = grid.particles[ i ];
-
-      var c = Math.round( Sound.mapSound( g.sz, 35, 0, 7 ) );
-      //console.log(c);
-      ctx.fillStyle = colours.get(c);
-      if (g.sz < 10) ctx.fillStyle = rgb(255);
-      ctx.fillEllipse( g.pos.x, g.pos.y, g.sz, g.sz );
-      if ( g.sz > g.start_sz ) g.sz = tween( g.start_sz, g.sz, 35 );
+    if (counter >= grid.num_items_horiz) {
+      counter = 0;
     }
+
+
   }
 
-  function moveParticles() {
-    for ( var i = 0; i < engine.particles.length; i++ ) {
-      var p = engine.particles[ i ];
-      p.pos.x += p.speed.x * p.dir.x;
-      p.pos.y += p.speed.y * p.dir.y;
-      //console.log(p.speed.y);
-      var c = Math.round( Sound.mapSound( g.sz, engine.particles.length * 2, 0, 7 ) );
-      p.sz = c;
-      if ( p.pos.y < 0 ) p.pos.y = h;
-      if ( p.pos.y > h ) p.pos.y = 0;
-      if ( p.pos.x < 0 ) p.pos.x = w;
-      if ( p.pos.x > w ) p.pos.x = 0;
+
+
+  function Block(startx, starty, block_size, num_stripes) {
+    // if(num_stripes < 2) {
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "white";
+
+    startx -= this.block_size / 2;
+    starty -= this.block_size / 2;
+    this.block_size = block_size;
+    this.rot = 0;
+    this.spacing = block_size / num_stripes;
+    this.stripes = [];
+    var count = 0;
+
+    for (var x1 = 0; x1 < this.block_size; x1 += this.spacing) {
+      this.stripes[count] = new Stripes(x1, 0, this.block_size, this.block_size - x1);
+      count++;
     }
-    //engine.update();
+
+    for (var y1 = 0; y1 < this.block_size; y1 += this.spacing) {
+      this.stripes[count] = new Stripes(0, y1, this.block_size - y1, this.block_size);
+      count++;
+    }
+
+    function Stripes(x1, y1, x2, y2) {
+      this.x1 = x1 || 0;
+      this.y1 = y1 || 0;
+      this.x2 = x2 || 0;
+      this.y2 = y2 || 0;
+    }
+
+    this.drawStripes = function() {
+      ctx.fillRect(startx, starty, this.block_size, this.block_size);
+      for (var i = 0; i < this.stripes.length; i++) {
+        ctx.line(startx + this.stripes[i].x1, starty + this.stripes[i].y1, startx + this.stripes[i].x2, starty + this.stripes[i].y2);
+      }
+      ctx.strokeRect(startx, starty, this.block_size, this.block_size);
+    }
+
+    this.drawStripes();
   }
 
 
 
 
-
-  function getDist( p, p2 ) {
-    return dist( p.pos.x, p.pos.y, p2.pos.x, p2.pos.y );
-  }
 
 }();

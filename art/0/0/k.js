@@ -29,10 +29,10 @@ rbvj = function () {
     for ( var i = 0; i < engine.particles.length; i++ ) {
 
       var p = engine.particles[ i ];
-      vol = Sound.mapSound( i % 100, 100, -4, 4 ) - random( 0.3 );
-      if ( vol > 0 ) p.pos.y = tween( p.pos.y, p.pos.y - vol, 20 );
-      if ( p.pos.y > height ) p.pos.y = 0;
-      if ( p.pos.y < 0 ) p.pos.y = height;
+      vol = Sound.mapSound( i % 100, 100, -2, 2 ) - random( 0.1 );
+      if ( vol > 0 ) p.pos.y = tween( p.pos.y, p.pos.y - vol, 30 );
+      if ( p.pos.y > h ) p.pos.y = 0;
+      if ( p.pos.y < 0 ) p.pos.y = h;
       ctx.lineWidth = p.lw;
 
       if ( vol > 0 ) ctx.line( p.pos.x - engine.grid.spacing_x / 2, p.pos.y, p.pos.x + engine.grid.spacing_x / 2 - 5, p.pos.y );

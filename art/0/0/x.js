@@ -1,5 +1,7 @@
 rbvj = function () {
 
+  clearAll();
+
   var grid = new particleEngine( 1, 1 );
   var engine = new particleEngine( 1, 2 );
   var hit_dist = 345;

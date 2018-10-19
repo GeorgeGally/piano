@@ -1,5 +1,6 @@
 rbvj = function () {
 
+  clearAll();
   resize();
   var circSize= 30;
   var t = 0;

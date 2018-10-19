@@ -1,5 +1,7 @@
 rbvj = function () {
 
+  clearAll();
+
   ctx.strokeStyle = rgba( 0, 0, 0, 0.8 );
 
   var particles = [];

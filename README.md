@@ -11,7 +11,7 @@ c - notes change colours
 d -
 e -
 f - notes change colours
-g -
+g - freq
 h - frequency changes movement
 i - frequency and volume changes movement
 j - frequency and HIGHS volume changes movement
@@ -20,6 +20,7 @@ l - volume changes movement, arrow keys add or subtract points
 n - sz and position by volume and freq. but more just meant to be a moody ambient piece.
 o - sound frequencies - let it run, infinite patterns
 p - freq and note/key
+q -
 r - freq and volume
 s -
 t -

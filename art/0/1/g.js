@@ -1,5 +1,7 @@
 rbvj = function () {
 
+  clearAll();
+
   var block_size = 20;
   var rect_size = 60;
   var frameRate = 60;
@@ -11,8 +13,7 @@ rbvj = function () {
   for (var i = 0; i < number_of_balls; i++) {
     addBall();
   }
-  ctx.background(0);
-  ctx2.clearRect(0, 0, w, h);
+
 
   function addBall(_x, _y){
 

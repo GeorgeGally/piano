@@ -1,5 +1,6 @@
 rbvj = function () {
 
+  clearAll();
   var gw = 35;
   var gh = 25;
   var grid = new particleEngine( gw, gh );

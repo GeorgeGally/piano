@@ -1,5 +1,9 @@
 rbvj = function () {
 
+  clearAll();
+  colour_count = 3;
+  colours = palettes [ colour_count ];
+
   var grid = new particleEngine( 5, 5 );
   var engine = new particleEngine( 5, 5 );
   var hit_dist = 55;
